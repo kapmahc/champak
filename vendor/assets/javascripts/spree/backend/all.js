@@ -9,3 +9,5 @@
 //= require spree/backend
 
 //= require_tree .
+//= require spree/backend/spree_globalize
+//= require spree/backend/spree_i18n

@@ -56,6 +56,16 @@ GIT
       spree_core (~> 3.1.0.beta)
 
 GIT
+  remote: git://github.com/spree-contrib/spree_globalize.git
+  revision: 0f36a5ec00b1a80b5450d0a4dd45b7b8ffce787c
+  branch: master
+  specs:
+    spree_globalize (3.1.0.beta)
+      friendly_id-globalize
+      globalize (~> 5.0.1)
+      spree_i18n (~> 3.1.0.beta)
+
+GIT
   remote: git://github.com/spree-contrib/spree_i18n.git
   revision: 65707e84aa60c268034a43fa5e9875d3fe1caf02
   branch: 3-1-stable
@@ -277,8 +287,13 @@ GEM
       railties (>= 3.2, < 5.1)
     friendly_id (5.1.0)
       activerecord (>= 4.0.0)
+    friendly_id-globalize (1.0.0.alpha2)
+      friendly_id (~> 5.1.0, < 6.0)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
+    globalize (5.0.1)
+      activemodel (>= 4.2.0, < 4.3)
+      activerecord (>= 4.2.0, < 4.3)
     hashie (3.4.6)
     highline (1.6.21)
     htmlentities (4.3.4)
@@ -577,6 +592,7 @@ DEPENDENCIES
   spree_editor!
   spree_email_to_friend!
   spree_gateway (~> 3.1.0)
+  spree_globalize!
   spree_i18n!
   spree_multi_currency!
   spree_recently_viewed!
