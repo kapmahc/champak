@@ -46,6 +46,8 @@ group :development do
 end
 
 # My add
+gem 'puma'
+
 gem 'spree', '~> 3.1.0'
 gem 'spree_auth_devise', '~> 3.1.0'
 gem 'spree_gateway', '~> 3.1.0'
@@ -64,3 +66,10 @@ gem 'spree_sitemap', github: 'spree-contrib/spree_sitemap', branch: '3-1-stable'
 gem 'spree_static_content', github: 'spree-contrib/spree_static_content', branch: '3-1-stable'
 gem 'spree_wishlist', github: 'spree-contrib/spree_wishlist', branch: 'master'
 gem 'spree_email_to_friend', github: 'spree-contrib/spree_email_to_friend', branch: 'master'
+
+group :development do
+  gem 'capistrano', '~> 3.1'
+  gem 'capistrano-rails', '~> 1.1'
+  gem 'capistrano-rbenv', '~> 2.0'
+  gem 'capistrano3-puma', git: 'https://github.com/seuros/capistrano-puma.git'
+end
