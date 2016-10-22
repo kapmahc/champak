@@ -12,5 +12,6 @@
 !/log/.keep
 /tmp
 
-# Editors
+# my
 /.idea
+/public/sitemap*

@@ -68,6 +68,13 @@ GRANT ALL PRIVILEGES ON DATABASE db-name TO user-name;
 * Run
 ```
 bundle exec cap production deploy
+bundle exec cap production puma:nginx_config
+
+echo "Sitemap: https://www.chang-me.com/sitemap.xml.gz" >> public/robots.txt
+```
+* Seed
+```
+bundle exec rake db:seed
 ```
 
 ## Issues
@@ -82,12 +89,19 @@ to:
     local   all             all                                     md5
 ```
 
+* Generate openssl certs
+```
+openssl genrsa -out www.change-me.com.key 2048
+openssl req -new -x509 -key www.change-me.com.key -out www.change-me.com.crt -days 3650 # Common Name:*.change-me.com
+```
+
 ## Development
 ```
 bundle exec rake railties:install:migrations
 bundle exec rake db:migrate
 bundle exec rake db:seed
 bundle exec rake spree_sample:load
+bundle exec rake sitemap:refresh:no_ping
 ```
  
 
