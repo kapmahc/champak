@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161022202760) do
+ActiveRecord::Schema.define(version: 20161022203363) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,6 +48,7 @@ ActiveRecord::Schema.define(version: 20161022202760) do
     t.datetime "updated_at",        null: false
     t.integer  "user_id"
     t.datetime "deleted_at"
+    t.string   "braintree_id"
   end
 
   add_index "spree_addresses", ["country_id"], name: "index_spree_addresses_on_country_id", using: :btree
@@ -112,6 +113,23 @@ ActiveRecord::Schema.define(version: 20161022202760) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
+
+  create_table "spree_braintree_checkouts", force: :cascade do |t|
+    t.string   "transaction_id"
+    t.string   "state"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "paypal_email"
+    t.string   "advanced_fraud_data"
+    t.string   "risk_id"
+    t.string   "risk_decision"
+    t.string   "braintree_last_digits", limit: 4
+    t.string   "braintree_card_type"
+    t.boolean  "admin_payment"
+  end
+
+  add_index "spree_braintree_checkouts", ["state"], name: "index_spree_braintree_checkouts_on_state", using: :btree
+  add_index "spree_braintree_checkouts", ["transaction_id"], name: "index_spree_braintree_checkouts_on_transaction_id", using: :btree
 
   create_table "spree_calculators", force: :cascade do |t|
     t.string   "type"
@@ -428,6 +446,8 @@ ActiveRecord::Schema.define(version: 20161022202760) do
     t.string   "number"
     t.string   "cvv_response_code"
     t.string   "cvv_response_message"
+    t.string   "braintree_token"
+    t.string   "braintree_nonce"
   end
 
   add_index "spree_payments", ["number"], name: "index_spree_payments_on_number", using: :btree
