@@ -36,6 +36,10 @@ append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'public/syst
 # Default value for keep_releases is 5
 # set :keep_releases, 5
 
+# rbenv
+set :rbenv_type, :user
+set :rbenv_ruby, File.read('.ruby-version').strip
+
 # nginx
 set :nginx_config_name, -> { "#{fetch(:app_domain)}" }
 set :nginx_server_name, -> { fetch :app_domain }

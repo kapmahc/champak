@@ -1,12 +1,4 @@
 GIT
-  remote: git://github.com/spree-contrib/spree-product-assembly.git
-  revision: abc3a5e23ebec04e0cb2d49d1c67bb80425b15b7
-  branch: 3-1-stable
-  specs:
-    spree_product_assembly (3.1.0)
-      spree_backend (~> 3.1.0.beta)
-
-GIT
   remote: git://github.com/spree-contrib/spree_active_shipping.git
   revision: 49133abc054777f58a37b9e3e82462715d5dbf28
   branch: 3-1-stable
@@ -587,7 +579,6 @@ DEPENDENCIES
   spree_gateway (~> 3.1.0)
   spree_i18n!
   spree_multi_currency!
-  spree_product_assembly!
   spree_recently_viewed!
   spree_related_products!
   spree_sitemap!
