@@ -1,4 +1,5 @@
 RAILS_ENV=development
 HOME_URL=https://www.change-me.com
+REDIS_URL=redis://localhost:6379/0
 SECRET_KEY_BASE=dahN8oogevahnuphahpei2xoh5aeTheiNgai3ruing3ja3xaedei2auNgae0ka6Owi5ahwohbaeb1Lae4oofizoshai1Leig0BaMahTaejahtao7eeLu5itie9aadi2u
 CHAMPAK_DATABASE_PASSWORD=eiZeleiZ6meiPh4aSaef8quifaisoove
