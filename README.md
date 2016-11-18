@@ -13,7 +13,7 @@ passwd -l deploy
 scp ~/.ssh/id_rsa.pub deploy@www.change-me.com:/tmp
 ```
 
-* Ssh no-password login 
+* Ssh no-password login
 ```
 su - deploy
 mkdir ~/.ssh
@@ -56,7 +56,8 @@ gem install bundler
 ### Config files
 * Upload
 ```
-scp .rbenv-vars config/database.yml deploy@www.change-me.com:/tmp
+scp vendor/assets/images/logo/spree_50.png .rbenv-vars config/database.yml deploy@www.change-me.com:/tmp
+echo "Sitemap: https://www.chang-me.com/sitemap.xml.gz" >> public/robots.txt
 ```
 * Create database
 ```
@@ -69,8 +70,6 @@ GRANT ALL PRIVILEGES ON DATABASE db-name TO user-name;
 ```
 bundle exec cap production deploy
 bundle exec cap production puma:nginx_config
-
-echo "Sitemap: https://www.chang-me.com/sitemap.xml.gz" >> public/robots.txt
 ```
 * Seed
 ```
@@ -103,5 +102,3 @@ bundle exec rake db:seed
 bundle exec rake spree_sample:load
 bundle exec rake sitemap:refresh:no_ping
 ```
- 
-
