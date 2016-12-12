@@ -55,6 +55,8 @@ gem 'spree', '~> 3.2.0.rc1'
 gem 'spree_auth_devise', '~> 3.2.0.beta'
 gem 'spree_gateway', '~> 3.2.0.beta'
 
+gem 'rails-settings-cached'
+
 gem 'spree_i18n', github: 'spree-contrib/spree_i18n'
 gem 'spree_multi_currency', github: 'spree-contrib/spree_multi_currency'
 gem 'spree_braintree_vzero', github: 'spree-contrib/spree_braintree_vzero'

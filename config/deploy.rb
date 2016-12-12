@@ -23,7 +23,7 @@ set :deploy_to, -> { "/var/www/#{fetch :app_domain, 'localhost'}" }
 
 # Default value for :linked_files is []
 # append :linked_files, 'config/database.yml', 'config/secrets.yml'
-append :linked_files, 'config/database.yml', '.rbenv-vars', 'vendor/assets/images/logo/spree_50.png', 'public/robots.txt'
+append :linked_files, 'config/database.yml', '.rbenv-vars', 'vendor/assets/images/logo/spree_50.png', 'public/robots.txt', 'config/initializers/locale.rb'
 
 # Default value for linked_dirs is []
 # append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'public/system'
