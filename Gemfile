@@ -47,7 +47,9 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
+gem 'rails-i18n', '~> 5.0.0'
 gem 'lograge'
+gem 'tinymce-rails-langs'
 
 gem 'spree', '~> 3.2.0.rc1'
 gem 'spree_auth_devise', '~> 3.2.0.beta'
@@ -66,6 +68,7 @@ gem 'spree_editor', github: 'spree-contrib/spree_editor'
 gem 'spree_recently_viewed', github: 'spree-contrib/spree_recently_viewed'
 gem 'spree_sitemap', github: 'spree-contrib/spree_sitemap'
 
+# gem 'spree_globalize', github: 'spree-contrib/spree_globalize', branch: 'master'
 # gem 'spree_active_shipping', github: 'spree-contrib/spree_active_shipping'
 # gem 'spree_wishlist', github: 'spree-contrib/spree_wishlist', branch: 'master'
 # gem 'spree_email_to_friend', github: 'spree-contrib/spree_email_to_friend', branch: 'master'

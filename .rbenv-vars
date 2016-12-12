@@ -1,5 +1,7 @@
 RAILS_ENV=development
 
+LOCALE=zh-CN
+
 CHAMPAK_DATABASE_PASSWORD=mu7oPoh4eithecie0Ceinu9thi5aiguo
 DEVISE_SECRET_KEY=leijaap1ien7quuxiu6the0zalai8naiv6thahcaedihohgh5aiKoong6im2eg9zer4UuNooTieb8Yoo3ugh5iefe5Wokahroghaibeelie0een1voomaeje0Ahgh0Oa
 
