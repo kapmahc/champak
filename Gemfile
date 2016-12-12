@@ -68,3 +68,10 @@ gem 'spree_sitemap', github: 'spree-contrib/spree_sitemap'
 # gem 'spree_active_shipping', github: 'spree-contrib/spree_active_shipping'
 # gem 'spree_wishlist', github: 'spree-contrib/spree_wishlist', branch: 'master'
 # gem 'spree_email_to_friend', github: 'spree-contrib/spree_email_to_friend', branch: 'master'
+
+group :development do
+  gem 'capistrano', '~> 3.7'
+  gem 'capistrano-rails', '~> 1.1'
+  gem 'capistrano-rbenv', '~> 2.0'
+  gem 'capistrano3-puma', github: 'seuros/capistrano-puma'
+end

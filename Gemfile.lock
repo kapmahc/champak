@@ -1,4 +1,13 @@
 GIT
+  remote: git://github.com/seuros/capistrano-puma.git
+  revision: e18b30c18aceceed003e8007c268125317a17a9d
+  specs:
+    capistrano3-puma (2.0.0)
+      capistrano (~> 3.5)
+      capistrano-bundler
+      puma (~> 3.4)
+
+GIT
   remote: git://github.com/spree-contrib/spree-product-assembly.git
   revision: da6a91b8c641c016ee59ad1ba3c02ec10561471b
   specs:
@@ -154,6 +163,8 @@ GEM
       activerecord (>= 3.0)
     addressable (2.5.0)
       public_suffix (~> 2.0, >= 2.0.2)
+    airbrussh (1.1.1)
+      sshkit (>= 1.6.1, != 1.7.0)
     arel (7.1.4)
     autoprefixer-rails (6.5.3.1)
       execjs
@@ -171,6 +182,22 @@ GEM
     cancancan (1.10.1)
     canonical-rails (0.1.1)
       rails (>= 4.1, < 5.1)
+    capistrano (3.7.0)
+      airbrussh (>= 1.0.0)
+      capistrano-harrow
+      i18n
+      rake (>= 10.0.0)
+      sshkit (>= 1.9.0)
+    capistrano-bundler (1.2.0)
+      capistrano (~> 3.1)
+      sshkit (~> 1.2)
+    capistrano-harrow (0.5.3)
+    capistrano-rails (1.2.0)
+      capistrano (~> 3.1)
+      capistrano-bundler (~> 1.1)
+    capistrano-rbenv (2.1.0)
+      capistrano (~> 3.1)
+      sshkit (~> 1.3)
     carmen (1.0.2)
       activesupport (>= 3.0.0)
     chronic (0.10.2)
@@ -263,6 +290,9 @@ GEM
     multi_json (1.12.1)
     multi_xml (0.6.0)
     multipart-post (2.0.0)
+    net-scp (1.2.1)
+      net-ssh (>= 2.6.5)
+    net-ssh (3.2.0)
     nio4r (1.2.1)
     nokogiri (1.6.8.1)
       mini_portile2 (~> 2.1.0)
@@ -448,6 +478,9 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    sshkit (1.11.4)
+      net-scp (>= 1.1.2)
+      net-ssh (>= 2.8.0)
     state_machines (0.4.0)
     state_machines-activemodel (0.4.0)
       activemodel (>= 4.1, < 5.1)
@@ -495,6 +528,10 @@ PLATFORMS
 
 DEPENDENCIES
   byebug
+  capistrano (~> 3.7)
+  capistrano-rails (~> 1.1)
+  capistrano-rbenv (~> 2.0)
+  capistrano3-puma!
   coffee-rails (~> 4.2)
   jbuilder (~> 2.5)
   jquery-rails
