@@ -19,3 +19,6 @@
 
 # Editor
 /.idea
+
+# Spree
+public/spree
