@@ -16,3 +16,7 @@ Spree.config do |config|
 end
 
 Spree.user_class = 'Spree::User'
+
+
+# fix 'ActionView::Template::Error (uninitialized constant SpreeI18n::LocaleHelper::Locale)'
+require 'spree_i18n/locale'
