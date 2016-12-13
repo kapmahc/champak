@@ -69,6 +69,7 @@ gem 'spree_product_assembly', github: 'spree-contrib/spree-product-assembly'
 gem 'spree_editor', github: 'spree-contrib/spree_editor'
 gem 'spree_recently_viewed', github: 'spree-contrib/spree_recently_viewed'
 gem 'spree_sitemap', github: 'spree-contrib/spree_sitemap'
+gem 'spree_multi_domain', github: 'spree-contrib/spree-multi-domain'
 
 # gem 'spree_globalize', github: 'spree-contrib/spree_globalize', branch: 'master'
 # gem 'spree_active_shipping', github: 'spree-contrib/spree_active_shipping'
@@ -80,4 +81,5 @@ group :development do
   gem 'capistrano-rails', '~> 1.1'
   gem 'capistrano-rbenv', '~> 2.0'
   gem 'capistrano3-puma', github: 'seuros/capistrano-puma'
+  gem "capistrano-db-tasks", require: false
 end

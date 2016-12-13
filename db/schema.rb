@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161212214825) do
+ActiveRecord::Schema.define(version: 20161213200433) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -530,6 +530,13 @@ ActiveRecord::Schema.define(version: 20161212214825) do
     t.index ["tax_category_id"], name: "index_spree_products_on_tax_category_id", using: :btree
   end
 
+  create_table "spree_products_stores", id: false, force: :cascade do |t|
+    t.integer "product_id"
+    t.integer "store_id"
+    t.index ["product_id"], name: "index_spree_products_stores_on_product_id", using: :btree
+    t.index ["store_id"], name: "index_spree_products_stores_on_store_id", using: :btree
+  end
+
   create_table "spree_products_taxons", force: :cascade do |t|
     t.integer "product_id"
     t.integer "taxon_id"
@@ -590,6 +597,11 @@ ActiveRecord::Schema.define(version: 20161212214825) do
     t.index ["product_group_id"], name: "index_promotion_rules_on_product_group_id", using: :btree
     t.index ["promotion_id"], name: "index_spree_promotion_rules_on_promotion_id", using: :btree
     t.index ["user_id"], name: "index_promotion_rules_on_user_id", using: :btree
+  end
+
+  create_table "spree_promotion_rules_stores", id: false, force: :cascade do |t|
+    t.integer "promotion_rule_id"
+    t.integer "store_id"
   end
 
   create_table "spree_promotions", force: :cascade do |t|
@@ -978,6 +990,22 @@ ActiveRecord::Schema.define(version: 20161212214825) do
     t.index ["user_id"], name: "index_spree_store_credits_on_user_id", using: :btree
   end
 
+  create_table "spree_store_payment_methods", force: :cascade do |t|
+    t.integer  "store_id"
+    t.integer  "payment_method_id"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  create_table "spree_store_shipping_methods", force: :cascade do |t|
+    t.integer  "store_id"
+    t.integer  "shipping_method_id"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.index ["shipping_method_id"], name: "index_spree_store_shipping_methods_on_shipping_method_id", using: :btree
+    t.index ["store_id"], name: "index_spree_store_shipping_methods_on_store_id", using: :btree
+  end
+
   create_table "spree_stores", force: :cascade do |t|
     t.string   "name"
     t.string   "url"
@@ -990,6 +1018,7 @@ ActiveRecord::Schema.define(version: 20161212214825) do
     t.boolean  "default",           default: false, null: false
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
+    t.string   "logo_file_name"
     t.index ["code"], name: "index_spree_stores_on_code", using: :btree
     t.index ["default"], name: "index_spree_stores_on_default", using: :btree
     t.index ["url"], name: "index_spree_stores_on_url", using: :btree
@@ -1053,7 +1082,9 @@ ActiveRecord::Schema.define(version: 20161212214825) do
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
     t.integer  "position",   default: 0
+    t.integer  "store_id"
     t.index ["position"], name: "index_spree_taxonomies_on_position", using: :btree
+    t.index ["store_id"], name: "index_spree_taxonomies_on_store_id", using: :btree
   end
 
   create_table "spree_taxons", force: :cascade do |t|
@@ -1089,6 +1120,7 @@ ActiveRecord::Schema.define(version: 20161212214825) do
     t.boolean  "active",       default: true
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
+    t.integer  "store_id"
     t.index ["active"], name: "index_spree_trackers_on_active", using: :btree
   end
 

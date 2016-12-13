@@ -8,6 +8,16 @@ GIT
       puma (~> 3.4)
 
 GIT
+  remote: git://github.com/spree-contrib/spree-multi-domain.git
+  revision: 074d1f4ca5d450966fd26cdd93c8f9108e672853
+  specs:
+    spree_multi_domain (3.2.0.alpha)
+      spree_api (>= 3.1.0, < 4.0)
+      spree_backend (>= 3.1.0, < 4.0)
+      spree_core (>= 3.1.0, < 4.0)
+      spree_frontend (>= 3.1.0, < 4.0)
+
+GIT
   remote: git://github.com/spree-contrib/spree-product-assembly.git
   revision: da6a91b8c641c016ee59ad1ba3c02ec10561471b
   specs:
@@ -166,7 +176,7 @@ GEM
     airbrussh (1.1.1)
       sshkit (>= 1.6.1, != 1.7.0)
     arel (7.1.4)
-    autoprefixer-rails (6.5.3.1)
+    autoprefixer-rails (6.5.4)
       execjs
     awesome_nested_set (3.1.1)
       activerecord (>= 4.0.0, < 5.1)
@@ -191,6 +201,8 @@ GEM
     capistrano-bundler (1.2.0)
       capistrano (~> 3.1)
       sshkit (~> 1.2)
+    capistrano-db-tasks (0.5)
+      capistrano (>= 3.0.0)
     capistrano-harrow (0.5.3)
     capistrano-rails (1.2.0)
       capistrano (~> 3.1)
@@ -537,6 +549,7 @@ PLATFORMS
 DEPENDENCIES
   byebug
   capistrano (~> 3.7)
+  capistrano-db-tasks
   capistrano-rails (~> 1.1)
   capistrano-rbenv (~> 2.0)
   capistrano3-puma!
@@ -560,6 +573,7 @@ DEPENDENCIES
   spree_gateway (~> 3.2.0.beta)
   spree_i18n!
   spree_multi_currency!
+  spree_multi_domain!
   spree_product_assembly!
   spree_recently_viewed!
   spree_related_products!
