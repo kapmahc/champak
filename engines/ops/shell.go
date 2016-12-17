@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"os"
 	"path"
+	"path/filepath"
 	"time"
 
 	"github.com/BurntSushi/toml"
@@ -47,28 +48,79 @@ func (p *Engine) Shell() []cli.Command {
 				},
 				{
 					Name:    "migrate",
-					Usage:   "applies all available migrations",
+					Usage:   "migrate the DB to the most recent version available",
 					Aliases: []string{"m"},
 					Action: auth.Action(func(*cli.Context) error {
-						//TODO
-						return nil
+						conf, err := dbConf()
+						if err != nil {
+							return err
+						}
+
+						target, err := goose.GetMostRecentDBVersion(conf.MigrationsDir)
+						if err != nil {
+							return err
+						}
+
+						return goose.RunMigrations(conf, conf.MigrationsDir, target)
 					}),
 				},
 				{
 					Name:    "rollback",
-					Usage:   "rolls back all migrations",
+					Usage:   "roll back the version by 1",
 					Aliases: []string{"r"},
 					Action: auth.Action(func(*cli.Context) error {
-						//TODO
-						return nil
+						conf, err := dbConf()
+						if err != nil {
+							return err
+						}
+
+						current, err := goose.GetDBVersion(conf)
+						if err != nil {
+							return err
+						}
+
+						previous, err := goose.GetPreviousDBVersion(conf.MigrationsDir, current)
+						if err != nil {
+							return err
+						}
+
+						return goose.RunMigrations(conf, conf.MigrationsDir, previous)
 					}),
 				},
 				{
 					Name:    "version",
-					Usage:   "show database scheme version",
+					Usage:   "dump the migration status for the current DB",
 					Aliases: []string{"v"},
 					Action: auth.Action(func(*cli.Context) error {
-						//TODO
+						conf, err := dbConf()
+						if err != nil {
+							return err
+						}
+
+						// collect all migrations
+						migrations, err := goose.CollectMigrations(conf.MigrationsDir)
+						if err != nil {
+							return err
+						}
+
+						db, err := goose.OpenDBFromDBConf(conf)
+						if err != nil {
+							return err
+						}
+						defer db.Close()
+
+						// must ensure that the version table exists if we're running on a pristine DB
+						if _, err = goose.EnsureDBVersion(conf, db); err != nil {
+							return err
+						}
+
+						fmt.Println("    Applied At                  Migration")
+						fmt.Println("    =======================================")
+						for _, m := range migrations {
+							if err = printMigrationStatus(db, m.Version, filepath.Base(m.Source)); err != nil {
+								return err
+							}
+						}
 						return nil
 					}),
 				},
@@ -360,25 +412,22 @@ func (p *Engine) Shell() []cli.Command {
 						},
 					},
 					Action: auth.Action(func(c *cli.Context) error {
-						//TODO
 						name := c.String("name")
 						if len(name) == 0 {
 							cli.ShowCommandHelp(c, "migration")
 							return nil
 						}
-						root := dbMigrationsDir()
-						if err := os.MkdirAll(root, 0700); err != nil {
-							return err
-						}
-						file, err := goose.CreateMigration(name, "sql", dbMigrationsDir(), time.Now())
+						cfg, err := dbConf()
 						if err != nil {
 							return err
 						}
-
-						// fn, err := filepath.Abs(file)
-						// if err != nil {
-						// 	return err
-						// }
+						if err = os.MkdirAll(cfg.MigrationsDir, 0700); err != nil {
+							return err
+						}
+						file, err := goose.CreateMigration(name, "sql", cfg.MigrationsDir, time.Now())
+						if err != nil {
+							return err
+						}
 
 						fmt.Printf("generate file %s\n", file)
 						return nil
