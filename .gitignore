@@ -1,0 +1,9 @@
+# Editor
+*.swp
+*.un~
+
+# Build
+/dist
+
+# Go
+/vendor/*/
