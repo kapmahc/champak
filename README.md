@@ -12,6 +12,9 @@ gvm use go1.7.4 --default
 go get -u github.com/kardianos/govendor
 go get -u github.com/kapmahc/champak
 cd $GOPATH/src/github.com/kapmahc/champak
+govendor sync
+make
+ls -l dist
 ```
 
 ## Editors
