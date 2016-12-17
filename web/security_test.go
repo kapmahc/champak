@@ -7,7 +7,7 @@ import (
 	"github.com/kapmahc/champak/web"
 )
 
-func TestEncryptor(t *testing.T) {
+func TestSecurity(t *testing.T) {
 	cip, err := aes.NewCipher([]byte("1234567890123456"))
 	if err != nil {
 		t.Fatal(err)

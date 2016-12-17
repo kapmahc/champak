@@ -1,10 +1,9 @@
 # TODO
 
 - RabbitMQ for queue
-- Redis for cache
-- Database migrate and rollback
+- Redis for cache and store task results
 - I18n(load from database/locales file, switch by url, store in cache)
 - JWT token
-- Flash message
+- Flash message, cards/links/t helper in template
 - Session by cookie store
 - sitemap.xml.gz, google/baidu verify file, robots.txt, atom.xml

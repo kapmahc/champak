@@ -67,6 +67,12 @@
 			"revisionTime": "2016-11-17T03:31:26Z"
 		},
 		{
+			"checksumSHA1": "UP2wONSE346WHWwT20G1Xedd6ZI=",
+			"path": "github.com/google/uuid",
+			"revision": "064e2069ce9c359c118179501254f67d7d37ba24",
+			"revisionTime": "2016-11-28T19:12:14Z"
+		},
+		{
 			"checksumSHA1": "Ok3Csn6Voou7pQT6Dv2mkwpqFtw=",
 			"path": "github.com/hashicorp/hcl",
 			"revision": "80e628d796135357b3d2e33a985c666b9f35eee1",
@@ -227,6 +233,12 @@
 			"path": "github.com/steinbacher/goose",
 			"revision": "dc457c3195032dd1c3848e21dc95ed02c92f8cfa",
 			"revisionTime": "2016-07-25T13:16:29Z"
+		},
+		{
+			"checksumSHA1": "BKXPIqMlpj20qhEM+7luvOl2PpM=",
+			"path": "github.com/streadway/amqp",
+			"revision": "cb4fb930736ebd61a54da180a6aa4e92b206ff13",
+			"revisionTime": "2016-12-10T20:40:49Z"
 		},
 		{
 			"checksumSHA1": "LMu1NsthSqcXfKu0m6YGPAmwBcY=",

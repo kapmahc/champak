@@ -6,13 +6,16 @@ import (
 	"github.com/spf13/viper"
 )
 
+// Engine ops engine
 type Engine struct {
 }
 
+// Map inject objects
 func (p *Engine) Map(*inject.Graph) error {
 	return nil
 }
 
+// Worker background workers
 func (p *Engine) Worker() {}
 
 // -----------------------------------------------------------------------------
@@ -69,6 +72,13 @@ func init() {
 	})
 
 	viper.SetDefault("elasticsearch", []string{"http://localhost:9200"})
+	viper.SetDefault("rabbitmq", map[string]interface{}{
+		"host":     "localhost",
+		"port":     5672,
+		"user":     "guest",
+		"password": "guest",
+		"virtual":  "",
+	})
 
 	web.Register(&Engine{})
 }

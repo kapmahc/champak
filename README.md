@@ -23,8 +23,22 @@ ls -l dist
 
 - git-plus
 - go-plus
+```bash
+go get -u github.com/zmb3/gogetdoc
+go get -u github.com/golang/lint/golint
+```
 - atom-beautify
 - autosave(remember to enable it)
+
+## Notes
+
+### RabbitMQ
+
+- The web UI is located at: <http://server-name:15672/>, (user "guest" is created with password "guest")
+
+  ```bash
+  rabbitmq-plugins enable rabbitmq_management
+  ```
 
 ## Documents
 
@@ -32,3 +46,4 @@ ls -l dist
 - [gin](https://github.com/gin-gonic/gin/)
 - [cli](https://github.com/urfave/cli)
 - [viper](https://github.com/spf13/viper)
+- [RabbitMQ](https://www.rabbitmq.com/getstarted.html)

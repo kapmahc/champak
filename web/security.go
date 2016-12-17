@@ -8,11 +8,13 @@ import (
 	"crypto/sha512"
 )
 
+// Security security tools
 type Security struct {
 	Cip cipher.Block `inject:"aes.cip"`
 	Key []byte       `inject:"hmac.key"`
 }
 
+// Encrypt aes encrypt
 func (p *Security) Encrypt(buf []byte) ([]byte, error) {
 	iv := make([]byte, aes.BlockSize)
 	if _, err := rand.Read(iv); err != nil {
@@ -25,6 +27,7 @@ func (p *Security) Encrypt(buf []byte) ([]byte, error) {
 	return append(val, iv...), nil
 }
 
+// Decrypt aes decrypt
 func (p *Security) Decrypt(buf []byte) ([]byte, error) {
 	bln := len(buf)
 	cln := bln - aes.BlockSize
@@ -37,11 +40,13 @@ func (p *Security) Decrypt(buf []byte) ([]byte, error) {
 	return val, nil
 }
 
+// Sum sum hmac
 func (p *Security) Sum(plain []byte) []byte {
 	mac := hmac.New(sha512.New, p.Key)
 	return mac.Sum(plain)
 }
 
+// Chk chk hmac
 func (p *Security) Chk(plain, code []byte) bool {
 	return hmac.Equal(p.Sum(plain), code)
 }
