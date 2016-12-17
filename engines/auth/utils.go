@@ -6,6 +6,10 @@ import (
 	"github.com/spf13/viper"
 )
 
+func IsProduction() bool {
+	return viper.GetString("env") == "production"
+}
+
 func DSN() string {
 	//"user=%s password=%s host=%s port=%d dbname=%s sslmode=%s"
 	args := ""

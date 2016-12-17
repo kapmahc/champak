@@ -26,6 +26,10 @@ func init() {
 	viper.SetConfigType("toml")
 	viper.AddConfigPath(".")
 
+	viper.SetDefault("app", map[string]interface{}{
+		"name": "champak",
+	})
+
 	viper.SetDefault("redis", map[string]interface{}{
 		"host": "localhost",
 		"port": 6379,
@@ -38,7 +42,7 @@ func init() {
 			"host":    "localhost",
 			"port":    5432,
 			"user":    "postgres",
-			"dbname":  "lotus_dev",
+			"dbname":  "champak_dev",
 			"sslmode": "disable",
 		},
 		"pool": map[string]int{

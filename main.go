@@ -1,8 +1,7 @@
 package main
 
 import (
-	"log"
-
+	log "github.com/Sirupsen/logrus"
 	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/kapmahc/champak/engines/auth"
 	_ "github.com/kapmahc/champak/engines/cms"
