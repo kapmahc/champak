@@ -6,11 +6,13 @@ import (
 	"html/template"
 	"os"
 	"path"
+	"time"
 
 	"github.com/BurntSushi/toml"
 	"github.com/kapmahc/champak/engines/auth"
 	"github.com/kapmahc/champak/web"
 	"github.com/spf13/viper"
+	"github.com/steinbacher/goose"
 	"github.com/urfave/cli"
 	"golang.org/x/text/language"
 )
@@ -215,15 +217,6 @@ func (p *Engine) Shell() []cli.Command {
 		  index index.html;
 		  access_log /var/log/nginx/{{.Name}}.access.log;
 		  error_log /var/log/nginx/{{.Name}}.error.log;
-		  location / {
-		    try_files $uri $uri/ /index.html?/$request_uri;
-		  }
-		#  location ^~ /assets/ {
-		#    gzip_static on;
-		#    expires max;
-		#    access_log off;
-		#    add_header Cache-Control "public";
-		#  }
 		  location ~* \.(?:css|js)$ {
 		    gzip_static on;
 		    expires max;
@@ -232,6 +225,7 @@ func (p *Engine) Shell() []cli.Command {
 		  }
 		  location ~* \.(?:jpg|jpeg|gif|png|ico|cur|gz|svg|svgz|mp4|ogg|ogv|webm|htc)$ {
 		    expires 1M;
+		    expires max;
 		    access_log off;
 		    add_header Cache-Control "public";
 		  }
@@ -240,13 +234,13 @@ func (p *Engine) Shell() []cli.Command {
 		    access_log off;
 		    add_header Cache-Control "public";
 		  }
-		  location ~ ^/api/{{.Version}}(/?)(.*) {
+		  location / {
 		    proxy_set_header X-Forwarded-Proto https;
 		    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 		    proxy_set_header Host $http_host;
 		    proxy_set_header X-Real-IP $remote_addr;
 		    proxy_redirect off;
-		    proxy_pass http://{{.Name}}_prod/$2$is_args$args;
+		    proxy_pass http://{{.Name}}_prod;
 		    # limit_req zone=one;
 		  }
 		}
@@ -366,21 +360,27 @@ func (p *Engine) Shell() []cli.Command {
 						},
 					},
 					Action: auth.Action(func(c *cli.Context) error {
+						//TODO
 						name := c.String("name")
 						if len(name) == 0 {
 							cli.ShowCommandHelp(c, "migration")
 							return nil
 						}
-						// root := dbMigrationsDir()
-						// if err := os.MkdirAll(root, 0700); err != nil {
-						// 	return err
-						// }
-						// file, err := migrate.Create(auth.DatabaseURL(), dbMigrationsDir(), name)
+						root := dbMigrationsDir()
+						if err := os.MkdirAll(root, 0700); err != nil {
+							return err
+						}
+						file, err := goose.CreateMigration(name, "sql", dbMigrationsDir(), time.Now())
+						if err != nil {
+							return err
+						}
+
+						// fn, err := filepath.Abs(file)
 						// if err != nil {
 						// 	return err
 						// }
-						// log.Printf("generate file %s", file.UpFile.FileName)
-						// log.Printf("generate file %s", file.DownFile.FileName)
+
+						fmt.Printf("generate file %s\n", file)
 						return nil
 					}),
 				},

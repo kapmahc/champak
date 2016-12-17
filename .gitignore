@@ -7,3 +7,7 @@
 
 # Go
 /vendor/*/
+
+# Devel
+/config.toml
+/etc
