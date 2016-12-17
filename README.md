@@ -1,7 +1,9 @@
 # Champak
-A complete open source e-commerce solution for
+
+A complete open source e-commerce solution by go-lang.
 
 ## Installing
+
 ```bash
 bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
 gvm install go1.7.4 -B
@@ -13,14 +15,17 @@ cd $GOPATH/src/github.com/kapmahc/champak
 ```
 
 ## Editors
+
 ### Atom plugins
-* git-plus
-* go-plus
-* atom-beautify
-* autosave(remember to enable it)
+
+- git-plus
+- go-plus
+- atom-beautify
+- autosave(remember to enable it)
 
 ## Documents
-* [gorm](http://jinzhu.me/gorm/)
-* [gin](https://github.com/gin-gonic/gin/)
-* [cli](https://github.com/urfave/cli)
-* [viper](https://github.com/spf13/viper)
+
+- [gorm](http://jinzhu.me/gorm/)
+- [gin](https://github.com/gin-gonic/gin/)
+- [cli](https://github.com/urfave/cli)
+- [viper](https://github.com/spf13/viper)

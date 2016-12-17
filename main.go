@@ -5,6 +5,7 @@ import (
 
 	_ "github.com/kapmahc/champak/engines/auth"
 	_ "github.com/kapmahc/champak/engines/cms"
+	_ "github.com/kapmahc/champak/engines/ops"
 	_ "github.com/kapmahc/champak/engines/ops/mail"
 	_ "github.com/kapmahc/champak/engines/ops/vpn"
 	_ "github.com/kapmahc/champak/engines/reading"
