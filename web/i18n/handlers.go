@@ -9,16 +9,21 @@ import (
 	"golang.org/x/text/language"
 )
 
+const (
+	// LOCALE locale key
+	LOCALE = "locale"
+)
+
 //LocaleHandler detect locale from http header
 func LocaleHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		const key = "locale"
+
 		// 1. Check URL arguments.
-		lng := c.Request.URL.Query().Get(key)
+		lng := c.Request.URL.Query().Get(LOCALE)
 
 		// 2. Get language information from cookies.
 		if len(lng) == 0 {
-			if ck, er := c.Request.Cookie(key); er == nil {
+			if ck, er := c.Request.Cookie(LOCALE); er == nil {
 				lng = ck.Value
 			}
 		}
@@ -44,7 +49,7 @@ func LocaleHandler() gin.HandlerFunc {
 			Path:    "/",
 		})
 
-		c.Set(key, tag.String())
+		c.Set(LOCALE, tag.String())
 
 	}
 }

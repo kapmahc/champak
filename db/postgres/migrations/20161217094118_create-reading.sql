@@ -11,6 +11,7 @@ CREATE TABLE reading_books (
   subject      VARCHAR(255),
   description  TEXT,
   published_at DATE                        NOT NULL DEFAULT current_date,
+  cover        VARCHAR(255),
   created_at   TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
   updated_at   TIMESTAMP WITHOUT TIME ZONE NOT NULL
 );
