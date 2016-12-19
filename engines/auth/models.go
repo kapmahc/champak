@@ -41,6 +41,21 @@ func (User) TableName() string {
 	return "users"
 }
 
+// IsAvailable is available?
+func (p *User) IsAvailable() bool {
+	return p.IsConfirm() && !p.IsLock()
+}
+
+// IsConfirm is confirm?
+func (p *User) IsConfirm() bool {
+	return p.ConfirmedAt != nil
+}
+
+// IsLock is lock?
+func (p *User) IsLock() bool {
+	return p.LockedAt != nil
+}
+
 // Attachment attachment
 type Attachment struct {
 	ID           uint
@@ -60,23 +75,6 @@ type Attachment struct {
 // TableName table name
 func (Attachment) TableName() string {
 	return "attachments"
-}
-
-// Card card
-type Card struct {
-	web.Model
-
-	Title     string
-	Summary   string
-	Logo      string
-	Href      string
-	Loc       string
-	SortOrder int
-}
-
-// TableName table name
-func (Card) TableName() string {
-	return "cards"
 }
 
 // Contact contact
@@ -106,21 +104,6 @@ type LeaveWord struct {
 // TableName table name
 func (LeaveWord) TableName() string {
 	return "leave_words"
-}
-
-// Link link
-type Link struct {
-	web.Model
-
-	Label     string
-	Href      string
-	Loc       string
-	SortOrder int
-}
-
-// TableName table name
-func (Link) TableName() string {
-	return "links"
 }
 
 // Log log

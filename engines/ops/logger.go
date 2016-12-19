@@ -5,12 +5,12 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 	logrus_syslog "github.com/Sirupsen/logrus/hooks/syslog"
-	"github.com/kapmahc/champak/web"
+	"github.com/kapmahc/champak/engines/auth"
 	"github.com/spf13/viper"
 )
 
 func init() {
-	if web.IsProduction() {
+	if auth.IsProduction() {
 		log.SetLevel(log.InfoLevel)
 		if wrt, err := syslog.New(syslog.LOG_INFO, viper.GetString("app.name")); err == nil {
 			log.AddHook(&logrus_syslog.SyslogHook{Writer: wrt})

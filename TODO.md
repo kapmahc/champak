@@ -1,5 +1,6 @@
 # TODO
 
+- Languae match
 - RabbitMQ for queue
 - Redis for cache and store task results
 - I18n(load from database/locales file, switch by url, store in cache)

@@ -5,8 +5,8 @@ import (
 	"time"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/gin-gonic/gin"
 	"golang.org/x/text/language"
+	gin "gopkg.in/gin-gonic/gin.v1"
 )
 
 const (
@@ -43,7 +43,7 @@ func LocaleHandler() gin.HandlerFunc {
 
 		// Write cookie
 		http.SetCookie(c.Writer, &http.Cookie{
-			Name:    key,
+			Name:    LOCALE,
 			Value:   tag.String(),
 			Expires: time.Now().Add(7 * 24 * time.Hour),
 			Path:    "/",

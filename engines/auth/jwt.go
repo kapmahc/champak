@@ -40,7 +40,6 @@ func (p *Jwt) MustAdminHandler() gin.HandlerFunc {
 func (p *Jwt) MustRolesHandler(roles ...string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		u := c.MustGet("user").(*User)
-		lang := c.MustGet("locale").(string)
 		for _, a := range p.Dao.Authority(u.ID, "-", 0) {
 			for _, r := range roles {
 				if a == r {
@@ -48,7 +47,7 @@ func (p *Jwt) MustRolesHandler(roles ...string) gin.HandlerFunc {
 				}
 			}
 		}
-		c.String(http.StatusForbidden, "don't have roles %s", roles)
+		c.AbortWithStatus(http.StatusForbidden)
 	}
 }
 

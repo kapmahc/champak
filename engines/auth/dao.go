@@ -6,3 +6,9 @@ import "github.com/jinzhu/gorm"
 type Dao struct {
 	Db *gorm.DB `inject:""`
 }
+
+// Authority get roles
+func (p *Dao) Authority(user uint, rty string, rit uint) []string {
+	//TODO
+	return []string{}
+}

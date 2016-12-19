@@ -6,17 +6,16 @@ import (
 
 	"github.com/garyburd/redigo/redis"
 	"github.com/jinzhu/gorm"
-	"github.com/kapmahc/champak/web"
 	"github.com/spf13/viper"
 )
 
 //OpenDatabase open database
 func OpenDatabase() (*gorm.DB, error) {
-	db, err := gorm.Open(viper.GetString("database.driver"), web.DSN())
+	db, err := gorm.Open(viper.GetString("database.driver"), DSN())
 	if err != nil {
 		return nil, err
 	}
-	if !web.IsProduction() {
+	if !IsProduction() {
 		db.LogMode(true)
 	}
 
