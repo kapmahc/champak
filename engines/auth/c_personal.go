@@ -51,9 +51,6 @@ func (p *Engine) postProfile(c *gin.Context) {
 
 }
 
-func (p *Engine) getContact(c *gin.Context) {
-
-}
-func (p *Engine) postContact(c *gin.Context) {
+func (p *Engine) deleteSignOut(c *gin.Context) {
 
 }

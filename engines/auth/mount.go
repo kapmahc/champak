@@ -21,6 +21,7 @@ func (p *Engine) Mount(rt *gin.Engine) {
 	umg := rt.Group("/personal", p.Jwt.CurrentUserHandler(true))
 	umg.GET("/personal/profile", p.getProfile)
 	umg.POST("/personal/profile", p.postProfile)
+	umg.DELETE("/personal/sign-out", p.deleteSignOut)
 
 	rt.GET("/attachments/*name", p.getAttachment)
 	rt.POST("/attachments", p.Jwt.CurrentUserHandler(true), p.postAttachment)

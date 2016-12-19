@@ -585,12 +585,17 @@ func (p *Engine) Shell() []cli.Command {
 			Aliases: []string{"rt"},
 			Usage:   "print out all defined routes",
 			Action: web.Action(func(*cli.Context) error {
-				return web.Shell(
-					"redis-cli",
-					"-h", viper.GetString("redis.host"),
-					"-p", viper.GetString("redis.port"),
-					"-n", viper.GetString("redis.db"),
-				)
+				gin.SetMode(gin.ReleaseMode)
+				rt := gin.New()
+				web.Loop(func(en web.Engine) error {
+					en.Mount(rt)
+					return nil
+				})
+				fmt.Println("METHOD\tPATH")
+				for _, r := range rt.Routes() {
+					fmt.Printf("%s\t%s\n", r.Method, r.Path)
+				}
+				return nil
 			}),
 		},
 		{
