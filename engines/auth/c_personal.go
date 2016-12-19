@@ -3,11 +3,16 @@ package auth
 import (
 	"net/http"
 
+	"github.com/kapmahc/champak/web"
+
 	gin "gopkg.in/gin-gonic/gin.v1"
 )
 
 func (p *Engine) getSignIn(c *gin.Context) {
-	c.HTML(http.StatusOK, "sign-in.html", gin.H{})
+	lng := c.MustGet(web.LOCALE).(string)
+	c.HTML(http.StatusOK, "auth/sign-in", gin.H{
+		"locale": lng,
+	})
 }
 func (p *Engine) postSignIn(c *gin.Context) {
 

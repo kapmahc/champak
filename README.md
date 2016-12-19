@@ -9,8 +9,10 @@ bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/bins
 gvm install go1.7.4 -B
 gvm use go1.7.4 --default
 
+go get -u github.com/kardianos/govendor
 go get -u github.com/kapmahc/champak
 cd $GOPATH/src/github.com/kapmahc/champak
+govender sync
 make
 ls -l dist
 ```

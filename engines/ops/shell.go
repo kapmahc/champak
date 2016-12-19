@@ -38,8 +38,8 @@ func (p *Engine) Shell() []cli.Command {
 				rt := gin.Default()
 
 				theme := viper.GetString("server.theme")
-				if rdr, err := p.loadTemplates(path.Join("themes", theme, "views")); err == nil {
-					rt.HTMLRender = rdr
+				if tpl, err := p.loadTemplates(theme); err == nil {
+					rt.SetHTMLTemplate(tpl)
 				} else {
 					return err
 				}

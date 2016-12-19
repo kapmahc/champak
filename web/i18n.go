@@ -37,9 +37,9 @@ func (Locale) TableName() string {
 
 //I18n i18n
 type I18n struct {
-	Db        *gorm.DB       `inject:""`
-	Cache     *Cache         `inject:""`
-	Languages []language.Tag `inject:"languages"`
+	Db      *gorm.DB         `inject:""`
+	Cache   *Cache           `inject:""`
+	Matcher language.Matcher `inject:"language.matcher"`
 }
 
 //Tm translate by lang tag
@@ -53,11 +53,14 @@ func (p *I18n) Tm(lang string, code string, args ...interface{}) string {
 
 //T translate by lang tag
 func (p *I18n) T(lang string, code string, args ...interface{}) string {
-	msg := p.Get(lang, code)
-	if len(msg) == 0 {
+	var l Locale
+	if err := p.Db.
+		Select("message").
+		Where("lang = ? AND code = ?", lang, code).
+		First(&l).Error; err != nil {
 		return code
 	}
-	return fmt.Sprintf(msg, args...)
+	return fmt.Sprintf(l.Message, args...)
 }
 
 //Set set locale
@@ -143,6 +146,7 @@ func (p *I18n) Sync(dir string) error {
 //Handler detect locale from http header
 func (p *I18n) Handler() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		write := false
 
 		// 1. Check URL arguments.
 		lng := c.Request.URL.Query().Get(LOCALE)
@@ -151,29 +155,33 @@ func (p *I18n) Handler() gin.HandlerFunc {
 		if len(lng) == 0 {
 			if ck, er := c.Request.Cookie(LOCALE); er == nil {
 				lng = ck.Value
+			} else {
+				write = true
 			}
+		} else {
+			write = true
 		}
 
 		// 3. Get language information from 'Accept-Language'.
 		if len(lng) == 0 {
+			write = true
 			al := c.Request.Header.Get("Accept-Language")
 			if len(al) > 4 {
 				lng = al[:5]
 			}
 		}
-		tag, err := language.Parse(lng)
-		if err != nil {
-			log.Error(err)
-			tag = language.AmericanEnglish
-		}
+
+		tag, _, _ := p.Matcher.Match(language.Make(lng))
 
 		// Write cookie
-		http.SetCookie(c.Writer, &http.Cookie{
-			Name:    LOCALE,
-			Value:   tag.String(),
-			Expires: time.Now().Add(7 * 24 * time.Hour),
-			Path:    "/",
-		})
+		if write {
+			http.SetCookie(c.Writer, &http.Cookie{
+				Name:    LOCALE,
+				Value:   tag.String(),
+				Expires: time.Now().AddDate(10, 0, 0),
+				Path:    "/",
+			})
+		}
 
 		c.Set(LOCALE, tag.String())
 

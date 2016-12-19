@@ -67,7 +67,7 @@ func IocAction(fn func(*cli.Context, *inject.Graph) error) cli.ActionFunc {
 			&inject.Object{Value: []byte(viper.GetString("secrets.hmac")), Name: "hmac.key"},
 			&inject.Object{Value: []byte(viper.GetString("secrets.jwt")), Name: "jwt.key"},
 			&inject.Object{Value: viper.GetString("app.name"), Name: "namespace"},
-			&inject.Object{Value: langs, Name: "languages"},
+			&inject.Object{Value: language.NewMatcher(langs), Name: "language.matcher"},
 			&inject.Object{Value: crypto.SigningMethodHS512, Name: "jwt.method"},
 		); err != nil {
 			return err
