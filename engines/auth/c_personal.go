@@ -1,9 +1,13 @@
 package auth
 
-import gin "gopkg.in/gin-gonic/gin.v1"
+import (
+	"net/http"
+
+	gin "gopkg.in/gin-gonic/gin.v1"
+)
 
 func (p *Engine) getSignIn(c *gin.Context) {
-
+	c.HTML(http.StatusOK, "sign-in.html", gin.H{})
 }
 func (p *Engine) postSignIn(c *gin.Context) {
 

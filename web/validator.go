@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"sync"
 
-	"github.com/gin-gonic/gin/binding"
+	"gopkg.in/gin-gonic/gin.v1/binding"
 	validator "gopkg.in/go-playground/validator.v9"
 )
 

@@ -3,10 +3,12 @@ package web
 import (
 	"crypto/aes"
 	"fmt"
+	"time"
 
 	"github.com/SermoDigital/jose/crypto"
 	log "github.com/Sirupsen/logrus"
 	"github.com/facebookgo/inject"
+	"github.com/gin-contrib/cache/persistence"
 	"github.com/spf13/viper"
 	"github.com/urfave/cli"
 	"golang.org/x/text/language"
@@ -50,6 +52,7 @@ func IocAction(fn func(*cli.Context, *inject.Graph) error) cli.ActionFunc {
 			&inject.Object{Value: rep},
 			&inject.Object{Value: cip},
 			&inject.Object{Value: cip, Name: "aes.cip"},
+			&inject.Object{Value: persistence.NewInMemoryStore(time.Hour * 24)},
 			&inject.Object{
 				Value: fmt.Sprintf(
 					"amqp://%v:%v@%v:%v/%v",

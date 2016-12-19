@@ -14,6 +14,7 @@ import (
 	"github.com/BurntSushi/toml"
 	"github.com/facebookgo/inject"
 	"github.com/fvbock/endless"
+	"github.com/gin-contrib/sessions"
 	"github.com/kapmahc/champak/web"
 	"github.com/spf13/viper"
 	"github.com/steinbacher/goose"
@@ -37,26 +38,17 @@ func (p *Engine) Shell() []cli.Command {
 				rt := gin.Default()
 
 				theme := viper.GetString("server.theme")
-				tpl, err := template.
-					New("").
-					Funcs(template.FuncMap{
-					// TODO cards links t
-					// "T": p.I18n.T,
-					}).
-					ParseGlob(
-						fmt.Sprintf("themes/%s/templates/**/*", theme),
-					)
-				if err != nil {
+				if rdr, err := p.loadTemplates(path.Join("themes", theme, "views")); err == nil {
+					rt.HTMLRender = rdr
+				} else {
 					return err
 				}
-				rt.SetHTMLTemplate(tpl)
 				rt.Static("/assets", path.Join("themes", theme, "assets"))
 
-				//TODO
-				// rt.Use(sessions.Sessions(
-				// 	"_session_",
-				// 	sessions.NewCookieStore([]byte(viper.GetString("secrets.session"))),
-				// ))
+				rt.Use(sessions.Sessions(
+					"_session_",
+					sessions.NewCookieStore([]byte(viper.GetString("secrets.session"))),
+				))
 				rt.Use(p.I18n.Handler())
 
 				web.Loop(func(en web.Engine) error {
