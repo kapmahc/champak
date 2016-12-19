@@ -1,6 +1,7 @@
 package web
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"os"
@@ -11,12 +12,13 @@ import (
 	"github.com/go-ini/ini"
 	"github.com/jinzhu/gorm"
 	"golang.org/x/text/language"
-	gin "gopkg.in/gin-gonic/gin.v1"
 )
+
+type localeKeyType string
 
 const (
 	// LOCALE locale key
-	LOCALE = "locale"
+	LOCALE = localeKeyType("locale")
 )
 
 //Locale locale model
@@ -140,42 +142,40 @@ func (p *I18n) Sync(dir string) error {
 	})
 }
 
-//Handler detect locale from http header
-func (p *I18n) Handler() gin.HandlerFunc {
-	return func(c *gin.Context) {
+//ServeHTTP detect locale from http header
+func (p *I18n) ServeHTTP(wrt http.ResponseWriter, req *http.Request, next http.HandlerFunc) {
+	key := string(LOCALE)
+	// 1. Check URL arguments.
+	lng := req.URL.Query().Get(key)
 
-		// 1. Check URL arguments.
-		lng := c.Request.URL.Query().Get(LOCALE)
-
-		// 2. Get language information from cookies.
-		if len(lng) == 0 {
-			if ck, er := c.Request.Cookie(LOCALE); er == nil {
-				lng = ck.Value
-			}
+	// 2. Get language information from cookies.
+	if len(lng) == 0 {
+		if ck, er := req.Cookie(key); er == nil {
+			lng = ck.Value
 		}
-
-		// 3. Get language information from 'Accept-Language'.
-		if len(lng) == 0 {
-			al := c.Request.Header.Get("Accept-Language")
-			if len(al) > 4 {
-				lng = al[:5]
-			}
-		}
-		tag, err := language.Parse(lng)
-		if err != nil {
-			log.Error(err)
-			tag = language.AmericanEnglish
-		}
-
-		// Write cookie
-		http.SetCookie(c.Writer, &http.Cookie{
-			Name:    LOCALE,
-			Value:   tag.String(),
-			Expires: time.Now().Add(7 * 24 * time.Hour),
-			Path:    "/",
-		})
-
-		c.Set(LOCALE, tag.String())
-
 	}
+
+	// 3. Get language information from 'Accept-Language'.
+	if len(lng) == 0 {
+		al := req.Header.Get("Accept-Language")
+		if len(al) > 4 {
+			lng = al[:5]
+		}
+	}
+	tag, err := language.Parse(lng)
+	if err != nil {
+		log.Error(err)
+		tag = language.AmericanEnglish
+	}
+
+	// Write cookie
+	http.SetCookie(wrt, &http.Cookie{
+		Name:    key,
+		Value:   tag.String(),
+		Expires: time.Now().Add(7 * 24 * time.Hour),
+		Path:    "/",
+	})
+
+	ctx := context.WithValue(req.Context(), LOCALE, tag.String())
+	next(wrt, req.WithContext(ctx))
 }

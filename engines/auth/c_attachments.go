@@ -1,15 +1,15 @@
 package auth
 
-import gin "gopkg.in/gin-gonic/gin.v1"
+import "net/http"
 
-func (p *Engine) getAttachment(c *gin.Context) {
-
-}
-
-func (p *Engine) postAttachment(c *gin.Context) {
+func (p *Engine) getAttachment(w http.ResponseWriter, req *http.Request) {
 
 }
 
-func (p *Engine) deleteAttachment(c *gin.Context) {
+func (p *Engine) postAttachment(w http.ResponseWriter, req *http.Request) {
+
+}
+
+func (p *Engine) deleteAttachment(w http.ResponseWriter, req *http.Request) {
 
 }

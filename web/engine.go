@@ -2,14 +2,14 @@ package web
 
 import (
 	"github.com/facebookgo/inject"
+	"github.com/gorilla/mux"
 	"github.com/urfave/cli"
-	gin "gopkg.in/gin-gonic/gin.v1"
 )
 
 // Engine engine
 type Engine interface {
 	Map(*inject.Graph) error
-	Mount(*gin.Engine)
+	Mount(*mux.Router)
 	Worker()
 	Shell() []cli.Command
 }

@@ -1,6 +1,6 @@
 package ops
 
-import gin "gopkg.in/gin-gonic/gin.v1"
+import "github.com/gorilla/mux"
 
 // Mount mount web points
-func (p *Engine) Mount(*gin.Engine) {}
+func (p *Engine) Mount(*mux.Router) {}

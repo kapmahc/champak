@@ -1,7 +1,7 @@
 package auth
 
-import gin "gopkg.in/gin-gonic/gin.v1"
+import "net/http"
 
-func (p *Engine) postVotes(c *gin.Context) {
+func (p *Engine) postVotes(w http.ResponseWriter, req *http.Request) {
 
 }
