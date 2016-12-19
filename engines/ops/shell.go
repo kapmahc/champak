@@ -584,7 +584,7 @@ func (p *Engine) Shell() []cli.Command {
 			Name:    "routes",
 			Aliases: []string{"rt"},
 			Usage:   "print out all defined routes",
-			Action: web.Action(func(*cli.Context) error {
+			Action: func(*cli.Context) error {
 				gin.SetMode(gin.ReleaseMode)
 				rt := gin.New()
 				web.Loop(func(en web.Engine) error {
@@ -596,7 +596,7 @@ func (p *Engine) Shell() []cli.Command {
 					fmt.Printf("%s\t%s\n", r.Method, r.Path)
 				}
 				return nil
-			}),
+			},
 		},
 		{
 			Name:  "i18n",
