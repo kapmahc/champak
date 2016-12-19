@@ -10,9 +10,10 @@ import (
 
 // Engine ops engine
 type Engine struct {
-	Cache *web.Cache `inject:""`
-	Job   *web.Job   `inject:""`
-	I18n  *web.I18n  `inject:""`
+	Cache    *web.Cache    `inject:""`
+	Job      *web.Job      `inject:""`
+	I18n     *web.I18n     `inject:""`
+	Settings *web.Settings `inject:""`
 }
 
 // Map inject objects

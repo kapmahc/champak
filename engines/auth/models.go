@@ -165,20 +165,3 @@ type Role struct {
 func (Role) TableName() string {
 	return "roles"
 }
-
-// Setting setting
-type Setting struct {
-	web.Model
-
-	Key  string
-	Val  []byte
-	Flag bool
-
-	UserID uint
-	User   *User
-}
-
-// TableName table name
-func (Setting) TableName() string {
-	return "settings"
-}
