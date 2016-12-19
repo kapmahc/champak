@@ -77,35 +77,6 @@ func (Attachment) TableName() string {
 	return "attachments"
 }
 
-// Contact contact
-type Contact struct {
-	web.Model
-
-	Key string
-	Val string
-
-	UserID uint
-	User   User
-}
-
-// TableName table name
-func (Contact) TableName() string {
-	return "contacts"
-}
-
-// LeaveWord leave word
-type LeaveWord struct {
-	ID        uint
-	Body      string
-	Type      string
-	CreatedAt time.Time
-}
-
-// TableName table name
-func (LeaveWord) TableName() string {
-	return "leave_words"
-}
-
 // Log log
 type Log struct {
 	ID        uint
@@ -119,19 +90,6 @@ type Log struct {
 // TableName table name
 func (Log) TableName() string {
 	return "logs"
-}
-
-// Notice notice
-type Notice struct {
-	web.Model
-
-	Body string
-	Type string
-}
-
-// TableName table name
-func (Notice) TableName() string {
-	return "notices"
 }
 
 // Policy policy

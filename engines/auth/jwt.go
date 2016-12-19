@@ -57,16 +57,14 @@ func (p *Jwt) CurrentUserHandler(must bool) gin.HandlerFunc {
 		tkn, err := jws.ParseFromRequest(c.Request, jws.Compact)
 		if err != nil {
 			if must {
-				c.String(http.StatusInternalServerError, err.Error())
-				c.Abort()
+				c.AbortWithError(http.StatusInternalServerError, err)
 			}
 			return
 		}
 
 		if err := tkn.Verify(p.Key, p.Method); err != nil {
 			if must {
-				c.String(http.StatusUnauthorized, err.Error())
-				c.Abort()
+				c.AbortWithError(http.StatusUnauthorized, err)
 			}
 			return
 		}
@@ -74,18 +72,13 @@ func (p *Jwt) CurrentUserHandler(must bool) gin.HandlerFunc {
 		data := tkn.Payload().(map[string]interface{})
 		if err := p.Dao.Db.Where("uid = ?", data["uid"]).First(&user).Error; err != nil {
 			if must {
-				c.String(http.StatusUnauthorized, err.Error())
-				c.Abort()
+				c.AbortWithError(http.StatusUnauthorized, err)
 			}
 			return
 		}
-		if must {
-
-		}
 		if !user.IsAvailable() {
 			if must {
-				c.String(http.StatusForbidden, "bad user status")
-				c.Abort()
+				c.AbortWithStatus(http.StatusForbidden)
 			}
 			return
 		}

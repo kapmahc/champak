@@ -34,19 +34,6 @@ CREATE INDEX idx_users_provider_type
   ON users (provider_type);
 
 
-CREATE TABLE contacts (
-  id         SERIAL PRIMARY KEY,
-  user_id    BIGINT                      NOT NULL,
-  key        VARCHAR(32)                 NOT NULL,
-  val        VARCHAR(255)                NOT NULL,
-  created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
-  updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
-);
-CREATE UNIQUE INDEX idx_contacts
-  ON contacts (user_id, key);
-CREATE INDEX idx_contacts_key
-  ON contacts (key);
-
 CREATE TABLE logs (
   id         SERIAL PRIMARY KEY,
   user_id    BIGINT                      NOT NULL,
@@ -98,21 +85,6 @@ CREATE UNIQUE INDEX idx_votes_resources
 CREATE INDEX idx_votes_resource_type
   ON votes (resource_type);
 
-
-CREATE TABLE notices (
-  id         SERIAL PRIMARY KEY,
-  body       TEXT                        NOT NULL,
-  type       VARCHAR(8)                  NOT NULL DEFAULT 'markdown',
-  created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
-  updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
-);
-
-CREATE TABLE leave_words (
-  id         SERIAL PRIMARY KEY,
-  body       TEXT                        NOT NULL,
-  type       VARCHAR(8)                  NOT NULL DEFAULT 'markdown',
-  created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now()
-);
 
 CREATE TABLE attachments (
   id            SERIAL PRIMARY KEY,
@@ -166,11 +138,8 @@ CREATE INDEX idx_cards_loc ON cards(loc);
 DROP TABLE cards;
 DROP TABLE links;
 DROP TABLE attachments;
-DROP TABLE leave_words;
-DROP TABLE notices;
 DROP TABLE votes;
 DROP TABLE policies;
 DROP TABLE roles;
 DROP TABLE logs;
-DROP TABLE contacts;
 DROP TABLE users;
