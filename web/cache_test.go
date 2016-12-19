@@ -1,11 +1,11 @@
-package cache_test
+package web_test
 
 import (
 	"testing"
 	"time"
 
 	"github.com/garyburd/redigo/redis"
-	"github.com/kapmahc/champak/web/cache"
+	"github.com/kapmahc/champak/web"
 )
 
 type S struct {
@@ -13,7 +13,23 @@ type S struct {
 	SV string
 }
 
-func testCache(t *testing.T, c cache.Store) {
+func OpenRedis() *redis.Pool {
+	return &redis.Pool{
+		MaxIdle:     3,
+		IdleTimeout: 240 * time.Second,
+		Dial: func() (redis.Conn, error) {
+			return redis.Dial(
+				"tcp",
+				"localhost:6379",
+			)
+		},
+	}
+}
+
+func TestCache(t *testing.T) {
+
+	c := web.Cache{Redis: OpenRedis()}
+
 	s1 := S{IV: 100, SV: "hello, champak!"}
 	if err := c.Set("hello", &s1, 60); err != nil {
 		t.Fatal(err)
@@ -35,19 +51,4 @@ func testCache(t *testing.T, c cache.Store) {
 	if err := c.Flush(); err != nil {
 		t.Fatal(err)
 	}
-}
-
-func TestRedisCache(t *testing.T) {
-	pool := redis.Pool{
-		MaxIdle:     3,
-		IdleTimeout: 240 * time.Second,
-		Dial: func() (redis.Conn, error) {
-			return redis.Dial(
-				"tcp",
-				"localhost:6379",
-			)
-		},
-	}
-
-	testCache(t, &cache.RedisStore{Redis: &pool})
 }

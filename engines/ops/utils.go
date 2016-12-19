@@ -1,4 +1,4 @@
-package auth
+package ops
 
 import (
 	"fmt"
@@ -6,6 +6,7 @@ import (
 
 	"github.com/garyburd/redigo/redis"
 	"github.com/jinzhu/gorm"
+	"github.com/kapmahc/champak/web"
 	"github.com/spf13/viper"
 )
 
@@ -15,7 +16,7 @@ func OpenDatabase() (*gorm.DB, error) {
 	if err != nil {
 		return nil, err
 	}
-	if !IsProduction() {
+	if !web.IsProduction() {
 		db.LogMode(true)
 	}
 

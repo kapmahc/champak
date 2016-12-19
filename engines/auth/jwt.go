@@ -9,7 +9,7 @@ import (
 	"github.com/SermoDigital/jose/jws"
 	"github.com/SermoDigital/jose/jwt"
 	"github.com/google/uuid"
-	"github.com/kapmahc/champak/web/i18n"
+	"github.com/kapmahc/champak/web"
 	gin "gopkg.in/gin-gonic/gin.v1"
 )
 
@@ -18,7 +18,7 @@ type Jwt struct {
 	Key    []byte               `inject:"jwt.key"`
 	Method crypto.SigningMethod `inject:"jwt.method"`
 	Dao    *Dao                 `inject:""`
-	I18n   *i18n.I18n           `inject:""`
+	I18n   *web.I18n            `inject:""`
 }
 
 //Validate check jwt

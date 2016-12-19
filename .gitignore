@@ -11,3 +11,5 @@
 # Devel
 /config.toml
 /etc
+/tmp
+*.db

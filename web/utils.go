@@ -5,7 +5,14 @@ import (
 	"os"
 	"os/exec"
 	"syscall"
+
+	"github.com/spf13/viper"
 )
+
+// IsProduction production mode ?
+func IsProduction() bool {
+	return viper.GetString("env") == "production"
+}
 
 //Shell exec shell command
 func Shell(cmd string, args ...string) error {

@@ -1,5 +1,6 @@
 # TODO
 
+- session store in redis
 - Languae match
 - RabbitMQ for queue
 - Redis for cache and store task results

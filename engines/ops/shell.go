@@ -14,13 +14,12 @@ import (
 	"github.com/BurntSushi/toml"
 	"github.com/facebookgo/inject"
 	"github.com/fvbock/endless"
-	"github.com/gin-gonic/gin"
-	"github.com/kapmahc/champak/engines/auth"
 	"github.com/kapmahc/champak/web"
 	"github.com/spf13/viper"
 	"github.com/steinbacher/goose"
 	"github.com/urfave/cli"
 	"golang.org/x/text/language"
+	gin "gopkg.in/gin-gonic/gin.v1"
 )
 
 //Shell command options
@@ -31,8 +30,8 @@ func (p *Engine) Shell() []cli.Command {
 			Name:    "server",
 			Aliases: []string{"s"},
 			Usage:   "start the app server",
-			Action: auth.IocAction(func(*cli.Context, *inject.Graph) error {
-				if auth.IsProduction() {
+			Action: web.IocAction(func(*cli.Context, *inject.Graph) error {
+				if web.IsProduction() {
 					gin.SetMode(gin.ReleaseMode)
 				}
 				rt := gin.Default()
@@ -67,14 +66,7 @@ func (p *Engine) Shell() []cli.Command {
 
 				adr := fmt.Sprintf(":%d", viper.GetInt("server.port"))
 
-				// hnd := cors.New(cors.Options{
-				// 	AllowCredentials: true,
-				// 	AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "PATCH"},
-				// 	AllowedHeaders:   []string{"*"},
-				// 	Debug:            !IsProduction(),
-				// }).Handler(rt)
-
-				if auth.IsProduction() {
+				if web.IsProduction() {
 					return endless.ListenAndServe(adr, rt)
 				}
 				return http.ListenAndServe(adr, rt)
@@ -84,7 +76,7 @@ func (p *Engine) Shell() []cli.Command {
 			Name:    "worker",
 			Aliases: []string{"w"},
 			Usage:   "start the worker progress",
-			Action: auth.IocAction(func(_ *cli.Context, inj *inject.Graph) error {
+			Action: web.IocAction(func(_ *cli.Context, inj *inject.Graph) error {
 				forever := make(chan bool)
 
 				web.Loop(func(en web.Engine) error {
@@ -101,7 +93,7 @@ func (p *Engine) Shell() []cli.Command {
 			Name:    "redis",
 			Aliases: []string{"re"},
 			Usage:   "open redis connection",
-			Action: auth.Action(func(*cli.Context) error {
+			Action: web.Action(func(*cli.Context) error {
 				return web.Shell(
 					"redis-cli",
 					"-h", viper.GetString("redis.host"),
@@ -119,7 +111,7 @@ func (p *Engine) Shell() []cli.Command {
 					Name:    "list",
 					Usage:   "list all cache keys",
 					Aliases: []string{"l"},
-					Action: auth.IocAction(func(*cli.Context, *inject.Graph) error {
+					Action: web.IocAction(func(*cli.Context, *inject.Graph) error {
 						keys, err := p.Cache.Keys()
 						if err != nil {
 							return err
@@ -134,7 +126,7 @@ func (p *Engine) Shell() []cli.Command {
 					Name:    "clear",
 					Usage:   "clear cache items",
 					Aliases: []string{"c"},
-					Action: auth.IocAction(func(*cli.Context, *inject.Graph) error {
+					Action: web.IocAction(func(*cli.Context, *inject.Graph) error {
 						return p.Cache.Flush()
 					}),
 				},
@@ -149,7 +141,7 @@ func (p *Engine) Shell() []cli.Command {
 					Name:    "example",
 					Usage:   "scripts example for create database and user",
 					Aliases: []string{"e"},
-					Action: auth.Action(func(*cli.Context) error {
+					Action: web.Action(func(*cli.Context) error {
 						drv := viper.GetString("database.driver")
 						args := viper.GetStringMapString("database.args")
 						var err error
@@ -168,7 +160,7 @@ func (p *Engine) Shell() []cli.Command {
 					Name:    "migrate",
 					Usage:   "migrate the DB to the most recent version available",
 					Aliases: []string{"m"},
-					Action: auth.Action(func(*cli.Context) error {
+					Action: web.Action(func(*cli.Context) error {
 						conf, err := dbConf()
 						if err != nil {
 							return err
@@ -186,7 +178,7 @@ func (p *Engine) Shell() []cli.Command {
 					Name:    "rollback",
 					Usage:   "roll back the version by 1",
 					Aliases: []string{"r"},
-					Action: auth.Action(func(*cli.Context) error {
+					Action: web.Action(func(*cli.Context) error {
 						conf, err := dbConf()
 						if err != nil {
 							return err
@@ -209,7 +201,7 @@ func (p *Engine) Shell() []cli.Command {
 					Name:    "version",
 					Usage:   "dump the migration status for the current DB",
 					Aliases: []string{"v"},
-					Action: auth.Action(func(*cli.Context) error {
+					Action: web.Action(func(*cli.Context) error {
 						conf, err := dbConf()
 						if err != nil {
 							return err
@@ -246,7 +238,7 @@ func (p *Engine) Shell() []cli.Command {
 					Name:    "connect",
 					Usage:   "connect database",
 					Aliases: []string{"c"},
-					Action: auth.Action(func(*cli.Context) error {
+					Action: web.Action(func(*cli.Context) error {
 						drv := viper.GetString("database.driver")
 						args := viper.GetStringMapString("database.args")
 						var err error
@@ -268,7 +260,7 @@ func (p *Engine) Shell() []cli.Command {
 					Name:    "create",
 					Usage:   "create database",
 					Aliases: []string{"n"},
-					Action: auth.Action(func(*cli.Context) error {
+					Action: web.Action(func(*cli.Context) error {
 						drv := viper.GetString("database.driver")
 						args := viper.GetStringMapString("database.args")
 						var err error
@@ -293,7 +285,7 @@ func (p *Engine) Shell() []cli.Command {
 					Name:    "drop",
 					Usage:   "drop database",
 					Aliases: []string{"d"},
-					Action: auth.Action(func(*cli.Context) error {
+					Action: web.Action(func(*cli.Context) error {
 						drv := viper.GetString("database.driver")
 						args := viper.GetStringMapString("database.args")
 						var err error
@@ -354,7 +346,7 @@ func (p *Engine) Shell() []cli.Command {
 					Name:    "nginx",
 					Aliases: []string{"ng"},
 					Usage:   "generate nginx.conf",
-					Action: auth.Action(func(*cli.Context) error {
+					Action: web.Action(func(*cli.Context) error {
 						const tpl = `
 		server {
 		  listen 80;
@@ -475,7 +467,7 @@ func (p *Engine) Shell() []cli.Command {
 							Usage: "years",
 						},
 					},
-					Action: auth.Action(func(c *cli.Context) error {
+					Action: web.Action(func(c *cli.Context) error {
 						name := c.String("name")
 						if len(name) == 0 {
 							cli.ShowCommandHelp(c, "openssl")
@@ -529,7 +521,7 @@ func (p *Engine) Shell() []cli.Command {
 							Usage: "name",
 						},
 					},
-					Action: auth.Action(func(c *cli.Context) error {
+					Action: web.Action(func(c *cli.Context) error {
 						name := c.String("name")
 						if len(name) == 0 {
 							cli.ShowCommandHelp(c, "migration")
@@ -562,7 +554,7 @@ func (p *Engine) Shell() []cli.Command {
 							Usage: "locale name",
 						},
 					},
-					Action: auth.Action(func(c *cli.Context) error {
+					Action: web.Action(func(c *cli.Context) error {
 						name := c.String("name")
 						if len(name) == 0 {
 							cli.ShowCommandHelp(c, "locale")

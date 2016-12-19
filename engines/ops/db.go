@@ -6,7 +6,6 @@ import (
 	"path"
 	"time"
 
-	"github.com/kapmahc/champak/engines/auth"
 	"github.com/spf13/viper"
 	"github.com/steinbacher/goose"
 )
@@ -35,7 +34,7 @@ func printMigrationStatus(db *sql.DB, version int64, script string) error {
 func dbConf() (*goose.DBConf, error) {
 	drv := goose.DBDriver{
 		Name: viper.GetString("database.driver"),
-		DSN:  auth.DSN(),
+		DSN:  DSN(),
 	}
 	switch drv.Name {
 	case "postgres":

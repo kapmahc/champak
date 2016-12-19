@@ -16,7 +16,7 @@ func TestJob(t *testing.T) {
 	}
 
 	if err := job.Receive("echo", func(id string, body []byte, created time.Time) error {
-		fmt.Printf("ECHO [%s] %s %v", id, body, created)
+		fmt.Printf("ECHO [%s] %s %v\n", id, body, created)
 		return errors.New("normal return")
 	}); err != nil {
 		// t.Fatal(err)

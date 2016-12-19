@@ -1,9 +1,8 @@
-package auth
+package web
 
 import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/facebookgo/inject"
-	"github.com/kapmahc/champak/web"
 	"github.com/spf13/viper"
 	"github.com/urfave/cli"
 )
@@ -19,7 +18,7 @@ func (p *injectLogger) Debugf(format string, v ...interface{}) {
 func IocAction(fn func(*cli.Context, *inject.Graph) error) cli.ActionFunc {
 	return Action(func(ctx *cli.Context) error {
 		inj := inject.Graph{Logger: &injectLogger{}}
-		web.Loop(func(en web.Engine) error {
+		Loop(func(en Engine) error {
 			if e := en.Map(&inj); e != nil {
 				return e
 			}

@@ -91,18 +91,6 @@
 			"revisionTime": "2016-12-16T23:12:39Z"
 		},
 		{
-			"checksumSHA1": "NZxsVvdfuvaztRyLPz43rOIBAN8=",
-			"path": "github.com/gin-gonic/contrib/sessions",
-			"revision": "45b1fbf9c69a8b8905d20f665b559d03f932db84",
-			"revisionTime": "2016-12-15T03:18:23Z"
-		},
-		{
-			"checksumSHA1": "RsNwOto8G8aXIiRrlFn4dtU9q/g=",
-			"path": "github.com/gin-gonic/gin",
-			"revision": "e2212d40c62a98b388a5eb48ecbdcf88534688ba",
-			"revisionTime": "2016-12-04T22:13:08Z"
-		},
-		{
 			"checksumSHA1": "UsILDoIB2S7ra+w2fMdb85mX3HM=",
 			"path": "github.com/gin-gonic/gin/binding",
 			"revision": "e2212d40c62a98b388a5eb48ecbdcf88534688ba",

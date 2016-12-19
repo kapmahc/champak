@@ -1,27 +1,34 @@
-package i18n_test
+package web_test
 
 import (
 	"testing"
 
 	"github.com/jinzhu/gorm"
-	"github.com/kapmahc/champak/web/i18n"
+	"github.com/kapmahc/champak/web"
 	_ "github.com/mattn/go-sqlite3"
 	"golang.org/x/text/language"
 )
 
 var lang = language.SimplifiedChinese.String()
 
-func TestDatabase(t *testing.T) {
+func OpenDatabase() (*gorm.DB, error) {
 	db, err := gorm.Open("sqlite3", "test.db")
+	if err != nil {
+		return nil, err
+	}
+	db.LogMode(true)
+
+	db.AutoMigrate(&web.Locale{})
+	db.Model(&web.Locale{}).AddUniqueIndex("idx_locales_lang_code", "lang", "code")
+	return db, nil
+}
+
+func TestI18n(t *testing.T) {
+	db, err := OpenDatabase()
 	if err != nil {
 		t.Fatal(err)
 	}
-	db.LogMode(true)
-	i18n.Migrate(db)
-	testStore(t, &i18n.GormStore{Db: db})
-}
-
-func testStore(t *testing.T, p i18n.Store) {
+	p := &web.I18n{Db: db}
 	key := "hello"
 	val := "你好"
 	p.Set(lang, key, val)
@@ -29,7 +36,7 @@ func testStore(t *testing.T, p i18n.Store) {
 	if val1 := p.Get(lang, key); val != val1 {
 		t.Errorf("want %s, get %s", val, val1)
 	}
-	ks, err := p.Keys(lang)
+	ks, err := p.Codes(lang)
 	if err != nil {
 		t.Fatal(err)
 	}
