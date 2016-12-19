@@ -1,9 +1,8 @@
 package ops
 
 import (
-	"crypto/aes"
+	"golang.org/x/text/language"
 
-	"github.com/SermoDigital/jose/crypto"
 	"github.com/facebookgo/inject"
 	"github.com/kapmahc/champak/web"
 	"github.com/spf13/viper"
@@ -12,33 +11,13 @@ import (
 // Engine ops engine
 type Engine struct {
 	Cache *web.Cache `inject:""`
-	Job   web.Job    `inject:""`
+	Job   *web.Job   `inject:""`
+	I18n  *web.I18n  `inject:""`
 }
 
 // Map inject objects
 func (p *Engine) Map(inj *inject.Graph) error {
-	db, err := OpenDatabase()
-	if err != nil {
-		return err
-	}
-	rep := OpenRedis()
-	cip, err := aes.NewCipher([]byte(viper.GetString("secrets.aes")))
-	if err != nil {
-		return err
-	}
 
-	if err := inj.Provide(
-		&inject.Object{Value: db},
-		&inject.Object{Value: rep},
-		&inject.Object{Value: cip},
-		&inject.Object{Value: cip, Name: "aes.cip"},
-		&inject.Object{Value: []byte(viper.GetString("secrets.hmac")), Name: "hmac.key"},
-		&inject.Object{Value: []byte(viper.GetString("secrets.jwt")), Name: "jwt.key"},
-		&inject.Object{Value: viper.GetString("app.name"), Name: "namespace"},
-		&inject.Object{Value: crypto.SigningMethodHS512, Name: "jwt.method"},
-	); err != nil {
-		return err
-	}
 	return nil
 }
 
@@ -48,6 +27,8 @@ func (p *Engine) Worker() {}
 // -----------------------------------------------------------------------------
 
 func init() {
+	web.Register(&Engine{})
+
 	viper.SetEnvPrefix("champak")
 	viper.BindEnv("env")
 	viper.SetDefault("env", "development")
@@ -107,6 +88,10 @@ func init() {
 		"virtual":  "",
 	})
 
-	// ------------
-	web.Register(&Engine{})
+	viper.SetDefault("languages", []string{
+		language.AmericanEnglish.String(),
+		language.SimplifiedChinese.String(),
+		language.TraditionalChinese.String(),
+	})
+
 }

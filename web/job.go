@@ -68,16 +68,6 @@ func (p *Job) name(k string) string {
 }
 
 func (p *Job) open(queue string, fn func(*amqp.Channel, string, string) error) error {
-	// args := viper.GetStringMap("rabbitmq")
-	// fmt.Sprintf(
-	// 	"amqp://%v:%v@%v:%v/%v",
-	// 	args["user"],
-	// 	args["password"],
-	// 	args["host"],
-	// 	args["port"],
-	// 	args["virtual"],
-	// )
-
 	con, err := amqp.Dial(p.URL)
 	if err != nil {
 		return err

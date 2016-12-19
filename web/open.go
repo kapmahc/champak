@@ -1,4 +1,4 @@
-package ops
+package web
 
 import (
 	"fmt"
@@ -6,7 +6,6 @@ import (
 
 	"github.com/garyburd/redigo/redis"
 	"github.com/jinzhu/gorm"
-	"github.com/kapmahc/champak/web"
 	"github.com/spf13/viper"
 )
 
@@ -16,7 +15,7 @@ func OpenDatabase() (*gorm.DB, error) {
 	if err != nil {
 		return nil, err
 	}
-	if !web.IsProduction() {
+	if !IsProduction() {
 		db.LogMode(true)
 	}
 

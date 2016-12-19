@@ -8,8 +8,12 @@ import (
 
 // Engine  auth engine
 type Engine struct {
-	Cache *web.Cache `inject:""`
-	Job   web.Job    `inject:""`
+	Cache    *web.Cache    `inject:""`
+	Job      *web.Job      `inject:""`
+	I18n     *web.I18n     `inject:""`
+	Jwt      *Jwt          `inject:""`
+	Dao      *Dao          `inject:""`
+	Security *web.Security `inject:""`
 }
 
 // Map map objects

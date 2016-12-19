@@ -11,6 +11,11 @@ import (
 	gin "gopkg.in/gin-gonic/gin.v1"
 )
 
+const (
+	// LOCALE locale key
+	LOCALE = "locale"
+)
+
 //Locale locale model
 type Locale struct {
 	Model
@@ -24,8 +29,9 @@ type Locale struct {
 
 //I18n i18n
 type I18n struct {
-	Db    *gorm.DB `inject:""`
-	Cache *Cache
+	Db        *gorm.DB       `inject:""`
+	Cache     *Cache         `inject:""`
+	Languages []language.Tag `inject:"languages"`
 }
 
 //Tm translate by lang tag
@@ -89,23 +95,8 @@ func (p *I18n) Codes(lang string) ([]string, error) {
 	return keys, err
 }
 
-//Languages list locale languages
-func (p *I18n) Languages() ([]string, error) {
-	var keys []string
-	err := p.Db.Model(&Locale{}).Pluck("code", &keys).Error
-
-	return keys, err
-}
-
-// -----------------------------------------------------------------------------
-
-const (
-	// LOCALE locale key
-	LOCALE = "locale"
-)
-
-//LocaleHandler detect locale from http header
-func LocaleHandler() gin.HandlerFunc {
+//Handler detect locale from http header
+func (p *I18n) Handler() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
 		// 1. Check URL arguments.
