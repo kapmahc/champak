@@ -57,7 +57,7 @@ func (p *Engine) Shell() []cli.Command {
 				// 	"_session_",
 				// 	sessions.NewCookieStore([]byte(viper.GetString("secrets.session"))),
 				// ))
-				// rt.Use(i18n.LocaleHandler(p.Logger))
+				rt.Use(p.I18n.Handler())
 
 				web.Loop(func(en web.Engine) error {
 					en.Mount(rt)
@@ -576,6 +576,33 @@ func (p *Engine) Shell() []cli.Command {
 						}
 						defer fd.Close()
 						return err
+					}),
+				},
+			},
+		},
+		{
+			Name:    "routes",
+			Aliases: []string{"rt"},
+			Usage:   "print out all defined routes",
+			Action: web.Action(func(*cli.Context) error {
+				return web.Shell(
+					"redis-cli",
+					"-h", viper.GetString("redis.host"),
+					"-p", viper.GetString("redis.port"),
+					"-n", viper.GetString("redis.db"),
+				)
+			}),
+		},
+		{
+			Name:  "i18n",
+			Usage: "i18n operations",
+			Subcommands: []cli.Command{
+				{
+					Name:    "sync",
+					Aliases: []string{"s"},
+					Usage:   "sync locales from files",
+					Action: web.IocAction(func(*cli.Context, *inject.Graph) error {
+						return p.I18n.Sync("locales")
 					}),
 				},
 			},

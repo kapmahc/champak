@@ -3,9 +3,12 @@ package web
 import (
 	"fmt"
 	"net/http"
+	"os"
+	"path/filepath"
 	"time"
 
 	log "github.com/Sirupsen/logrus"
+	"github.com/go-ini/ini"
 	"github.com/jinzhu/gorm"
 	"golang.org/x/text/language"
 	gin "gopkg.in/gin-gonic/gin.v1"
@@ -23,6 +26,11 @@ type Locale struct {
 	Lang    string `gorm:"not null;type:varchar(8);index"`
 	Code    string `gorm:"not null;index;type:VARCHAR(255)"`
 	Message string `gorm:"not null;type:varchar(800)"`
+}
+
+// TableName table name
+func (Locale) TableName() string {
+	return "locales"
 }
 
 // -----------------------------------------------------------------------------
@@ -93,6 +101,43 @@ func (p *I18n) Codes(lang string) ([]string, error) {
 	err := p.Db.Model(&Locale{}).Where("lang = ?", lang).Pluck("code", &keys).Error
 
 	return keys, err
+}
+
+// Sync sync records
+func (p *I18n) Sync(dir string) error {
+	return filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
+		const ext = ".ini"
+		name := info.Name()
+		if info.Mode().IsRegular() && filepath.Ext(name) == ext {
+			log.Debugf("Find locale file %s", path)
+			if err != nil {
+				return err
+			}
+			lang := name[0 : len(name)-len(ext)]
+			if _, err := language.Parse(lang); err != nil {
+				return err
+			}
+			cfg, err := ini.Load(path)
+			if err != nil {
+				return err
+			}
+
+			items := cfg.Section(ini.DEFAULT_SECTION).KeysHash()
+			for k, v := range items {
+				var l Locale
+				if p.Db.Where("lang = ? AND code = ?", lang, k).First(&l).RecordNotFound() {
+					l.Lang = lang
+					l.Code = k
+					l.Message = v
+					if err := p.Db.Create(&l).Error; err != nil {
+						return err
+					}
+				}
+			}
+			log.Infof("find %d items", len(items))
+		}
+		return nil
+	})
 }
 
 //Handler detect locale from http header
