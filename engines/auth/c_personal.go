@@ -11,8 +11,9 @@ import (
 func (p *Engine) getSignIn(c *gin.Context) {
 	lng := c.MustGet(web.LOCALE).(string)
 	c.HTML(http.StatusOK, "auth/sign-in", gin.H{
-		"locale":    lng,
-		"languages": []string{"en-US", "zh-Hans", "zh-Hant"},
+		"locale":       lng,
+		"languages":    []string{"en-US", "zh-Hans", "zh-Hant"},
+		"current_user": nil,
 	})
 }
 func (p *Engine) postSignIn(c *gin.Context) {

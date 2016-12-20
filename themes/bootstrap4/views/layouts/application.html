@@ -23,6 +23,8 @@
         <a class="nav-link" href="{{$.Href}}">{{t $l $.label}}</a>
       </li>
     {{end}}
+    {{template "personal-bar" .}}
+    {{template "language-bar" .}}
   </ul>
 </nav>
 {{end}}
@@ -48,4 +50,45 @@
 </div>
 </body>
 </html>
+{{end}}
+
+{{define "personal-bar"}}
+{{$l := .locale}}
+{{if .current_user}}
+<li class="nav-item dropdown float-xs-right">
+  <a class="nav-link dropdown-toggle" id="personal-bar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    {{t $l "language-bar.welcome" .current_user.FullName}}
+  </a>
+  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="personal-bar">
+  </div>
+</li>
+{{else}}
+<li class="nav-item dropdown float-xs-right">
+  <a class="nav-link dropdown-toggle" id="personal-bar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    {{t $l "personal-bar.sign-in-or-up"}}
+  </a>
+  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="personal-bar">
+    <a class="dropdown-item" href="/personal/sign-in">{{t $l "auth.personal.sign-in.title"}}</a>
+    <a class="dropdown-item" href="/personal/sign-up">{{t $l "auth.personal.sign-up.title"}}</a>
+    <a class="dropdown-item" href="/personal/forgot-password">{{t $l "auth.personal.forgot-password.title"}}</a>
+    <a class="dropdown-item" href="/personal/confirm">{{t $l "auth.personal.confirm.title"}}</a>
+    <a class="dropdown-item" href="/personal/unlock">{{t $l "auth.personal.unlock.title"}}</a>
+  </div>
+</li>
+{{end}}
+{{end}}
+
+{{define "language-bar"}}
+{{$l := .locale}}
+<li class="nav-item dropdown float-xs-right">
+  <a class="nav-link dropdown-toggle" id="language-bar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    {{t $l "language-bar.switch"}}
+  </a>
+  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="language-bar">
+    {{range .languages}}
+      {{$m := fmt "languages.%s" .}}
+      <a class="dropdown-item" href="/?locale={{.}}">{{t $l $m}}</a>
+    {{end}}
+  </div>
+</li>
 {{end}}
