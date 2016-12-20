@@ -1,9 +1,6 @@
 {{define "auth/sign-in"}}
-{{$locale := .locale}}
+{{$l := .locale}}
 {{template "application/header" .}}
-<form method="post" action="/personal/sign-in">
-  {{ .csrfField }} 
-</form>
-{{t .locale "buttons.submit"}}
+{{template "form" .form}}
 {{template "application/footer" .}}
 {{end}}

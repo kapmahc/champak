@@ -3,11 +3,25 @@ package auth
 import (
 	"net/http"
 
+	"github.com/kapmahc/champak/web"
+
 	gin "gopkg.in/gin-gonic/gin.v1"
 )
 
 func (p *Engine) getSignIn(c *gin.Context) {
-	data := c.MustGet("data").(gin.H)
+	lng := c.MustGet(web.LOCALE).(string)
+	data := c.MustGet(web.DATA).(gin.H)
+	title := p.I18n.T(lng, "auth.personal.sign-in.title")
+	fm := web.NewForm(c, "post", "sign-in", title, "/personal/sign-in")
+	fm.AddFields(
+		web.NewTextField("fullName", p.I18n.T(lng, "attributes.full-name"), ""),
+		web.NewEmailField("email", p.I18n.T(lng, "attributes.email"), ""),
+		web.NewPasswordField("password", p.I18n.T(lng, "attributes.password")),
+		web.NewPasswordField("passwordConfirmation", p.I18n.T(lng, "attributes.password-confirmation")),
+	)
+
+	data["title"] = title
+	data["form"] = fm
 	c.HTML(http.StatusOK, "auth/sign-in", data)
 }
 func (p *Engine) postSignIn(c *gin.Context) {

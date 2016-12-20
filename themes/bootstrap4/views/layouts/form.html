@@ -1,0 +1,41 @@
+{{define "form"}}
+{{$l := .locale}}
+<h2>{{.title}}</h2>
+<hr/>
+<form method="{{.method}}" action="{{.action}}">
+  {{ .csrfField }}
+  {{range .fields}}
+    {{if eq .Type "email"}}
+      <div class="form-group">
+        <label for="{{.ID}}">{{if .Require}}*{{end}}{{.Label}}:</label>
+        <input type="email" class="form-control" name="{{.ID}}" id="{{.ID}}" aria-describedby="{{.ID}}Help" placeholder="{{.Placeholder}}">
+        <small id="{{.ID}}Help" class="form-text text-muted">
+          {{.Help}}
+        </small>
+      </div>
+    {{else if eq .Type "text"}}
+      <div class="form-group">
+        <label for="{{.ID}}">{{if .Require}}*{{end}}{{.Label}}:</label>
+        <input type="text" class="form-control" name="{{.ID}}" id="{{.ID}}" aria-describedby="{{.ID}}Help" placeholder="{{.Placeholder}}">
+        <small id="{{.ID}}Help" class="form-text text-muted">
+          {{.Help}}
+        </small>
+      </div>
+    {{else if eq .Type "password"}}
+      <div class="form-group">
+        <label for="{{.ID}}">{{if .Require}}*{{end}}{{.Label}}</label>
+        <input type="password" class="form-control" name="{{.ID}}" id="{{.ID}}" aria-describedby="{{.ID}}Help" placeholder="{{.Placeholder}}">
+        <small id="{{.ID}}Help" class="form-text text-muted">
+          {{.Help}}
+        </small>
+      </div>
+    {{else}}
+      <input type="hidden" id="{{.ID}}" name="{{.ID}}" value="{{.Value}}">
+    {{end}}
+  {{end}}
+  <div class="form-group">
+    <button type="submit" class="btn btn-primary">{{t $l "buttons.submit"}}</button>
+    <button type="reset" class="btn btn-secondary">{{t $l "buttons.reset"}}</button>
+  </div>
+</form>
+{{end}}

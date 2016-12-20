@@ -62,7 +62,12 @@ func (p *Engine) Shell() []cli.Command {
 				})
 
 				adr := fmt.Sprintf(":%d", viper.GetInt("server.port"))
-				hnd := csrf.Protect([]byte(viper.GetString("secrets.csrf")))(rt)
+				hnd := csrf.Protect(
+					[]byte(viper.GetString("secrets.csrf")),
+					csrf.Secure(web.IsProduction()),
+					csrf.CookieName("_csrf_token_"),
+					csrf.FieldName("authenticity_token"),
+				)(rt)
 
 				if web.IsProduction() {
 					return endless.ListenAndServe(adr, hnd)
