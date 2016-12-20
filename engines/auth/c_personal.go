@@ -3,8 +3,8 @@ package auth
 import (
 	"net/http"
 
+	"github.com/gin-contrib/sessions"
 	"github.com/kapmahc/champak/web"
-
 	gin "gopkg.in/gin-gonic/gin.v1"
 )
 
@@ -25,7 +25,10 @@ func (p *Engine) getSignIn(c *gin.Context) {
 	c.HTML(http.StatusOK, "auth/sign-in", data)
 }
 func (p *Engine) postSignIn(c *gin.Context) {
-
+	ss := sessions.Default(c)
+	ss.AddFlash("demo", web.ALERT)
+	ss.Save()
+	c.Redirect(http.StatusFound, "/personal/sign-in")
 }
 
 func (p *Engine) getSignUp(c *gin.Context) {

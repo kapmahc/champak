@@ -53,6 +53,7 @@ func (p *Engine) Shell() []cli.Command {
 					),
 					p.I18n.Handler(),
 					csrfHandler,
+					flashsHandler,
 					p.Jwt.CurrentUserHandler,
 				)
 
