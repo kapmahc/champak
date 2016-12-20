@@ -77,6 +77,7 @@ func init() {
 		"aes":     web.RandomStr(32),
 		"hmac":    web.RandomStr(32),
 		"session": web.RandomStr(32),
+		"csrf":    web.RandomStr(32),
 	})
 
 	viper.SetDefault("elasticsearch", map[string]interface{}{

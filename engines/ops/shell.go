@@ -15,6 +15,7 @@ import (
 	"github.com/facebookgo/inject"
 	"github.com/fvbock/endless"
 	"github.com/gin-contrib/sessions"
+	"github.com/gorilla/csrf"
 	"github.com/kapmahc/champak/web"
 	"github.com/spf13/viper"
 	"github.com/steinbacher/goose"
@@ -45,12 +46,15 @@ func (p *Engine) Shell() []cli.Command {
 				}
 				rt.Static("/assets", path.Join("themes", theme, "assets"))
 
-				rt.Use(sessions.Sessions(
-					"_session_",
-					sessions.NewCookieStore([]byte(viper.GetString("secrets.session"))),
-				))
-				rt.Use(p.I18n.Handler())
-				rt.Use(p.Jwt.CurrentUserHandler)
+				rt.Use(
+					sessions.Sessions(
+						"_session_",
+						sessions.NewCookieStore([]byte(viper.GetString("secrets.session"))),
+					),
+					p.I18n.Handler(),
+					csrfHandler,
+					p.Jwt.CurrentUserHandler,
+				)
 
 				web.Loop(func(en web.Engine) error {
 					en.Mount(rt)
@@ -58,11 +62,12 @@ func (p *Engine) Shell() []cli.Command {
 				})
 
 				adr := fmt.Sprintf(":%d", viper.GetInt("server.port"))
+				hnd := csrf.Protect([]byte(viper.GetString("secrets.csrf")))(rt)
 
 				if web.IsProduction() {
-					return endless.ListenAndServe(adr, rt)
+					return endless.ListenAndServe(adr, hnd)
 				}
-				return http.ListenAndServe(adr, rt)
+				return http.ListenAndServe(adr, hnd)
 			}),
 		},
 		{
