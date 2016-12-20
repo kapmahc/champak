@@ -18,14 +18,14 @@ func (p *Engine) Mount(rt *gin.Engine) {
 	ung.GET("/change-password", p.getChangePassword)
 	ung.POST("/change-password", p.postChangePassword)
 
-	umg := rt.Group("/personal", p.Jwt.CurrentUserHandler(true))
+	umg := rt.Group("/personal")
 	umg.GET("/profile", p.getProfile)
 	umg.POST("/profile", p.postProfile)
 	umg.DELETE("/sign-out", p.deleteSignOut)
 
 	rt.GET("/attachments/*name", p.getAttachment)
-	rt.POST("/attachments", p.Jwt.CurrentUserHandler(true), p.postAttachment)
-	rt.DELETE("/attachmetns/:id", p.Jwt.CurrentUserHandler(true), p.deleteAttachment)
+	rt.POST("/attachments", p.postAttachment)
+	rt.DELETE("/attachmetns/:id", p.deleteAttachment)
 
-	rt.POST("/votes", p.Jwt.CurrentUserHandler(true), p.postVotes)
+	rt.POST("/votes", p.postVotes)
 }

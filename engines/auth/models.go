@@ -41,11 +41,6 @@ func (User) TableName() string {
 	return "users"
 }
 
-// IsAvailable is available?
-func (p *User) IsAvailable() bool {
-	return p.IsConfirm() && !p.IsLock()
-}
-
 // IsConfirm is confirm?
 func (p *User) IsConfirm() bool {
 	return p.ConfirmedAt != nil

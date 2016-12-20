@@ -8,9 +8,15 @@ import (
 	"github.com/SermoDigital/jose/crypto"
 	"github.com/SermoDigital/jose/jws"
 	"github.com/SermoDigital/jose/jwt"
+	log "github.com/Sirupsen/logrus"
 	"github.com/google/uuid"
 	"github.com/kapmahc/champak/web"
 	gin "gopkg.in/gin-gonic/gin.v1"
+)
+
+const (
+	// CurrentUser current user
+	CurrentUser = "current_user"
 )
 
 //Jwt jwt helper
@@ -52,38 +58,33 @@ func (p *Jwt) MustRolesHandler(roles ...string) gin.HandlerFunc {
 }
 
 //CurrentUserHandler inject current user
-func (p *Jwt) CurrentUserHandler(must bool) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		tkn, err := jws.ParseFromRequest(c.Request, jws.Compact)
-		if err != nil {
-			if must {
-				c.AbortWithError(http.StatusInternalServerError, err)
-			}
-			return
-		}
+func (p *Jwt) CurrentUserHandler(c *gin.Context) {
+	lng := c.MustGet(web.LOCALE).(string)
+	tkn, err := jws.ParseFromRequest(c.Request, jws.Compact)
 
-		if err := tkn.Verify(p.Key, p.Method); err != nil {
-			if must {
-				c.AbortWithError(http.StatusUnauthorized, err)
+	if err == nil {
+		if err = tkn.Verify(p.Key, p.Method); err == nil {
+			var user User
+			data := tkn.Payload().(map[string]interface{})
+			if err = p.Dao.Db.Where("uid = ?", data["uid"]).First(&user).Error; err == nil {
+				if !user.IsConfirm() {
+					err = p.I18n.E(lng, "auth.errors.user-not-confirm")
+				} else if user.IsLock() {
+					err = p.I18n.E(lng, "auth.errors.user-is-lock")
+				} else {
+					c.Set(CurrentUser, &user)
+					data := c.MustGet(web.DATA).(gin.H)
+					data[CurrentUser] = gin.H{
+						"full_name": user.FullName,
+						"uid":       user.UID,
+					}
+					c.Set(web.DATA, user)
+					return
+				}
 			}
-			return
 		}
-		var user User
-		data := tkn.Payload().(map[string]interface{})
-		if err := p.Dao.Db.Where("uid = ?", data["uid"]).First(&user).Error; err != nil {
-			if must {
-				c.AbortWithError(http.StatusUnauthorized, err)
-			}
-			return
-		}
-		if !user.IsAvailable() {
-			if must {
-				c.AbortWithStatus(http.StatusForbidden)
-			}
-			return
-		}
-		c.Set("user", &user)
 	}
+	log.Debug(err)
 }
 
 func (p *Jwt) key(kid string) string {

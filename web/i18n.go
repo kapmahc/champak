@@ -1,6 +1,7 @@
 package web
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"os"
@@ -45,13 +46,13 @@ type I18n struct {
 	Matcher language.Matcher `inject:"language.matcher"`
 }
 
-//Tm translate by lang tag
-func (p *I18n) Tm(lang string, code string, args ...interface{}) string {
+//E crete an i18n error
+func (p *I18n) E(lang string, code string, args ...interface{}) error {
 	msg := p.Get(lang, code)
 	if len(msg) == 0 {
-		return code
+		return errors.New(code)
 	}
-	return fmt.Sprintf(msg, args...)
+	return fmt.Errorf(msg, args...)
 }
 
 //T translate by lang tag

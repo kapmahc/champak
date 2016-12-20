@@ -50,6 +50,7 @@ func (p *Engine) Shell() []cli.Command {
 					sessions.NewCookieStore([]byte(viper.GetString("secrets.session"))),
 				))
 				rt.Use(p.I18n.Handler())
+				rt.Use(p.Jwt.CurrentUserHandler)
 
 				web.Loop(func(en web.Engine) error {
 					en.Mount(rt)

@@ -4,6 +4,7 @@ import (
 	"golang.org/x/text/language"
 
 	"github.com/facebookgo/inject"
+	"github.com/kapmahc/champak/engines/auth"
 	"github.com/kapmahc/champak/web"
 	"github.com/spf13/viper"
 )
@@ -15,6 +16,7 @@ type Engine struct {
 	I18n     *web.I18n     `inject:""`
 	Settings *web.Settings `inject:""`
 	Layout   *web.Layout   `inject:""`
+	Jwt      *auth.Jwt     `inject:""`
 }
 
 // Map inject objects
