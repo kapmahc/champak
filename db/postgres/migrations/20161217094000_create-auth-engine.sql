@@ -107,36 +107,8 @@ CREATE INDEX idx_attachments_title
 CREATE INDEX idx_attachments_media_type
   ON attachments (media_type);
 
-
-CREATE TABLE links (
-  id         SERIAL PRIMARY KEY,
-  label      VARCHAR(64)                        NOT NULL,
-  href      VARCHAR(255)                        NOT NULL,
-  loc       VARCHAR(16)                  NOT NULL,
-  sort_order    INT                         NOT NULL DEFAULT 0,
-  created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
-  updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
-);
-CREATE INDEX idx_links_loc ON links(loc);
-
-CREATE TABLE cards (
-  id         SERIAL PRIMARY KEY,
-  title      VARCHAR(64)                        NOT NULL,
-  summary      VARCHAR(500)                        NOT NULL,
-  logo      VARCHAR(255)                        NOT NULL,
-  href      VARCHAR(255)                        NOT NULL,
-  loc       VARCHAR(16)                  NOT NULL,
-  sort_order    INT                         NOT NULL DEFAULT 0,
-  created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
-  updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
-);
-CREATE INDEX idx_cards_loc ON cards(loc);
-
-
 -- +goose Down
 -- SQL section 'Down' is executed when this migration is rolled back
-DROP TABLE cards;
-DROP TABLE links;
 DROP TABLE attachments;
 DROP TABLE votes;
 DROP TABLE policies;

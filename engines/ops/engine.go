@@ -14,6 +14,7 @@ type Engine struct {
 	Job      *web.Job      `inject:""`
 	I18n     *web.I18n     `inject:""`
 	Settings *web.Settings `inject:""`
+	Layout   *web.Layout   `inject:""`
 }
 
 // Map inject objects

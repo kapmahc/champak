@@ -1,7 +1,15 @@
 {{define "application/header"}}
-<h1>app header</h1>
+<!DOCTYPE html>
+<html lang="{{.locale}}">
+  <head>
+    {{template "metas" .}}
+  </head>
+  <body>
+    <h1>Hello, world!</h1>
+
 {{end}}
 
 {{define "application/footer"}}
-<h1>app footer</h1>
+</body>
+</html>
 {{end}}
