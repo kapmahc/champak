@@ -14,9 +14,9 @@ type Layout struct {
 func (p *Layout) Links(loc string) []Link {
 	var items []Link
 	if err := p.Db.
-		Select("label", "href").
-		Where("loc = ?").
-		Order("soft_order ASC").
+		Select([]string{"label", "href"}).
+		Where("loc = ?", loc).
+		Order("sort_order ASC").
 		Find(&items).Error; err != nil {
 		log.Error(err)
 	}
@@ -24,12 +24,12 @@ func (p *Layout) Links(loc string) []Link {
 }
 
 // Cards cards
-func (p *Layout) Cards(lang, loc string) []Card {
+func (p *Layout) Cards(loc string) []Card {
 	var items []Card
 	if err := p.Db.
-		Select("title", "summary", "logo", "href").
-		Where("loc = ?").
-		Order("soft_order ASC").
+		Select([]string{"title", "summary", "logo", "href"}).
+		Where("loc = ?", loc).
+		Order("sort_order ASC").
 		Find(&items).Error; err != nil {
 		log.Error(err)
 	}
