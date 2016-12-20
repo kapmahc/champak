@@ -10,6 +10,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/go-ini/ini"
 	"github.com/jinzhu/gorm"
+	"github.com/spf13/viper"
 	"golang.org/x/text/language"
 	gin "gopkg.in/gin-gonic/gin.v1"
 )
@@ -17,6 +18,8 @@ import (
 const (
 	// LOCALE locale key
 	LOCALE = "locale"
+	// DATA data key
+	DATA = "data"
 )
 
 //Locale locale model
@@ -184,6 +187,10 @@ func (p *I18n) Handler() gin.HandlerFunc {
 		}
 
 		c.Set(LOCALE, tag.String())
+		c.Set(DATA, gin.H{
+			"locale":    tag.String(),
+			"languages": viper.GetStringSlice("languages"),
+		})
 
 	}
 }
