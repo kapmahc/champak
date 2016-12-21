@@ -7,50 +7,53 @@ import (
 
 // Mount mount web points
 func (p *Engine) Mount(rt *gin.Engine) {
-	ung := rt.Group("/personal")
-	ung.GET("/sign-in", p.getUsersSignIn)
-	ung.POST(
+	ug := rt.Group("/personal")
+	ug.GET("/sign-in", p.getUsersSignIn)
+	ug.POST(
 		"/sign-in",
 		web.PostFormHandler("/personal/sign-in", &fmSignIn{}, p.postUsersSignIn),
 	)
-	ung.GET("/sign-up", p.getUsersSignUp)
-	ung.POST(
+	ug.GET("/sign-up", p.getUsersSignUp)
+	ug.POST(
 		"/sign-up",
 		web.PostFormHandler("/personal/sign-up", &fmSignUp{}, p.postUsersSignUp),
 	)
-	ung.GET("/confirm", p.getUsersConfirm)
-	ung.GET(
+	ug.GET("/confirm", p.getUsersConfirm)
+	ug.GET(
 		"/confirm/:token",
 		web.FlashHandler("/personal/sign-in", p.getUsersConfirmToken),
 	)
-	ung.POST(
+	ug.POST(
 		"/confirm",
 		web.PostFormHandler("/personal/confirm", &fmEmail{}, p.postUsersConfirm),
 	)
-	ung.GET("/unlock", p.getUsersUnlock)
-	ung.GET(
+	ug.GET("/unlock", p.getUsersUnlock)
+	ug.GET(
 		"/unlock/:token",
 		web.FlashHandler("/personal/sign-in", p.getUsersUnlockToken),
 	)
-	ung.POST("/unlock",
+	ug.POST("/unlock",
 		web.PostFormHandler("/personal/unlock", &fmEmail{}, p.postUsersUnlock),
 	)
-	ung.GET("/forgot-password", p.getUsersForgotPassword)
-	ung.POST(
+	ug.GET("/forgot-password", p.getUsersForgotPassword)
+	ug.POST(
 		"/forgot-password",
 		web.PostFormHandler("/personal/forgot-password", &fmEmail{}, p.postUsersForgotPassword),
 	)
-	ung.GET("/reset-password/:token", p.getUsersResetPassword)
-	ung.POST(
+	ug.GET("/reset-password/:token", p.getUsersResetPassword)
+	ug.POST(
 		"/reset-password",
 		web.PostFormHandler("/personal/reset-password", &fmResetPassword{}, p.postUsersResetPassword),
 	)
 
-	umg := rt.Group("/personal")
-	umg.GET("/profile", p.getUsersProfile)
-	umg.POST("/profile", p.postUsersProfile)
-	umg.DELETE("/sign-out", p.deleteUsersSignOut)
+	ug.GET("/profile", p.getUsersProfile)
+	ug.POST("/profile", p.postUsersProfile)
+	ug.GET("/change-password", p.getUsersChangePassword)
+	ug.POST("/change-password", p.postUsersChangePassword)
+	ug.GET("/logs", p.getUsersLogs)
+	ug.DELETE("/sign-out", p.deleteUsersSignOut)
 
+	rt.GET("/personal", p.getUsersSelf)
 	rt.GET("/attachments/*name", p.getAttachment)
 	rt.POST("/attachments", p.postAttachment)
 	rt.DELETE("/attachmetns/:id", p.deleteAttachment)

@@ -6,11 +6,15 @@ import (
 	gin "gopkg.in/gin-gonic/gin.v1"
 )
 
+// DashboardHandler dashboard handler
+type DashboardHandler func(*gin.Context) []Link
+
 // Engine engine
 type Engine interface {
 	Map(*inject.Graph) error
 	Mount(*gin.Engine)
 	Worker()
+	Dashboard() DashboardHandler
 	Shell() []cli.Command
 }
 

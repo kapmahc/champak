@@ -4,6 +4,7 @@ import (
 	"github.com/facebookgo/inject"
 	"github.com/jinzhu/gorm"
 	"github.com/kapmahc/champak/web"
+	gin "gopkg.in/gin-gonic/gin.v1"
 )
 
 // Engine  auth engine
@@ -15,11 +16,19 @@ type Engine struct {
 	Dao      *Dao          `inject:""`
 	Db       *gorm.DB      `inject:""`
 	Security *web.Security `inject:""`
+	Session  *Session      `inject:""`
 }
 
 // Map map objects
 func (p *Engine) Map(inj *inject.Graph) error {
 	return nil
+}
+
+// Dashboard dashboard links
+func (p *Engine) Dashboard() web.DashboardHandler {
+	return func(*gin.Context) []web.Link {
+		return []web.Link{}
+	}
 }
 
 // -----------------------------------------------------------------------------

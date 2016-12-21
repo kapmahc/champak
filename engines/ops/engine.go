@@ -2,6 +2,7 @@ package ops
 
 import (
 	"golang.org/x/text/language"
+	gin "gopkg.in/gin-gonic/gin.v1"
 
 	"github.com/facebookgo/inject"
 	"github.com/kapmahc/champak/engines/auth"
@@ -28,6 +29,13 @@ func (p *Engine) Map(inj *inject.Graph) error {
 
 // Worker background workers
 func (p *Engine) Worker() {}
+
+// Dashboard dashboard links
+func (p *Engine) Dashboard() web.DashboardHandler {
+	return func(*gin.Context) []web.Link {
+		return []web.Link{}
+	}
+}
 
 // -----------------------------------------------------------------------------
 
