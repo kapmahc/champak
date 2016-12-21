@@ -50,11 +50,15 @@ func (p *Engine) Shell() []cli.Command {
 				}
 				rt.Static("/assets", path.Join("themes", theme, "assets"))
 
+				sss := sessions.NewCookieStore([]byte(viper.GetString("secrets.session")))
+				sss.Options(sessions.Options{
+					MaxAge:   0,
+					HttpOnly: true,
+					Path:     "/",
+					Secure:   web.IsProduction(),
+				})
 				rt.Use(
-					sessions.Sessions(
-						"_session_",
-						sessions.NewCookieStore([]byte(viper.GetString("secrets.session"))),
-					),
+					sessions.Sessions("_session_", sss),
 					p.I18n.Handler(),
 					csrfHandler,
 					flashsHandler,
@@ -73,6 +77,7 @@ func (p *Engine) Shell() []cli.Command {
 					csrf.Secure(web.IsProduction()),
 					csrf.CookieName("_csrf_token_"),
 					csrf.FieldName("authenticity_token"),
+					csrf.Path("/"),
 				)(rt)
 
 				if web.IsProduction() {

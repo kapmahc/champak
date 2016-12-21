@@ -32,8 +32,9 @@ func (p *Engine) getUsersSignIn(c *gin.Context) {
 }
 
 type fmSignIn struct {
-	Email    string `form:"email" binding:"required"`
-	Password string `form:"password" binding:"required"`
+	Email      string `form:"email" binding:"required"`
+	Password   string `form:"password" binding:"required"`
+	RememberMe bool   `form:"rememberMe"`
 }
 
 func (p *Engine) postUsersSignIn(c *gin.Context, o interface{}) error {
