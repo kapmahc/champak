@@ -4,7 +4,6 @@ import (
 	"crypto/x509/pkix"
 	"fmt"
 	"html/template"
-	"log"
 	"net/http"
 	"os"
 	"path"
@@ -12,6 +11,7 @@ import (
 	"time"
 
 	"github.com/BurntSushi/toml"
+	log "github.com/Sirupsen/logrus"
 	"github.com/facebookgo/inject"
 	"github.com/fvbock/endless"
 	"github.com/gin-contrib/sessions"
@@ -97,7 +97,7 @@ func (p *Engine) Shell() []cli.Command {
 					go en.Worker()
 					return nil
 				})
-				log.Printf(" [*] Waiting for logs. To exit press CTRL+C")
+				log.Printf(" [*] Waiting for tasks. To exit press CTRL+C")
 
 				<-forever
 				return nil

@@ -20,6 +20,13 @@ const (
 	UserTypeEmail = "email"
 )
 
+const (
+	// DefaultResourceType default resource type
+	DefaultResourceType = "-"
+	// DefaultResourceID default resourc id
+	DefaultResourceID = 0
+)
+
 // User user
 type User struct {
 	web.Model

@@ -156,7 +156,7 @@ func (p *Dao) Deny(role uint, user uint) error {
 }
 
 //Allow allow permission
-func (p *Dao) Allow(role uint, user uint, years, months, days int) error {
+func (p *Dao) Allow(role, user uint, years, months, days int) error {
 	begin := time.Now()
 	end := begin.AddDate(years, months, days)
 	var count int
