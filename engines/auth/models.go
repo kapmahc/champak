@@ -97,6 +97,7 @@ type Log struct {
 	ID        uint
 	Message   string
 	CreatedAt time.Time
+	IP        string
 
 	UserID uint
 	User   User

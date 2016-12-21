@@ -46,7 +46,7 @@ func (p *Engine) postUsersSignIn(c *gin.Context, o interface{}) error {
 	}
 	ip := c.ClientIP()
 	if !p.Security.Chk([]byte(fm.Password), user.Password) {
-		p.Dao.Log(user.ID, p.I18n.T(lng, "auth.logs.sign-in-failed", ip))
+		p.Dao.Log(user.ID, ip, p.I18n.T(lng, "auth.logs.sign-in-failed"))
 		return p.I18n.E(lng, "auth.errors.email-password-not-match")
 	}
 	if !user.IsConfirm() {
@@ -57,7 +57,7 @@ func (p *Engine) postUsersSignIn(c *gin.Context, o interface{}) error {
 	}
 
 	p.Dao.signIn(user.ID, ip)
-	p.Dao.Log(user.ID, p.I18n.T(lng, "auth.logs.sign-in-success", ip))
+	p.Dao.Log(user.ID, ip, p.I18n.T(lng, "auth.logs.sign-in-success"))
 	ss := sessions.Default(c)
 	ss.Set("uid", user.UID)
 	ss.Save()
@@ -108,7 +108,7 @@ func (p *Engine) postUsersSignUp(c *gin.Context, o interface{}) error {
 	if err != nil {
 		return err
 	}
-	p.Dao.Log(user.ID, p.I18n.T(lng, "auth.logs.sign-up"))
+	p.Dao.Log(user.ID, c.ClientIP(), p.I18n.T(lng, "auth.logs.sign-up"))
 	if err = p.sendEmail(lng, user, actConfirm); err != nil {
 		log.Error(err)
 	}
@@ -132,6 +132,7 @@ func (p *Engine) getUsersConfirmToken(c *gin.Context) error {
 	if err = p.Db.Model(user).Update("confirmed_at", time.Now()).Error; err != nil {
 		return err
 	}
+	p.Dao.Log(user.ID, c.ClientIP(), p.I18n.T(lng, "auth.logs.confirm"))
 	ss := sessions.Default(c)
 	ss.AddFlash(p.I18n.T(lng, "auth.messages.confirm-success"), web.NOTICE)
 	ss.Save()
@@ -243,6 +244,7 @@ func (p *Engine) postUsersResetPassword(c *gin.Context, o interface{}) error {
 		Update("password", p.Security.Sum([]byte(fm.Password))).Error; err != nil {
 		return err
 	}
+	p.Dao.Log(user.ID, c.ClientIP(), p.I18n.T(lng, "auth.logs.reset-password"))
 	ss := sessions.Default(c)
 	ss.AddFlash(p.I18n.T(lng, "auth.messages.reset-password-success"), web.NOTICE)
 	ss.Save()
@@ -262,6 +264,7 @@ func (p *Engine) getUsersUnlockToken(c *gin.Context) error {
 	if err = p.Db.Model(user).Update(map[string]interface{}{"locked_at": nil}).Error; err != nil {
 		return err
 	}
+	p.Dao.Log(user.ID, c.ClientIP(), p.I18n.T(lng, "auth.logs.unlock"))
 	ss := sessions.Default(c)
 	ss.AddFlash(p.I18n.T(lng, "auth.messages.unlock-success"), web.NOTICE)
 	ss.Save()

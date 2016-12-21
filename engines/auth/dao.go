@@ -52,8 +52,8 @@ func (p *Dao) GetByEmail(email string) (*User, error) {
 }
 
 // Log add log
-func (p *Dao) Log(user uint, message string) {
-	if err := p.Db.Create(&Log{UserID: user, Message: message}).Error; err != nil {
+func (p *Dao) Log(user uint, ip, message string) {
+	if err := p.Db.Create(&Log{UserID: user, IP: ip, Message: message}).Error; err != nil {
 		log.Error(err)
 	}
 }

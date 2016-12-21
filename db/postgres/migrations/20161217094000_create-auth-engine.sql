@@ -38,6 +38,7 @@ CREATE TABLE logs (
   id         SERIAL PRIMARY KEY,
   user_id    BIGINT                      NOT NULL,
   type       VARCHAR(8)                  NOT NULL DEFAULT 'info',
+  ip         INET                        NOT NULL,
   message    VARCHAR(255)                NOT NULL,
   created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now()
 );

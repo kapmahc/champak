@@ -22,6 +22,6 @@ func (p *Engine) deleteUsersSignOut(c *gin.Context) {
 	ss.Clear()
 	ss.Save()
 	lng := c.MustGet(web.LOCALE).(string)
-	p.Dao.Log(user.ID, p.I18n.T(lng, "auth.logs.sign-out", c.ClientIP()))
+	p.Dao.Log(user.ID, c.ClientIP(), p.I18n.T(lng, "auth.logs.sign-out"))
 	c.JSON(http.StatusOK, gin.H{"to": "/"})
 }
