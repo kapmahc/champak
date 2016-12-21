@@ -1,0 +1,27 @@
+{{define "personal-bar"}}
+{{$l := .locale}}
+{{if .current_user}}
+<li class="nav-item dropdown float-xs-right">
+  <a class="nav-link dropdown-toggle" id="personal-bar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    {{t $l "personal-bar.welcome" .current_user.full_name}}
+  </a>
+  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="personal-bar">
+    <a class="dropdown-item" href="/personal/dashboard">{{t $l "auth.personal.dashboard.title"}}</a>    
+    <a data-confirm="{{t $l "are-you-sure"}}" data-method="delete" class="dropdown-item" href="/personal/sign-out">{{t $l "personal-bar.sign-out"}}</a>
+  </div>
+</li>
+{{else}}
+<li class="nav-item dropdown float-xs-right">
+  <a class="nav-link dropdown-toggle" id="personal-bar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    {{t $l "personal-bar.sign-in-or-up"}}
+  </a>
+  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="personal-bar">
+    <a class="dropdown-item" href="/personal/sign-in">{{t $l "auth.personal.sign-in.title"}}</a>
+    <a class="dropdown-item" href="/personal/sign-up">{{t $l "auth.personal.sign-up.title"}}</a>
+    <a class="dropdown-item" href="/personal/forgot-password">{{t $l "auth.personal.forgot-password.title"}}</a>
+    <a class="dropdown-item" href="/personal/confirm">{{t $l "auth.personal.confirm.title"}}</a>
+    <a class="dropdown-item" href="/personal/unlock">{{t $l "auth.personal.unlock.title"}}</a>
+  </div>
+</li>
+{{end}}
+{{end}}

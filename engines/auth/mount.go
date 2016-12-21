@@ -47,9 +47,9 @@ func (p *Engine) Mount(rt *gin.Engine) {
 	)
 
 	umg := rt.Group("/personal")
-	umg.GET("/profile", p.getProfile)
-	umg.POST("/profile", p.postProfile)
-	umg.DELETE("/sign-out", p.deleteSignOut)
+	umg.GET("/profile", p.getUsersProfile)
+	umg.POST("/profile", p.postUsersProfile)
+	umg.DELETE("/sign-out", p.deleteUsersSignOut)
 
 	rt.GET("/attachments/*name", p.getAttachment)
 	rt.POST("/attachments", p.postAttachment)

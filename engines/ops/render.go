@@ -21,7 +21,11 @@ func flashsHandler(c *gin.Context) {
 }
 
 func csrfHandler(c *gin.Context) {
-	c.Writer.Header().Set("X-CSRF-Token", csrf.Token(c.Request))
+	tkn := csrf.Token(c.Request)
+	c.Writer.Header().Set("X-CSRF-Token", tkn)
+	data := c.MustGet(web.DATA).(gin.H)
+	data["csrf"] = tkn
+	c.Set(web.DATA, data)
 }
 
 func (p *Engine) loadTemplates(theme string) (*template.Template, error) {
