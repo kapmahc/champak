@@ -128,13 +128,13 @@ func (p *Engine) getUsersConfirmToken(c *gin.Context) error {
 	if user.IsConfirm() {
 		return p.I18n.E(lng, "auth.errors.user-already-confirm")
 	}
-	if err = p.Db.Model(user).Update("confirm_at", time.Now()).Error; err != nil {
+	if err = p.Db.Model(user).Update("confirmed_at", time.Now()).Error; err != nil {
 		return err
 	}
 	ss := sessions.Default(c)
 	ss.AddFlash(p.I18n.T(lng, "auth.messages.confirm-success"), web.NOTICE)
 	ss.Save()
-	c.Redirect(http.StatusFound, "personal/sign-in")
+	c.Redirect(http.StatusFound, "/personal/sign-in")
 	return nil
 }
 
@@ -174,7 +174,7 @@ func (p *Engine) postUsersConfirm(c *gin.Context, o interface{}) error {
 	ss := sessions.Default(c)
 	ss.AddFlash(p.I18n.T(lng, "auth.messages.email-for-confirm"), web.NOTICE)
 	ss.Save()
-	c.Redirect(http.StatusFound, "personal/sign-in")
+	c.Redirect(http.StatusFound, "/personal/sign-in")
 	return nil
 }
 
@@ -205,7 +205,7 @@ func (p *Engine) postUsersForgotPassword(c *gin.Context, o interface{}) error {
 	ss := sessions.Default(c)
 	ss.AddFlash(p.I18n.T(lng, "auth.messages.email-for-reset-password"), web.NOTICE)
 	ss.Save()
-	c.Redirect(http.StatusFound, "personal/sign-in")
+	c.Redirect(http.StatusFound, "/personal/sign-in")
 	return nil
 }
 
@@ -245,7 +245,7 @@ func (p *Engine) postUsersResetPassword(c *gin.Context, o interface{}) error {
 	ss := sessions.Default(c)
 	ss.AddFlash(p.I18n.T(lng, "auth.messages.reset-password-success"), web.NOTICE)
 	ss.Save()
-	c.Redirect(http.StatusFound, "personal/sign-in")
+	c.Redirect(http.StatusFound, "/personal/sign-in")
 	return nil
 }
 
@@ -264,7 +264,7 @@ func (p *Engine) getUsersUnlockToken(c *gin.Context) error {
 	ss := sessions.Default(c)
 	ss.AddFlash(p.I18n.T(lng, "auth.messages.unlock-success"), web.NOTICE)
 	ss.Save()
-	c.Redirect(http.StatusFound, "personal/sign-in")
+	c.Redirect(http.StatusFound, "/personal/sign-in")
 	return nil
 }
 
@@ -298,6 +298,6 @@ func (p *Engine) postUsersUnlock(c *gin.Context, o interface{}) error {
 	ss := sessions.Default(c)
 	ss.AddFlash(p.I18n.T(lng, "auth.messages.email-for-unlock"), web.NOTICE)
 	ss.Save()
-	c.Redirect(http.StatusFound, "personal/sign-in")
+	c.Redirect(http.StatusFound, "/personal/sign-in")
 	return nil
 }

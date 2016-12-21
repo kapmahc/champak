@@ -24,6 +24,10 @@ import (
 	gin "gopkg.in/gin-gonic/gin.v1"
 )
 
+const (
+	postgresqlDriver = "postgres"
+)
+
 //Shell command options
 func (p *Engine) Shell() []cli.Command {
 	return []cli.Command{
@@ -55,6 +59,7 @@ func (p *Engine) Shell() []cli.Command {
 					csrfHandler,
 					flashsHandler,
 					p.Jwt.CurrentUserHandler,
+					p.Session.CurrentUserHandler,
 				)
 
 				web.Loop(func(en web.Engine) error {
@@ -150,7 +155,7 @@ func (p *Engine) Shell() []cli.Command {
 						args := viper.GetStringMapString("database.args")
 						var err error
 						switch drv {
-						case "postgres":
+						case postgresqlDriver:
 							fmt.Printf("CREATE USER %s WITH PASSWORD '%s';\n", args["user"], args["password"])
 							fmt.Printf("CREATE DATABASE %s WITH ENCODING='UTF8';\n", args["dbname"])
 							fmt.Printf("GRANT ALL PRIVILEGES ON DATABASE %s TO %s;\n", args["dbname"], args["user"])
@@ -247,7 +252,7 @@ func (p *Engine) Shell() []cli.Command {
 						args := viper.GetStringMapString("database.args")
 						var err error
 						switch drv {
-						case "postgres":
+						case postgresqlDriver:
 							err = web.Shell("psql",
 								"-h", args["host"],
 								"-p", args["port"],
@@ -269,7 +274,7 @@ func (p *Engine) Shell() []cli.Command {
 						args := viper.GetStringMapString("database.args")
 						var err error
 						switch drv {
-						case "postgres":
+						case postgresqlDriver:
 							err = web.Shell("psql",
 								"-h", args["host"],
 								"-p", args["port"],
@@ -294,7 +299,7 @@ func (p *Engine) Shell() []cli.Command {
 						args := viper.GetStringMapString("database.args")
 						var err error
 						switch drv {
-						case "postgres":
+						case postgresqlDriver:
 							err = web.Shell("psql",
 								"-h", args["host"],
 								"-p", args["port"],

@@ -34,7 +34,7 @@ func (p *Session) SetCurrentUser(c *gin.Context, uid string) error {
 		"full_name": user.FullName,
 		"uid":       user.UID,
 	}
-	c.Set(web.DATA, user)
+	c.Set(CurrentUser, user)
 	return nil
 }
 

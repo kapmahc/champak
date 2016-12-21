@@ -17,6 +17,7 @@ type Engine struct {
 	Settings *web.Settings `inject:""`
 	Layout   *web.Layout   `inject:""`
 	Jwt      *auth.Jwt     `inject:""`
+	Session  *auth.Session `inject:""`
 }
 
 // Map inject objects

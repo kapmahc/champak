@@ -46,7 +46,7 @@ func (p *Dao) GetUserByUID(uid string) (*User, error) {
 func (p *Dao) GetByEmail(email string) (*User, error) {
 	var user User
 	err := p.Db.
-		Where("resource_type = ? AND resource_id = ?", UserTypeEmail, email).
+		Where("provider_type = ? AND provider_id = ?", UserTypeEmail, email).
 		First(&user).Error
 	return &user, err
 }
