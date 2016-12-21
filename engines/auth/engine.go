@@ -22,9 +22,6 @@ func (p *Engine) Map(inj *inject.Graph) error {
 	return nil
 }
 
-// Worker background job
-func (p *Engine) Worker() {}
-
 // -----------------------------------------------------------------------------
 
 func init() {

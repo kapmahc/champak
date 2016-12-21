@@ -1,11 +1,13 @@
 package web
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
 	"net/http"
 	"os"
 	"path/filepath"
+	"text/template"
 	"time"
 
 	log "github.com/Sirupsen/logrus"
@@ -46,7 +48,22 @@ type I18n struct {
 	Matcher language.Matcher `inject:"language.matcher"`
 }
 
-//E crete an i18n error
+// F format message
+func (p *I18n) F(lng, code string, obj interface{}) (string, error) {
+	msg, err := p.getMessage(lng, code)
+	if err != nil {
+		return "", err
+	}
+	tpl, err := template.New("").Parse(msg)
+	if err != nil {
+		return "", err
+	}
+	var buf bytes.Buffer
+	err = tpl.Execute(&buf, obj)
+	return buf.String(), err
+}
+
+//E create an i18n error
 func (p *I18n) E(lang string, code string, args ...interface{}) error {
 	msg := p.Get(lang, code)
 	if len(msg) == 0 {
@@ -56,15 +73,13 @@ func (p *I18n) E(lang string, code string, args ...interface{}) error {
 }
 
 //T translate by lang tag
-func (p *I18n) T(lang string, code string, args ...interface{}) string {
-	var l Locale
-	if err := p.Db.
-		Select("message").
-		Where("lang = ? AND code = ?", lang, code).
-		First(&l).Error; err != nil {
+func (p *I18n) T(lng string, code string, args ...interface{}) string {
+	msg, err := p.getMessage(lng, code)
+	if err != nil {
+		log.Debug(err)
 		return code
 	}
-	return fmt.Sprintf(l.Message, args...)
+	return fmt.Sprintf(msg, args...)
 }
 
 //Set set locale
@@ -96,10 +111,21 @@ func (p *I18n) Get(lng string, code string) string {
 }
 
 //Del del locale
-func (p *I18n) Del(lng string, code string) {
+func (p *I18n) Del(lng, code string) {
 	if err := p.Db.Where("lang = ? AND code = ?", lng, code).Delete(Locale{}).Error; err != nil {
 		log.Error(err)
 	}
+}
+
+func (p *I18n) getMessage(lng, code string) (string, error) {
+	var l Locale
+	if err := p.Db.
+		Select("message").
+		Where("lang = ? AND code = ?", lng, code).
+		First(&l).Error; err != nil {
+		return "", err
+	}
+	return l.Message, nil
 }
 
 //Codes list locale keys

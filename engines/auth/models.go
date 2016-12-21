@@ -68,7 +68,7 @@ func (p *User) SetUID() {
 }
 
 func (p User) String() string {
-	return fmt.Sprintf("%s<%s>", p.Name, p.Email)
+	return fmt.Sprintf("%s<%s>", p.FullName, p.Email)
 }
 
 // Attachment attachment
@@ -123,7 +123,7 @@ type Policy struct {
 //Enable is enable?
 func (p *Policy) Enable() bool {
 	now := time.Now()
-	return now.After(p.Begin) && now.Before(p.End)
+	return now.After(p.StartUp) && now.Before(p.ShutDown)
 }
 
 // TableName table name

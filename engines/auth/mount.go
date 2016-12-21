@@ -1,24 +1,50 @@
 package auth
 
-import gin "gopkg.in/gin-gonic/gin.v1"
+import (
+	"github.com/kapmahc/champak/web"
+	gin "gopkg.in/gin-gonic/gin.v1"
+)
 
 // Mount mount web points
 func (p *Engine) Mount(rt *gin.Engine) {
 	ung := rt.Group("/personal")
-	ung.GET("/sign-in", p.getSignIn)
-	ung.POST("/sign-in", p.postSignIn)
-	ung.GET("/sign-up", p.getSignUp)
-	ung.POST("/sign-up", p.postSignUp)
-	ung.GET("/confirm", p.getConfirm)
-	ung.GET("/confirm/:token", p.getConfirm)
-	ung.POST("/confirm", p.postConfirm)
-	ung.GET("/unlock", p.getUnlock)
-	ung.GET("/unlock/:token", p.getUnlock)
-	ung.POST("/unlock", p.postUnlock)
-	ung.GET("/forgot-password", p.getForgotPassword)
-	ung.POST("/forgot-password", p.postForgotPassword)
-	ung.GET("/change-password/:token", p.getChangePassword)
-	ung.POST("/change-password", p.postChangePassword)
+	ung.GET("/sign-in", p.getUsersSignIn)
+	ung.POST(
+		"/sign-in",
+		web.PostFormHandler("/personal/sign-in", &fmSignIn{}, p.postUsersSignIn),
+	)
+	ung.GET("/sign-up", p.getUsersSignUp)
+	ung.POST(
+		"/sign-up",
+		web.PostFormHandler("/personal/sign-up", &fmSignUp{}, p.postUsersSignUp),
+	)
+	ung.GET("/confirm", p.getUsersConfirm)
+	ung.GET(
+		"/confirm/:token",
+		web.FlashHandler("/personal/sign-in", p.getUsersConfirmToken),
+	)
+	ung.POST(
+		"/confirm",
+		web.PostFormHandler("/personal/confirm", &fmEmail{}, p.postUsersConfirm),
+	)
+	ung.GET("/unlock", p.getUsersUnlock)
+	ung.GET(
+		"/unlock/:token",
+		web.FlashHandler("/personal/sign-in", p.getUsersUnlockToken),
+	)
+	ung.POST("/unlock",
+		web.PostFormHandler("/personal/unlock", &fmEmail{}, p.postUsersUnlock),
+	)
+	ung.GET("/forgot-password", p.getUsersForgotPassword)
+	ung.POST(
+		"/forgot-password",
+		web.PostFormHandler("/personal/forgot-password", &fmEmail{}, p.postUsersForgotPassword),
+	)
+	ung.GET("/reset-password/:token", p.getUsersResetPassword)
+	ung.POST(
+		"/reset-password",
+		web.PostFormHandler("/personal/reset-password", &fmResetPassword{}, p.postUsersResetPassword),
+	)
 
 	umg := rt.Group("/personal")
 	umg.GET("/profile", p.getProfile)

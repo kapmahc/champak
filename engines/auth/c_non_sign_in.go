@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"time"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/gin-contrib/sessions"
 	"github.com/kapmahc/champak/web"
 	gin "gopkg.in/gin-gonic/gin.v1"
@@ -42,8 +43,9 @@ func (p *Engine) postUsersSignIn(c *gin.Context, o interface{}) error {
 	if err != nil {
 		return err
 	}
+	ip := c.ClientIP()
 	if !p.Security.Chk([]byte(fm.Password), user.Password) {
-		p.Dao.Log(user.ID, p.I18n.T(lng, "auth.logs.sign-in-failed"))
+		p.Dao.Log(user.ID, p.I18n.T(lng, "auth.logs.sign-in-failed", ip))
 		return p.I18n.E(lng, "auth.errors.email-password-not-match")
 	}
 	if !user.IsConfirm() {
@@ -53,12 +55,12 @@ func (p *Engine) postUsersSignIn(c *gin.Context, o interface{}) error {
 		return p.I18n.E(lng, "auth.errors.user-is-lock")
 	}
 
-	p.Dao.signIn(user.ID, c.ClientIP())
-	p.Dao.Log(user.ID, p.I18n.T(lng, "auth.logs.sign-in-success"))
+	p.Dao.signIn(user.ID, ip)
+	p.Dao.Log(user.ID, p.I18n.T(lng, "auth.logs.sign-in-success", ip))
 	ss := sessions.Default(c)
 	ss.Set("uid", user.UID)
 	ss.Save()
-	c.Redirect(http.StatusOK, "/")
+	c.Redirect(http.StatusFound, "/")
 	return nil
 }
 
@@ -106,12 +108,14 @@ func (p *Engine) postUsersSignUp(c *gin.Context, o interface{}) error {
 		return err
 	}
 	p.Dao.Log(user.ID, p.I18n.T(lng, "auth.logs.sign-up"))
-	p.sendEmail(user, actConfirm)
+	if err = p.sendEmail(lng, user, actConfirm); err != nil {
+		log.Error(err)
+	}
 
 	ss := sessions.Default(c)
 	ss.AddFlash(p.I18n.T(lng, "auth.messages.email-for-confirm"), web.NOTICE)
 	ss.Save()
-	c.Redirect(http.StatusOK, "/personal/sign-in")
+	c.Redirect(http.StatusFound, "/personal/sign-in")
 	return nil
 }
 
@@ -130,7 +134,7 @@ func (p *Engine) getUsersConfirmToken(c *gin.Context) error {
 	ss := sessions.Default(c)
 	ss.AddFlash(p.I18n.T(lng, "auth.messages.confirm-success"), web.NOTICE)
 	ss.Save()
-	c.Redirect(http.StatusOK, "personal/sign-in")
+	c.Redirect(http.StatusFound, "personal/sign-in")
 	return nil
 }
 
@@ -164,11 +168,13 @@ func (p *Engine) postUsersConfirm(c *gin.Context, o interface{}) error {
 		return p.I18n.E(lng, "auth.errors.user-already-confirm")
 	}
 
-	p.sendEmail(user, actConfirm)
+	if err = p.sendEmail(lng, user, actConfirm); err != nil {
+		log.Error(err)
+	}
 	ss := sessions.Default(c)
 	ss.AddFlash(p.I18n.T(lng, "auth.messages.email-for-confirm"), web.NOTICE)
 	ss.Save()
-	c.Redirect(http.StatusOK, "personal/sign-in")
+	c.Redirect(http.StatusFound, "personal/sign-in")
 	return nil
 }
 
@@ -193,19 +199,21 @@ func (p *Engine) postUsersForgotPassword(c *gin.Context, o interface{}) error {
 	if err != nil {
 		return err
 	}
-	p.sendEmail(user, actResetPassword)
+	if err = p.sendEmail(lng, user, actResetPassword); err != nil {
+		log.Error(err)
+	}
 	ss := sessions.Default(c)
 	ss.AddFlash(p.I18n.T(lng, "auth.messages.email-for-reset-password"), web.NOTICE)
 	ss.Save()
-	c.Redirect(http.StatusOK, "personal/sign-in")
+	c.Redirect(http.StatusFound, "personal/sign-in")
 	return nil
 }
 
-func (p *Engine) getUsersChangePassword(c *gin.Context) {
+func (p *Engine) getUsersResetPassword(c *gin.Context) {
 	lng := c.MustGet(web.LOCALE).(string)
 	data := c.MustGet(web.DATA).(gin.H)
-	title := p.I18n.T(lng, "auth.personal.sign-in.title")
-	fm := web.NewForm(c, "change-password", title, "/personal/change-password")
+	title := p.I18n.T(lng, "auth.personal.reset-password.title")
+	fm := web.NewForm(c, "reset-password", title, "/personal/reset-password")
 	fm.AddFields(
 		web.NewHiddenField("token", c.Param("token")),
 		web.NewPasswordField("password", p.I18n.T(lng, "attributes.password")),
@@ -223,7 +231,7 @@ type fmResetPassword struct {
 	PasswordConfirmation string `form:"passwordConfirmation" binding:"eqfield=Password"`
 }
 
-func (p *Engine) postChangePassword(c *gin.Context, o interface{}) error {
+func (p *Engine) postUsersResetPassword(c *gin.Context, o interface{}) error {
 	lng := c.MustGet(web.LOCALE).(string)
 	fm := o.(*fmResetPassword)
 	user, err := p.parseToken(fm.Token, actResetPassword)
@@ -237,7 +245,7 @@ func (p *Engine) postChangePassword(c *gin.Context, o interface{}) error {
 	ss := sessions.Default(c)
 	ss.AddFlash(p.I18n.T(lng, "auth.messages.reset-password-success"), web.NOTICE)
 	ss.Save()
-	c.Redirect(http.StatusOK, "personal/sign-in")
+	c.Redirect(http.StatusFound, "personal/sign-in")
 	return nil
 }
 
@@ -256,11 +264,11 @@ func (p *Engine) getUsersUnlockToken(c *gin.Context) error {
 	ss := sessions.Default(c)
 	ss.AddFlash(p.I18n.T(lng, "auth.messages.unlock-success"), web.NOTICE)
 	ss.Save()
-	c.Redirect(http.StatusOK, "personal/sign-in")
+	c.Redirect(http.StatusFound, "personal/sign-in")
 	return nil
 }
 
-func (p *Engine) getUnlock(c *gin.Context) {
+func (p *Engine) getUsersUnlock(c *gin.Context) {
 	lng := c.MustGet(web.LOCALE).(string)
 	data := c.MustGet(web.DATA).(gin.H)
 	title := p.I18n.T(lng, "auth.personal.unlock.title")
@@ -273,7 +281,7 @@ func (p *Engine) getUnlock(c *gin.Context) {
 	data["form"] = fm
 	c.HTML(http.StatusOK, "auth/non-sign-in", data)
 }
-func (p *Engine) postUnlock(c *gin.Context, o interface{}) error {
+func (p *Engine) postUsersUnlock(c *gin.Context, o interface{}) error {
 	lng := c.MustGet(web.LOCALE).(string)
 	fm := o.(*fmEmail)
 	user, err := p.Dao.GetByEmail(fm.Email)
@@ -284,10 +292,12 @@ func (p *Engine) postUnlock(c *gin.Context, o interface{}) error {
 		return p.I18n.E(lng, "auth.errors.user-not-lock")
 	}
 
-	p.sendEmail(user, actUnlock)
+	if err = p.sendEmail(lng, user, actUnlock); err != nil {
+		log.Error(err)
+	}
 	ss := sessions.Default(c)
 	ss.AddFlash(p.I18n.T(lng, "auth.messages.email-for-unlock"), web.NOTICE)
 	ss.Save()
-	c.Redirect(http.StatusOK, "personal/sign-in")
+	c.Redirect(http.StatusFound, "personal/sign-in")
 	return nil
 }

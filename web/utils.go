@@ -1,6 +1,7 @@
 package web
 
 import (
+	"fmt"
 	"math/rand"
 	"os"
 	"os/exec"
@@ -8,6 +9,14 @@ import (
 
 	"github.com/spf13/viper"
 )
+
+// HostURL get host url
+func HostURL() string {
+	if IsProduction() {
+		return fmt.Sprintf("https://%s", viper.GetString("server.name"))
+	}
+	return fmt.Sprintf("http://localhost:%d", viper.GetInt("server.port"))
+}
 
 // IsProduction production mode ?
 func IsProduction() bool {

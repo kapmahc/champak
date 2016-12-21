@@ -2,7 +2,6 @@ package auth
 
 import (
 	"fmt"
-	"net/http"
 	"time"
 
 	"github.com/SermoDigital/jose/crypto"
@@ -21,10 +20,11 @@ const (
 
 //Jwt jwt helper
 type Jwt struct {
-	Key    []byte               `inject:"jwt.key"`
-	Method crypto.SigningMethod `inject:"jwt.method"`
-	Dao    *Dao                 `inject:""`
-	I18n   *web.I18n            `inject:""`
+	Key     []byte               `inject:"jwt.key"`
+	Method  crypto.SigningMethod `inject:"jwt.method"`
+	Dao     *Dao                 `inject:""`
+	I18n    *web.I18n            `inject:""`
+	Session *Session             `inject:""`
 }
 
 //Validate check jwt
@@ -37,50 +37,14 @@ func (p *Jwt) Validate(buf []byte) (jwt.Claims, error) {
 	return tk.Claims(), err
 }
 
-//MustAdminHandler check must have admin role
-func (p *Jwt) MustAdminHandler() gin.HandlerFunc {
-	return p.MustRolesHandler("admin")
-}
-
-//MustRolesHandler check must have one roles at least
-func (p *Jwt) MustRolesHandler(roles ...string) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		u := c.MustGet("user").(*User)
-		for _, a := range p.Dao.Authority(u.ID, "-", 0) {
-			for _, r := range roles {
-				if a == r {
-					return
-				}
-			}
-		}
-		c.AbortWithStatus(http.StatusForbidden)
-	}
-}
-
 //CurrentUserHandler inject current user
 func (p *Jwt) CurrentUserHandler(c *gin.Context) {
-	lng := c.MustGet(web.LOCALE).(string)
 	tkn, err := jws.ParseFromRequest(c.Request, jws.Compact)
-
 	if err == nil {
 		if err = tkn.Verify(p.Key, p.Method); err == nil {
-			var user User
 			data := tkn.Payload().(map[string]interface{})
-			if err = p.Dao.Db.Where("uid = ?", data["uid"]).First(&user).Error; err == nil {
-				if !user.IsConfirm() {
-					err = p.I18n.E(lng, "auth.errors.user-not-confirm")
-				} else if user.IsLock() {
-					err = p.I18n.E(lng, "auth.errors.user-is-lock")
-				} else {
-					c.Set(CurrentUser, &user)
-					data := c.MustGet(web.DATA).(gin.H)
-					data[CurrentUser] = gin.H{
-						"full_name": user.FullName,
-						"uid":       user.UID,
-					}
-					c.Set(web.DATA, user)
-					return
-				}
+			if uid, ok := data["uid"]; ok {
+				err = p.Session.SetCurrentUser(c, uid.(string))
 			}
 		}
 	}

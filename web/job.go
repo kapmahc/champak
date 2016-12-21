@@ -16,8 +16,8 @@ type Job struct {
 }
 
 //Send send  a job message
-func (p *Job) Send(queue string, body []byte) error {
-	return p.open(queue, func(ch *amqp.Channel, ex, qu string) error {
+func (p *Job) Send(queue string, body []byte) {
+	if err := p.open(queue, func(ch *amqp.Channel, ex, qu string) error {
 		id := uuid.New().String()
 		err := ch.Publish(
 			ex,
@@ -34,7 +34,9 @@ func (p *Job) Send(queue string, body []byte) error {
 		)
 		log.Infof("send message %s to %s", id, queue)
 		return err
-	})
+	}); err != nil {
+		log.Error(err)
+	}
 
 }
 

@@ -21,7 +21,7 @@ func FlashHandler(ego string, fn func(*gin.Context) error) gin.HandlerFunc {
 			ss := sessions.Default(c)
 			ss.AddFlash(err.Error(), ALERT)
 			ss.Save()
-			c.Redirect(http.StatusInternalServerError, ego)
+			c.Redirect(http.StatusFound, ego)
 		}
 	}
 }
