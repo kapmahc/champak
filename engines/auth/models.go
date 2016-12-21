@@ -1,8 +1,13 @@
 package auth
 
 import (
+	"crypto/md5"
+	"encoding/hex"
+	"fmt"
+	"strings"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/kapmahc/champak/web"
 )
 
@@ -49,6 +54,21 @@ func (p *User) IsConfirm() bool {
 // IsLock is lock?
 func (p *User) IsLock() bool {
 	return p.LockedAt != nil
+}
+
+//SetGravatarLogo set logo by gravatar
+func (p *User) SetGravatarLogo() {
+	buf := md5.Sum([]byte(strings.ToLower(p.Email)))
+	p.Logo = fmt.Sprintf("https://gravatar.com/avatar/%s.png", hex.EncodeToString(buf[:]))
+}
+
+//SetUID generate uid
+func (p *User) SetUID() {
+	p.UID = uuid.New().String()
+}
+
+func (p User) String() string {
+	return fmt.Sprintf("%s<%s>", p.Name, p.Email)
 }
 
 // Attachment attachment
@@ -100,6 +120,12 @@ type Policy struct {
 	Role   Role
 }
 
+//Enable is enable?
+func (p *Policy) Enable() bool {
+	now := time.Now()
+	return now.After(p.Begin) && now.Before(p.End)
+}
+
 // TableName table name
 func (Policy) TableName() string {
 	return "policies"
@@ -117,4 +143,8 @@ type Role struct {
 // TableName table name
 func (Role) TableName() string {
 	return "roles"
+}
+
+func (p Role) String() string {
+	return fmt.Sprintf("%s@%s://%d", p.Name, p.ResourceType, p.ResourceID)
 }

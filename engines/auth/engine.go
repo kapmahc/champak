@@ -2,6 +2,7 @@ package auth
 
 import (
 	"github.com/facebookgo/inject"
+	"github.com/jinzhu/gorm"
 	"github.com/kapmahc/champak/web"
 )
 
@@ -12,6 +13,7 @@ type Engine struct {
 	I18n     *web.I18n     `inject:""`
 	Jwt      *Jwt          `inject:""`
 	Dao      *Dao          `inject:""`
+	Db       *gorm.DB      `inject:""`
 	Security *web.Security `inject:""`
 }
 

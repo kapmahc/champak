@@ -35,6 +35,9 @@ func (p *Engine) loadTemplates(theme string) (*template.Template, error) {
 			"eq": func(arg1, arg2 interface{}) bool {
 				return arg1 == arg2
 			},
+			"str2htm": func(s string) template.HTML {
+				return template.HTML(s)
+			},
 		}).
 		ParseGlob(
 			fmt.Sprintf("themes/%s/views/**/*", theme),

@@ -8,7 +8,7 @@
       </button>
       <h4 class="alert-heading">{{t $l "flashs.notice"}}</h4>
       {{range .notice}}
-        <p class="mb-0">{{.}}</p>
+        <p class="mb-0">{{str2htm .}}</p>
       {{end}}
     </div>
   {{end}}
@@ -19,7 +19,7 @@
     </button>
     <h4 class="alert-heading">{{t $l "flashs.alert"}}</h4>
     {{range .alert}}
-      <p class="mb-0">{{.}}</p>
+      <p class="mb-0">{{str2htm .}}</p>
     {{end}}
   </div>
   {{end}}
