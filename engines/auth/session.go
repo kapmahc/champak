@@ -49,6 +49,29 @@ func (p *Session) CurrentUserHandler(c *gin.Context) {
 	}
 }
 
+//MustSignInHandler check must have admin role
+func (p *Session) MustSignInHandler() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		lng := c.MustGet(web.LOCALE).(string)
+		if _, ok := c.Get(CurrentUser); ok {
+			data := c.MustGet(web.DATA).(gin.H)
+			var links []web.Dropdown
+			web.Loop(func(en web.Engine) error {
+				items := en.Dashboard()(c)
+				links = append(links, items...)
+				return nil
+			})
+			data["links"] = links
+			c.Set(web.DATA, data)
+			return
+		}
+		ss := sessions.Default(c)
+		ss.AddFlash(p.I18n.T(lng, "auth.errors.please-sign-in"), web.ALERT)
+		ss.Save()
+		c.Redirect(http.StatusFound, "/personal/sign-in")
+	}
+}
+
 //MustAdminHandler check must have admin role
 func (p *Session) MustAdminHandler() gin.HandlerFunc {
 	return p.MustRolesHandler(RoleAdmin)
@@ -57,14 +80,21 @@ func (p *Session) MustAdminHandler() gin.HandlerFunc {
 //MustRolesHandler check must have one roles at least
 func (p *Session) MustRolesHandler(roles ...string) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		u := c.MustGet("user").(*User)
-		for _, a := range p.Dao.Authority(u.ID, "-", 0) {
-			for _, r := range roles {
-				if a == r {
-					return
+		if obj, ok := c.Get(CurrentUser); ok {
+			u := obj.(*User)
+			for _, a := range p.Dao.Authority(u.ID, "-", 0) {
+				for _, r := range roles {
+					if a == r {
+						return
+					}
 				}
 			}
 		}
-		c.AbortWithStatus(http.StatusForbidden)
+
+		lng := c.MustGet(web.LOCALE).(string)
+		ss := sessions.Default(c)
+		ss.AddFlash(p.I18n.T(lng, "auth.errors.not-allow"), web.ALERT)
+		ss.Save()
+		c.Redirect(http.StatusFound, "/personal/sign-in")
 	}
 }

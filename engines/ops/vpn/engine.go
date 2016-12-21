@@ -29,8 +29,8 @@ func (p *Engine) Shell() []cli.Command {
 
 // Dashboard dashboard links
 func (p *Engine) Dashboard() web.DashboardHandler {
-	return func(*gin.Context) []*web.Link {
-		return []*web.Link{}
+	return func(*gin.Context) []web.Dropdown {
+		return []web.Dropdown{}
 	}
 }
 
