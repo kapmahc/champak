@@ -18,11 +18,18 @@
   <a href="/" class="navbar-brand">{{t $l "site.sub_title"}}</a>
   <ul class="nav navbar-nav">
     <li class="nav-item active">
-      <a class="nav-link" href="/">{{t $l "header.home"}} <span class="sr-only">(current)</span></a>
+      <a class="nav-link" href="/dashboard">{{t $l "header.dashboard"}} <span class="sr-only">(current)</span></a>
     </li>
-    {{range links "top"}}
-      <li class="nav-item">
-        <a class="nav-link" href="{{$.Href}}">{{t $l $.label}}</a>
+    {{range $k, $v := .links}}
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="top-nav-{{$k}}-bar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{t $l $v.Label}}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="top-nav-{{$k}}-bar">
+          {{range $v.Links}}
+            <a class="dropdown-item" href="{{.Href}}">{{t $l .Label}}</a>
+          {{end}}
+        </div>
       </li>
     {{end}}
     {{template "personal-bar" .}}

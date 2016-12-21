@@ -26,8 +26,32 @@ func (p *Engine) Map(inj *inject.Graph) error {
 
 // Dashboard dashboard links
 func (p *Engine) Dashboard() web.DashboardHandler {
-	return func(*gin.Context) []web.Link {
-		return []web.Link{}
+	return func(c *gin.Context) []web.Dropdown {
+		var items []web.Dropdown
+		if _, ok := c.Get(CurrentUser); ok {
+			items = append(
+				items,
+				web.Dropdown{
+					Label: "auth.personal.title",
+					Links: []*web.Link{
+						&web.Link{
+							Href:  "/personal/profile",
+							Label: "auth.personal.profile.title",
+						},
+						&web.Link{
+							Href:  "/personal/change-password",
+							Label: "auth.personal.change-password.title",
+						},
+						&web.Link{
+							Href:  "/personal/logs",
+							Label: "auth.personal.logs.title",
+						},
+					},
+				},
+			)
+		}
+
+		return items
 	}
 }
 

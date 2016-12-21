@@ -6,8 +6,14 @@ import (
 	gin "gopkg.in/gin-gonic/gin.v1"
 )
 
+// Dropdown drop-down
+type Dropdown struct {
+	Label string
+	Links []*Link
+}
+
 // DashboardHandler dashboard handler
-type DashboardHandler func(*gin.Context) []Link
+type DashboardHandler func(*gin.Context) []Dropdown
 
 // Engine engine
 type Engine interface {

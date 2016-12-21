@@ -53,7 +53,6 @@ func (p *Engine) Mount(rt *gin.Engine) {
 	ug.GET("/logs", p.getUsersLogs)
 	ug.DELETE("/sign-out", p.deleteUsersSignOut)
 
-	rt.GET("/personal", p.getUsersSelf)
 	rt.GET("/attachments/*name", p.getAttachment)
 	rt.POST("/attachments", p.postAttachment)
 	rt.DELETE("/attachmetns/:id", p.deleteAttachment)

@@ -51,7 +51,7 @@ func (p *Session) CurrentUserHandler(c *gin.Context) {
 
 //MustAdminHandler check must have admin role
 func (p *Session) MustAdminHandler() gin.HandlerFunc {
-	return p.MustRolesHandler("admin")
+	return p.MustRolesHandler(RoleAdmin)
 }
 
 //MustRolesHandler check must have one roles at least
