@@ -108,3 +108,26 @@ func NewHiddenField(id string, value interface{}) *HiddenField {
 		Value: value,
 	}
 }
+
+// TextField text field
+type TextArea struct {
+	Require     bool
+	Type        string
+	ID          string
+	Label       string
+	Value       string
+	Help        string
+	Placeholder string
+	ReadOnly    bool
+}
+
+// NewTextArea new textarea
+func NewTextArea(id, label, value string) *TextArea {
+	return &TextArea{
+		Require: true,
+		Type:    "textarea",
+		ID:      id,
+		Label:   label,
+		Value:   value,
+	}
+}

@@ -5,6 +5,7 @@ import (
 	gin "gopkg.in/gin-gonic/gin.v1"
 
 	"github.com/facebookgo/inject"
+	"github.com/jinzhu/gorm"
 	"github.com/kapmahc/champak/engines/auth"
 	"github.com/kapmahc/champak/web"
 	"github.com/spf13/viper"
@@ -20,6 +21,7 @@ type Engine struct {
 	Jwt      *auth.Jwt     `inject:""`
 	Session  *auth.Session `inject:""`
 	Dao      *auth.Dao     `inject:""`
+	Db       *gorm.DB      `inject:""`
 }
 
 // Map inject objects

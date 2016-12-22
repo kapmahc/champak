@@ -1,10 +1,17 @@
 package ops
 
-import gin "gopkg.in/gin-gonic/gin.v1"
+import (
+	"github.com/kapmahc/champak/web"
+	gin "gopkg.in/gin-gonic/gin.v1"
+)
 
 // Mount mount web points
 func (p *Engine) Mount(rt *gin.Engine) {
-
-	// og := rt.GET("/ops", p.Session.MustSignInHandler())
+	og := rt.GET("/ops", p.Session.MustAdminHandler())
+	og.GET("/site/info", p.getSiteInfo)
+	og.POST(
+		"/site/info",
+		web.PostFormHandler("/ops/site/info", &fmSiteInfo{}, p.postSiteInfo),
+	)
 
 }

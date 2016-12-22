@@ -71,10 +71,10 @@ func (p *Engine) getUsersSignUp(c *gin.Context) {
 	title := p.I18n.T(lng, "auth.personal.sign-up.title")
 	fm := web.NewForm(c, "sign-up", title, "/personal/sign-up")
 	fm.AddFields(
-		web.NewTextField("fullName", p.I18n.T(lng, "attributes.full-name"), ""),
+		web.NewTextField("fullName", p.I18n.T(lng, "attributes.fullName"), ""),
 		web.NewEmailField("email", p.I18n.T(lng, "attributes.email"), ""),
 		web.NewPasswordField("password", p.I18n.T(lng, "attributes.password")),
-		web.NewPasswordField("passwordConfirmation", p.I18n.T(lng, "attributes.password-confirmation")),
+		web.NewPasswordField("passwordConfirmation", p.I18n.T(lng, "attributes.passwordConfirmation")),
 	)
 
 	data["title"] = title
@@ -219,7 +219,7 @@ func (p *Engine) getUsersResetPassword(c *gin.Context) {
 	fm.AddFields(
 		web.NewHiddenField("token", c.Param("token")),
 		web.NewPasswordField("password", p.I18n.T(lng, "attributes.password")),
-		web.NewPasswordField("passwordConfirmation", p.I18n.T(lng, "attributes.password-confirmation")),
+		web.NewPasswordField("passwordConfirmation", p.I18n.T(lng, "attributes.passwordConfirmation")),
 	)
 
 	data["title"] = title

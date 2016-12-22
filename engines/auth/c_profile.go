@@ -17,8 +17,8 @@ func (p *Engine) getUsersChangePassword(c *gin.Context) {
 	fm := web.NewForm(c, "change-password", title, "/personal/change-password")
 	fm.AddFields(
 		web.NewPasswordField("password", p.I18n.T(lng, "attributes.password")),
-		web.NewPasswordField("newPassword", p.I18n.T(lng, "attributes.new-password")),
-		web.NewPasswordField("passwordConfirmation", p.I18n.T(lng, "attributes.password-confirmation")),
+		web.NewPasswordField("newPassword", p.I18n.T(lng, "attributes.newPassword")),
+		web.NewPasswordField("passwordConfirmation", p.I18n.T(lng, "attributes.passwordConfirmation")),
 	)
 
 	data["title"] = title
@@ -79,7 +79,7 @@ func (p *Engine) getUsersProfile(c *gin.Context) {
 	email.Require = false
 	email.ReadOnly = true
 	fm.AddFields(
-		web.NewTextField("fullName", p.I18n.T(lng, "attributes.full-name"), user.FullName),
+		web.NewTextField("fullName", p.I18n.T(lng, "attributes.fullName"), user.FullName),
 		email,
 		web.NewTextField("logo", p.I18n.T(lng, "auth.attributes.user.logo"), user.Logo),
 		web.NewTextField("home", p.I18n.T(lng, "auth.attributes.user.home"), user.Home),
