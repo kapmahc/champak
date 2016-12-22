@@ -2,6 +2,7 @@ package web
 
 import (
 	"github.com/facebookgo/inject"
+	"github.com/kapmahc/champak/web/sitemap"
 	"github.com/urfave/cli"
 	"golang.org/x/tools/blog/atom"
 	gin "gopkg.in/gin-gonic/gin.v1"
@@ -24,6 +25,7 @@ type Engine interface {
 	Dashboard() DashboardHandler
 	Shell() []cli.Command
 	Atom() ([]*atom.Entry, error)
+	Sitemap() ([]*sitemap.Item, error)
 }
 
 // -----------------------------------------------------------------------------

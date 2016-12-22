@@ -3,6 +3,7 @@ package mail
 import (
 	"github.com/facebookgo/inject"
 	"github.com/kapmahc/champak/web"
+	"github.com/kapmahc/champak/web/sitemap"
 	"github.com/urfave/cli"
 	"golang.org/x/tools/blog/atom"
 	gin "gopkg.in/gin-gonic/gin.v1"
@@ -38,6 +39,11 @@ func (p *Engine) Dashboard() web.DashboardHandler {
 // Atom atom entry
 func (p *Engine) Atom() ([]*atom.Entry, error) {
 	return []*atom.Entry{}, nil
+}
+
+// Sitemap sitemap entry
+func (p *Engine) Sitemap() ([]*sitemap.Item, error) {
+	return []*sitemap.Item{}, nil
 }
 
 // -----------------------------------------------------------------------------
