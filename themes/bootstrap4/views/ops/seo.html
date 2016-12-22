@@ -1,0 +1,27 @@
+{{define "ops/site/seo"}}
+{{template "dashboard/header" .}}
+{{template "form" .form}}
+{{$l := .locale}}
+<br/>
+<div class="list-group">
+  <a href="/robots.txt" target="_blank" class="list-group-item list-group-item-action">
+    robots.txt
+  </a>
+  <a href="/google{{.googleVerifyID}}.html" target="_blank" class="list-group-item list-group-item-action">
+    {{t $l "ops.site.seo.google-verify-file"}}
+  </a>
+  <a href="/baidu_verify_{{.baiduVerifyID}}.html" target="_blank" class="list-group-item list-group-item-action">
+    {{t $l "ops.site.seo.baidu-verify-file"}}
+  </a>
+  <a href="/sitemap.xml.gz" target="_blank" class="list-group-item list-group-item-action">
+    {{t $l "sitemap.xml.gz"}}
+  </a>
+  {{range .languages}}
+    <a href="/rss-{{.}}.atom" target="_blank" class="list-group-item list-group-item-action">
+      {{$m := fmt "languages.%s" .}}
+      {{t $l "ops.site.seo.rss-file"}} [{{t $l $m}}]
+    </a>
+  {{end}}
+</div>
+{{template "dashboard/footer" .}}
+{{end}}

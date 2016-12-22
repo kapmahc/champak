@@ -14,5 +14,10 @@ func (p *Engine) Mount(rt *gin.Engine) {
 		"/site/info",
 		web.PostFormHandler("/ops/site/info", &fmSiteInfo{}, p.postSiteInfo),
 	)
+	og.GET("/site/seo", p.getSiteSeo)
+	og.POST(
+		"/site/seo",
+		web.PostFormHandler("/ops/site/seo", &fmSiteSeo{}, p.postSiteSeo),
+	)
 
 }

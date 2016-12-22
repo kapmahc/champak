@@ -4,6 +4,7 @@ import (
 	"crypto/x509/pkix"
 	"fmt"
 	"html/template"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"path"
@@ -626,5 +627,42 @@ func (p *Engine) Shell() []cli.Command {
 				},
 			},
 		},
+		{
+			Name:  "seo",
+			Usage: "generate search engine verify files",
+			Action: web.IocAction(func(*cli.Context, *inject.Graph) error {
+				// google
+				var gvc string
+				if err := p.Settings.Get("site.googleVerifyID", &gvc); err != nil {
+					return err
+				}
+				if err := p.writeVerifyFile(
+					fmt.Sprintf("google%s.html", gvc),
+					fmt.Sprintf("google-site-verification: googlegoogle-site-verification: google%s.html", gvc),
+				); err != nil {
+					return err
+				}
+				// baidu
+				var bvc string
+				if err := p.Settings.Get("site.baiduVerifyID", &bvc); err != nil {
+					return err
+				}
+				if err := p.writeVerifyFile(
+					fmt.Sprintf("baidu_verify_%s.html", bvc),
+					bvc,
+				); err != nil {
+					return err
+				}
+				return nil
+			}),
+		},
 	}
+}
+
+func (p *Engine) writeVerifyFile(name string, body string) error {
+	const root = "public"
+	if err := os.MkdirAll(root, 0755); err != nil {
+		return err
+	}
+	return ioutil.WriteFile(path.Join(root, name), []byte(body), 0644)
 }

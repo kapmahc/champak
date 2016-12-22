@@ -9,6 +9,7 @@
 /vendor/*/
 
 # Devel
+/public
 /config.toml
 /etc
 /tmp
