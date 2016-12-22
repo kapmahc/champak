@@ -109,7 +109,7 @@ func NewHiddenField(id string, value interface{}) *HiddenField {
 	}
 }
 
-// TextField text field
+// TextArea textarea
 type TextArea struct {
 	Require     bool
 	Type        string

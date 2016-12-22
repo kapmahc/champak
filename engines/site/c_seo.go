@@ -1,37 +1,28 @@
 package site
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/google/uuid"
 	"github.com/kapmahc/champak/web"
-	"github.com/kapmahc/champak/web/sitemap"
 	"golang.org/x/tools/blog/atom"
 	gin "gopkg.in/gin-gonic/gin.v1"
 )
 
+//http://www.robotstxt.org/robotstxt.html
 func (p *Engine) getRobots(c *gin.Context) {
+	tpl := `
+User-agent: *
+Disallow:
+Sitemap: %s/sitemap.xml.gz
+`
+	c.Data(http.StatusOK, "text/html; charset=utf-8", []byte(fmt.Sprintf(tpl, web.HostURL())))
 
 }
-func (p *Engine) getSitemap(c *gin.Context) {
 
-	sm := sitemap.New()
-	web.Loop(func(en web.Engine) error {
-		if items, err := en.Sitemap(); err == nil {
-			sm.Items = append(sm.Items, items...)
-		} else {
-			log.Error(err)
-		}
-		return nil
-	})
-	home := web.HostURL()
-	for k := range sm.Items {
-		sm.Items[k].Link = home + sm.Items[k].Link
-	}
-	c.XML(http.StatusOK, sm)
-}
 func (p *Engine) getRss(c *gin.Context) {
 	lng := c.MustGet(web.LOCALE).(string)
 	var ae, an string

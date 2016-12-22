@@ -2,8 +2,8 @@ package cms
 
 import (
 	"github.com/facebookgo/inject"
+	"github.com/ikeikeikeike/go-sitemap-generator/stm"
 	"github.com/kapmahc/champak/web"
-	"github.com/kapmahc/champak/web/sitemap"
 	"github.com/urfave/cli"
 	"golang.org/x/tools/blog/atom"
 	gin "gopkg.in/gin-gonic/gin.v1"
@@ -42,8 +42,8 @@ func (p *Engine) Atom() ([]*atom.Entry, error) {
 }
 
 // Sitemap sitemap entry
-func (p *Engine) Sitemap() ([]*sitemap.Item, error) {
-	return []*sitemap.Item{}, nil
+func (p *Engine) Sitemap() ([]stm.URL, error) {
+	return []stm.URL{}, nil
 }
 
 // -----------------------------------------------------------------------------

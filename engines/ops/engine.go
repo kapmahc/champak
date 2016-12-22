@@ -6,10 +6,10 @@ import (
 	gin "gopkg.in/gin-gonic/gin.v1"
 
 	"github.com/facebookgo/inject"
+	"github.com/ikeikeikeike/go-sitemap-generator/stm"
 	"github.com/jinzhu/gorm"
 	"github.com/kapmahc/champak/engines/auth"
 	"github.com/kapmahc/champak/web"
-	"github.com/kapmahc/champak/web/sitemap"
 	"github.com/spf13/viper"
 )
 
@@ -81,8 +81,8 @@ func (p *Engine) Atom() ([]*atom.Entry, error) {
 }
 
 // Sitemap sitemap entry
-func (p *Engine) Sitemap() ([]*sitemap.Item, error) {
-	return []*sitemap.Item{}, nil
+func (p *Engine) Sitemap() ([]stm.URL, error) {
+	return []stm.URL{}, nil
 }
 
 // -----------------------------------------------------------------------------

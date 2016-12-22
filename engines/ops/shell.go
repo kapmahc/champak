@@ -17,6 +17,7 @@ import (
 	"github.com/fvbock/endless"
 	"github.com/gin-contrib/sessions"
 	"github.com/gorilla/csrf"
+	"github.com/ikeikeikeike/go-sitemap-generator/stm"
 	"github.com/kapmahc/champak/web"
 	"github.com/spf13/viper"
 	"github.com/steinbacher/goose"
@@ -653,6 +654,32 @@ func (p *Engine) Shell() []cli.Command {
 				); err != nil {
 					return err
 				}
+				// sitemap.xml
+				// https://www.sitemaps.org/protocol.html
+				sm := stm.NewSitemap()
+				sm.SetDefaultHost(web.HostURL())
+				sm.SetPublicPath("public/")
+				sm.SetSitemapsPath("/")
+				sm.SetCompress(true)
+				sm.SetVerbose(true)
+				sm.Create()
+
+				web.Loop(func(en web.Engine) error {
+					if urls, err := en.Sitemap(); err == nil {
+						for _, url := range urls {
+							sm.Add(url)
+						}
+					} else {
+						log.Error(err)
+					}
+					return nil
+				})
+				if web.IsProduction() {
+					sm.Finalize().PingSearchEngines()
+				} else {
+					sm.Finalize()
+				}
+				// done
 				return nil
 			}),
 		},
