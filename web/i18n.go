@@ -95,9 +95,18 @@ func (p *I18n) Set(lng string, code, message string) {
 		l.Message = message
 		err = p.Db.Save(&l).Error
 	}
-	if err != nil {
+	if err == nil {
+		p.setItems(lng, code, message)
+	} else {
 		log.Error(err)
 	}
+}
+
+func (p *I18n) setItems(lng, code, message string) {
+	if _, ok := p.Items[lng]; !ok {
+		p.Items[lng] = make(map[string]string)
+	}
+	p.Items[lng][code] = message
 }
 
 //Get get locale
@@ -133,7 +142,7 @@ func (p *I18n) getMessage(lng, code string) (string, error) {
 		return "", err
 	}
 
-	p.Items[lng][code] = l.Message
+	p.setItems(lng, code, l.Message)
 	return l.Message, nil
 }
 

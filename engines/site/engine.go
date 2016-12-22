@@ -3,6 +3,7 @@ package site
 import (
 	"github.com/facebookgo/inject"
 	"github.com/ikeikeikeike/go-sitemap-generator/stm"
+	"github.com/jinzhu/gorm"
 	"github.com/kapmahc/champak/engines/auth"
 	"github.com/kapmahc/champak/web"
 	"github.com/urfave/cli"
@@ -15,6 +16,7 @@ type Engine struct {
 	Session  *auth.Session `inject:""`
 	I18n     *web.I18n     `inject:""`
 	Settings *web.Settings `inject:""`
+	Db       *gorm.DB      `inject:""`
 }
 
 // Map map

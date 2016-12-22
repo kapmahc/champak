@@ -5,6 +5,11 @@ import (
 	gin "gopkg.in/gin-gonic/gin.v1"
 )
 
+const (
+	//TO key of to
+	TO = "to"
+)
+
 // Form form
 type Form map[string]interface{}
 

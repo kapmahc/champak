@@ -26,4 +26,7 @@ func (p *Engine) Mount(rt *gin.Engine) {
 	)
 	og.GET("/site/status", p.getSiteStatus)
 
+	og.GET("/leave-words", p.indexLeaveWords)
+	og.DELETE("/leave-words/:id", web.FlashHandler("/ops/leave-words", p.destoryLeaveWord))
+
 }

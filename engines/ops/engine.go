@@ -67,8 +67,8 @@ func (p *Engine) Dashboard() web.DashboardHandler {
 						Href:  "/ops/notices",
 					},
 					&web.Link{
-						Label: "ops.leave_words.title",
-						Href:  "/ops/leave_words",
+						Label: "ops.leave-words.title",
+						Href:  "/ops/leave-words",
 					},
 					&web.Link{
 						Label: "ops.locales.title",
