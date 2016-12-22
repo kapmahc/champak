@@ -17,7 +17,7 @@
     {{t $l "sitemap.xml.gz"}}
   </a>
   {{range .languages}}
-    <a href="/rss-{{.}}.atom" target="_blank" class="list-group-item list-group-item-action">
+    <a href="/rss.atom?locale={{.}}" target="_blank" class="list-group-item list-group-item-action">
       {{$m := fmt "languages.%s" .}}
       {{t $l "ops.site.seo.rss-file"}} [{{t $l $m}}]
     </a>

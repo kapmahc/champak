@@ -4,6 +4,7 @@ import (
 	"github.com/facebookgo/inject"
 	"github.com/kapmahc/champak/web"
 	"github.com/urfave/cli"
+	"golang.org/x/tools/blog/atom"
 	gin "gopkg.in/gin-gonic/gin.v1"
 )
 
@@ -32,6 +33,11 @@ func (p *Engine) Dashboard() web.DashboardHandler {
 	return func(*gin.Context) []web.Dropdown {
 		return []web.Dropdown{}
 	}
+}
+
+// Atom atom entry
+func (p *Engine) Atom() ([]*atom.Entry, error) {
+	return []*atom.Entry{}, nil
 }
 
 // -----------------------------------------------------------------------------

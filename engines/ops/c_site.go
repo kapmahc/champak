@@ -14,7 +14,7 @@ func (p *Engine) getSiteInfo(c *gin.Context) {
 
 	title := p.I18n.T(lng, "ops.site.info.title")
 	fm := web.NewForm(c, "site-info", title, "/ops/site/info")
-	for _, k := range []string{"title", "subTitle", "author", "keywords", "copyright"} {
+	for _, k := range []string{"title", "subTitle", "keywords", "copyright"} {
 		fm.AddFields(web.NewTextField(
 			k,
 			p.I18n.T(lng, fmt.Sprintf("ops.attributes.site.%s", k)),
@@ -37,7 +37,6 @@ func (p *Engine) getSiteInfo(c *gin.Context) {
 type fmSiteInfo struct {
 	Title       string `form:"title" binding:"required,max=255"`
 	SubTitle    string `form:"subTitle" binding:"required,max=32"`
-	Author      string `form:"author" binding:"required,max=255"`
 	Keywords    string `form:"keywords" binding:"required,max=255"`
 	Description string `form:"description" binding:"required,max=500"`
 	Copyright   string `form:"copyright" binding:"required,max=255"`
@@ -50,7 +49,6 @@ func (p *Engine) postSiteInfo(c *gin.Context, o interface{}) error {
 	for k, v := range map[string]string{
 		"title":       fm.Title,
 		"subTitle":    fm.SubTitle,
-		"author":      fm.Author,
 		"keywords":    fm.Keywords,
 		"description": fm.Description,
 		"copyright":   fm.Copyright,

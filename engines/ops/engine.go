@@ -2,6 +2,7 @@ package ops
 
 import (
 	"golang.org/x/text/language"
+	"golang.org/x/tools/blog/atom"
 	gin "gopkg.in/gin-gonic/gin.v1"
 
 	"github.com/facebookgo/inject"
@@ -71,6 +72,11 @@ func (p *Engine) Dashboard() web.DashboardHandler {
 		}
 		return items
 	}
+}
+
+// Atom atom entry
+func (p *Engine) Atom() ([]*atom.Entry, error) {
+	return []*atom.Entry{}, nil
 }
 
 // -----------------------------------------------------------------------------

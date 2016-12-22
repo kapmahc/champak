@@ -3,6 +3,7 @@ package web
 import (
 	"github.com/facebookgo/inject"
 	"github.com/urfave/cli"
+	"golang.org/x/tools/blog/atom"
 	gin "gopkg.in/gin-gonic/gin.v1"
 )
 
@@ -22,6 +23,7 @@ type Engine interface {
 	Worker()
 	Dashboard() DashboardHandler
 	Shell() []cli.Command
+	Atom() ([]*atom.Entry, error)
 }
 
 // -----------------------------------------------------------------------------
