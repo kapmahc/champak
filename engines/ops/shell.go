@@ -64,6 +64,7 @@ func (p *Engine) Shell() []cli.Command {
 					p.I18n.Handler(),
 					csrfHandler,
 					flashsHandler,
+					p.authorHandler,
 					p.Jwt.CurrentUserHandler,
 					p.Session.CurrentUserHandler,
 				)

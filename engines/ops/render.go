@@ -5,12 +5,25 @@ import (
 	"html/template"
 	"time"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/gin-contrib/sessions"
 	"github.com/gorilla/csrf"
 	"github.com/kapmahc/champak/web"
 	gin "gopkg.in/gin-gonic/gin.v1"
 )
 
+func (p *Engine) authorHandler(c *gin.Context) {
+	var ae, an string
+	if err := p.Settings.Get("site.author.email", &ae); err != nil {
+		log.Error(err)
+	}
+	if err := p.Settings.Get("site.author.name", &an); err != nil {
+		log.Error(err)
+	}
+	data := c.MustGet(web.DATA).(gin.H)
+	data["author"] = gin.H{"name": an, "email": ae}
+	c.Set(web.DATA, data)
+}
 func flashsHandler(c *gin.Context) {
 	data := c.MustGet(web.DATA).(gin.H)
 	ss := sessions.Default(c)

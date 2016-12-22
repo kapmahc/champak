@@ -49,6 +49,10 @@ func (p *Engine) Dashboard() web.DashboardHandler {
 						Href:  "/ops/site/info",
 					},
 					&web.Link{
+						Label: "ops.site.author.title",
+						Href:  "/ops/site/author",
+					},
+					&web.Link{
 						Label: "ops.site.seo.title",
 						Href:  "/ops/site/seo",
 					},

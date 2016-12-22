@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/kapmahc/champak/web"
 	gin "gopkg.in/gin-gonic/gin.v1"
 )
@@ -57,5 +58,49 @@ func (p *Engine) postSiteInfo(c *gin.Context, o interface{}) error {
 	}
 
 	c.Redirect(http.StatusFound, "/ops/site/info")
+	return nil
+}
+
+func (p *Engine) getSiteAuthor(c *gin.Context) {
+	lng := c.MustGet(web.LOCALE).(string)
+	data := c.MustGet(web.DATA).(gin.H)
+
+	title := p.I18n.T(lng, "ops.site.author.title")
+	fm := web.NewForm(c, "site-author", title, "/ops/site/author")
+	for _, k := range []string{"email", "name"} {
+		var v string
+		if err := p.Settings.Get(fmt.Sprintf("site.author.%s", k), &v); err != nil {
+			log.Error(err)
+		}
+		fm.AddFields(web.NewTextField(
+			k,
+			p.I18n.T(lng, fmt.Sprintf("ops.attributes.site.author.%s", k)),
+			v,
+		))
+	}
+
+	data["title"] = title
+	data["form"] = fm
+	c.HTML(http.StatusOK, "auth/form", data)
+}
+
+type fmSiteAuthor struct {
+	Email string `form:"email" binding:"email,max=255"`
+	Name  string `form:"name" binding:"required,max=32"`
+}
+
+func (p *Engine) postSiteAuthor(c *gin.Context, o interface{}) error {
+	fm := o.(*fmSiteAuthor)
+
+	for k, v := range map[string]string{
+		"name":  fm.Name,
+		"email": fm.Email,
+	} {
+		if err := p.Settings.Set(fmt.Sprintf("site.author.%s", k), v, false); err != nil {
+			log.Error(err)
+		}
+	}
+
+	c.Redirect(http.StatusFound, "/ops/site/author")
 	return nil
 }
