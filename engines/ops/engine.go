@@ -6,6 +6,7 @@ import (
 	gin "gopkg.in/gin-gonic/gin.v1"
 
 	"github.com/facebookgo/inject"
+	"github.com/garyburd/redigo/redis"
 	"github.com/ikeikeikeike/go-sitemap-generator/stm"
 	"github.com/jinzhu/gorm"
 	"github.com/kapmahc/champak/engines/auth"
@@ -24,6 +25,7 @@ type Engine struct {
 	Session  *auth.Session `inject:""`
 	Dao      *auth.Dao     `inject:""`
 	Db       *gorm.DB      `inject:""`
+	Redis    *redis.Pool   `inject:""`
 }
 
 // Map inject objects

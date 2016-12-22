@@ -25,3 +25,29 @@
 </div>
 {{template "dashboard/footer" .}}
 {{end}}
+
+
+
+{{define "ops/site/status"}}
+{{template "dashboard/header" .}}
+{{$l := .locale}}
+<div class="row">
+  <div class="col-md-6 block">
+    <h4>REDIS</h4>
+    <hr/>
+    <pre>{{.redis}}</pre>
+  </div>
+  {{range $k, $v := .status}}
+  <div class="col-md-6 block">
+    <h4>{{t $l $k}}</h4>
+    <hr/>
+    <ul class="list-group">
+    {{range $k1, $v1 := $v}}
+      <li class="list-group-item list-group-item-action">{{$k1}}: {{$v1}}</li>
+    {{end}}
+    </ul>
+  </div>
+  {{end}}
+</div>
+{{template "dashboard/footer" .}}
+{{end}}

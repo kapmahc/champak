@@ -3,11 +3,69 @@ package ops
 import (
 	"fmt"
 	"net/http"
+	"runtime"
+	"time"
 
 	log "github.com/Sirupsen/logrus"
+	"github.com/garyburd/redigo/redis"
 	"github.com/kapmahc/champak/web"
 	gin "gopkg.in/gin-gonic/gin.v1"
 )
+
+func (p *Engine) databaseStatus() gin.H {
+	type Status struct {
+		Version string
+	}
+	var sts Status
+	p.Db.Raw("SELECT VERSION() AS version").Scan(&sts)
+	return gin.H{
+		"version": sts.Version,
+	}
+}
+func (p *Engine) runtimeStatus() gin.H {
+	var mem runtime.MemStats
+	runtime.ReadMemStats(&mem)
+	return gin.H{
+		"GO":           runtime.Version(),
+		"OS":           runtime.GOOS,
+		"ARCH":         runtime.GOARCH,
+		"CPUS":         runtime.NumCPU(),
+		"MEMORY USAGE": fmt.Sprintf("%d/%d MB", mem.Alloc/(1024*1024), mem.Sys/(1024*1024)),
+		"LAST GC":      time.Unix(0, int64(mem.LastGC)),
+	}
+}
+func (p *Engine) redisStatus() string {
+	c := p.Redis.Get()
+	defer c.Close()
+
+	sts, err := redis.String(c.Do("INFO"))
+	if err != nil {
+		log.Error(err)
+	}
+	return sts
+}
+func (p *Engine) cacheStatus() gin.H {
+	return gin.H{}
+}
+func (p *Engine) jobStatus() gin.H {
+	return gin.H{}
+}
+
+func (p *Engine) getSiteStatus(c *gin.Context) {
+	lng := c.MustGet(web.LOCALE).(string)
+	data := c.MustGet(web.DATA).(gin.H)
+	title := p.I18n.T(lng, "ops.site.status.title")
+	status := gin.H{
+		"ops.site.status.os":       p.runtimeStatus(),
+		"ops.site.status.database": p.databaseStatus(),
+		"ops.site.status.cache":    p.cacheStatus(),
+		"ops.site.status.jobs":     p.jobStatus(),
+	}
+	data["title"] = title
+	data["status"] = status
+	data["redis"] = p.redisStatus()
+	c.HTML(http.StatusOK, "ops/site/status", data)
+}
 
 func (p *Engine) getSiteInfo(c *gin.Context) {
 	lng := c.MustGet(web.LOCALE).(string)
