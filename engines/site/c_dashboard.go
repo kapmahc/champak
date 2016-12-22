@@ -1,4 +1,4 @@
-package ops
+package site
 
 import (
 	"net/http"
@@ -12,5 +12,5 @@ func (p *Engine) getDashboard(c *gin.Context) {
 	data := c.MustGet(web.DATA).(gin.H)
 	lng := c.MustGet(web.LOCALE).(string)
 	data["title"] = p.I18n.T(lng, "header.dashboard")
-	c.HTML(http.StatusOK, "ops/dashboard", data)
+	c.HTML(http.StatusOK, "site/dashboard", data)
 }

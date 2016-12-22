@@ -2,6 +2,7 @@ package site
 
 import (
 	"github.com/facebookgo/inject"
+	"github.com/kapmahc/champak/engines/auth"
 	"github.com/kapmahc/champak/web"
 	"github.com/urfave/cli"
 	gin "gopkg.in/gin-gonic/gin.v1"
@@ -9,16 +10,13 @@ import (
 
 // Engine engine
 type Engine struct {
+	Session *auth.Session `inject:""`
+	I18n    *web.I18n     `inject:""`
 }
 
 // Map map
 func (p *Engine) Map(*inject.Graph) error {
 	return nil
-}
-
-// Mount mount
-func (p *Engine) Mount(rt *gin.Engine) {
-	rt.GET("/", p.getHome)
 }
 
 // Worker worker
