@@ -46,6 +46,7 @@ type I18n struct {
 	Db      *gorm.DB         `inject:""`
 	Cache   *Cache           `inject:""`
 	Matcher language.Matcher `inject:"language.matcher"`
+	Items   map[string]map[string]string
 }
 
 // F format message
@@ -65,8 +66,8 @@ func (p *I18n) F(lng, code string, obj interface{}) (string, error) {
 
 //E create an i18n error
 func (p *I18n) E(lang string, code string, args ...interface{}) error {
-	msg := p.Get(lang, code)
-	if len(msg) == 0 {
+	msg, err := p.getMessage(lang, code)
+	if err != nil {
 		return errors.New(code)
 	}
 	return fmt.Errorf(msg, args...)
@@ -76,7 +77,6 @@ func (p *I18n) E(lang string, code string, args ...interface{}) error {
 func (p *I18n) T(lng string, code string, args ...interface{}) string {
 	msg, err := p.getMessage(lng, code)
 	if err != nil {
-		log.Debug(err)
 		return code
 	}
 	return fmt.Sprintf(msg, args...)
@@ -118,6 +118,13 @@ func (p *I18n) Del(lng, code string) {
 }
 
 func (p *I18n) getMessage(lng, code string) (string, error) {
+	if _, ok := p.Items[lng]; !ok {
+		p.Items[lng] = make(map[string]string)
+	}
+	if msg, ok := p.Items[lng][code]; ok {
+		return msg, nil
+	}
+
 	var l Locale
 	if err := p.Db.
 		Select("message").
@@ -125,6 +132,8 @@ func (p *I18n) getMessage(lng, code string) (string, error) {
 		First(&l).Error; err != nil {
 		return "", err
 	}
+
+	p.Items[lng][code] = l.Message
 	return l.Message, nil
 }
 

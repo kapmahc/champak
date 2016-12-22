@@ -53,6 +53,7 @@ func IocAction(fn func(*cli.Context, *inject.Graph) error) cli.ActionFunc {
 			&inject.Object{Value: cip},
 			&inject.Object{Value: cip, Name: "aes.cip"},
 			&inject.Object{Value: persistence.NewInMemoryStore(time.Hour * 24)},
+			&inject.Object{Value: &I18n{Items: make(map[string]map[string]string)}},
 			&inject.Object{
 				Value: fmt.Sprintf(
 					"amqp://%v:%v@%v:%v/%v",
