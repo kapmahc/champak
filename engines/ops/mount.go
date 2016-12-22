@@ -7,7 +7,8 @@ import (
 
 // Mount mount web points
 func (p *Engine) Mount(rt *gin.Engine) {
-	og := rt.GET("/ops", p.Session.MustAdminHandler())
+	og := rt.Group("/ops", p.Session.MustSignInHandler(), p.Session.MustAdminHandler())
+
 	og.GET("/site/info", p.getSiteInfo)
 	og.POST(
 		"/site/info",
