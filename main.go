@@ -10,6 +10,7 @@ import (
 	_ "github.com/kapmahc/champak/engines/ops/vpn"
 	_ "github.com/kapmahc/champak/engines/reading"
 	_ "github.com/kapmahc/champak/engines/shop"
+	_ "github.com/kapmahc/champak/engines/site"
 	"github.com/kapmahc/champak/web"
 	_ "github.com/lib/pq"
 )

@@ -19,6 +19,7 @@ type Engine struct {
 	Layout   *web.Layout   `inject:""`
 	Jwt      *auth.Jwt     `inject:""`
 	Session  *auth.Session `inject:""`
+	Dao      *auth.Dao     `inject:""`
 }
 
 // Map inject objects
@@ -32,8 +33,41 @@ func (p *Engine) Worker() {}
 
 // Dashboard dashboard links
 func (p *Engine) Dashboard() web.DashboardHandler {
-	return func(*gin.Context) []web.Dropdown {
-		return []web.Dropdown{}
+	return func(c *gin.Context) []web.Dropdown {
+		var items []web.Dropdown
+		user := c.MustGet(auth.CurrentUser).(*auth.User)
+		if p.Dao.Is(user.ID, auth.RoleAdmin) {
+			items = append(items, web.Dropdown{
+				Label: "ops.dashboard.profile",
+				Links: []*web.Link{
+					&web.Link{
+						Label: "ops.site.info.title",
+						Href:  "/ops/site/info",
+					},
+					&web.Link{
+						Label: "ops.site.seo.title",
+						Href:  "/ops/site/seo",
+					},
+					&web.Link{
+						Label: "ops.site.status.title",
+						Href:  "/ops/site/status",
+					},
+					&web.Link{
+						Label: "ops.notices.title",
+						Href:  "/ops/notices",
+					},
+					&web.Link{
+						Label: "ops.leave_words.title",
+						Href:  "/ops/leave_words",
+					},
+					&web.Link{
+						Label: "ops.locales.title",
+						Href:  "/ops/locales",
+					},
+				},
+			})
+		}
+		return items
 	}
 }
 

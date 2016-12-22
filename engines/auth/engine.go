@@ -32,7 +32,7 @@ func (p *Engine) Dashboard() web.DashboardHandler {
 			items = append(
 				items,
 				web.Dropdown{
-					Label: "auth.personal.title",
+					Label: "auth.dashboard.title",
 					Links: []*web.Link{
 						&web.Link{
 							Href:  "/personal/profile",
