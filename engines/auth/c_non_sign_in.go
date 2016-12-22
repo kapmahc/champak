@@ -83,7 +83,7 @@ func (p *Engine) getUsersSignUp(c *gin.Context) {
 }
 
 type fmSignUp struct {
-	FullName             string `form:"fullName" binding:"min=2,max=255"`
+	FullName             string `form:"fullName" binding:"required,max=255"`
 	Email                string `form:"email" binding:"email"`
 	Password             string `form:"password" binding:"min=6,max=32"`
 	PasswordConfirmation string `form:"passwordConfirmation" binding:"eqfield=Password"`

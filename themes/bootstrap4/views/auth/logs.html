@@ -1,0 +1,25 @@
+{{define "auth/users/logs"}}
+{{template "dashboard/header" .}}
+{{$l := .locale}}
+<h2>{{.title}}</h2>
+<hr/>
+<table class="table table-bordered table-hover">
+  <thead>
+    <tr>
+      <th>{{t $l "attributes.created-at"}}</th>
+      <th>IP</th>
+      <th>{{t $l "auth.attributes.log.message"}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{range .logs}}
+    <tr>
+      <th scope="row">{{dtf .CreatedAt}}</th>
+      <td>{{.IP}}</td>
+      <td>{{.Message}}</td>
+    </tr>
+    {{end}}
+  </tbody>
+</table>
+{{template "dashboard/footer" .}}
+{{end}}

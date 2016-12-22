@@ -8,7 +8,7 @@
     {{if eq .Type "email"}}
       <div class="form-group">
         <label for="{{.ID}}">{{if .Require}}*{{end}}{{.Label}}:</label>
-        <input type="email" class="form-control" name="{{.ID}}" id="{{.ID}}" aria-describedby="{{.ID}}Help" placeholder="{{.Placeholder}}">
+        <input value="{{.Value}}" {{if .ReadOnly}}readonly{{end}} type="email" class="form-control" name="{{.ID}}" id="{{.ID}}" aria-describedby="{{.ID}}Help" placeholder="{{.Placeholder}}">
         <small id="{{.ID}}Help" class="form-text text-muted">
           {{.Help}}
         </small>
@@ -16,7 +16,7 @@
     {{else if eq .Type "text"}}
       <div class="form-group">
         <label for="{{.ID}}">{{if .Require}}*{{end}}{{.Label}}:</label>
-        <input type="text" class="form-control" name="{{.ID}}" id="{{.ID}}" aria-describedby="{{.ID}}Help" placeholder="{{.Placeholder}}">
+        <input value="{{.Value}}" {{if .ReadOnly}}readonly{{end}} type="text" class="form-control" name="{{.ID}}" id="{{.ID}}" aria-describedby="{{.ID}}Help" placeholder="{{.Placeholder}}">
         <small id="{{.ID}}Help" class="form-text text-muted">
           {{.Help}}
         </small>

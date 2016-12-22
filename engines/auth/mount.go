@@ -48,9 +48,15 @@ func (p *Engine) Mount(rt *gin.Engine) {
 
 	umg := rt.Group("/personal", p.Session.MustSignInHandler())
 	umg.GET("/profile", p.getUsersProfile)
-	umg.POST("/profile", p.postUsersProfile)
+	umg.POST(
+		"/profile",
+		web.PostFormHandler("/personal/profile", &fmProfile{}, p.postUsersProfile),
+	)
 	umg.GET("/change-password", p.getUsersChangePassword)
-	umg.POST("/change-password", p.postUsersChangePassword)
+	umg.POST(
+		"/change-password",
+		web.PostFormHandler("/personal/change-password", &fmChangePassword{}, p.postUsersChangePassword),
+	)
 	umg.GET("/logs", p.getUsersLogs)
 	umg.DELETE("/sign-out", p.deleteUsersSignOut)
 

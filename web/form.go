@@ -36,6 +36,7 @@ type TextField struct {
 	Value       string
 	Help        string
 	Placeholder string
+	ReadOnly    bool
 }
 
 // NewTextField new text field
@@ -52,6 +53,7 @@ func NewTextField(id, label, value string) *TextField {
 // EmailField email field
 type EmailField struct {
 	Require     bool
+	ReadOnly    bool
 	Type        string
 	ID          string
 	Label       string

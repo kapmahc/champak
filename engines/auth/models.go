@@ -22,9 +22,7 @@ const (
 	InputTypeHTML = "html"
 	// UserTypeEmail email user
 	UserTypeEmail = "email"
-)
 
-const (
 	// DefaultResourceType default resource type
 	DefaultResourceType = "-"
 	// DefaultResourceID default resourc id
@@ -50,6 +48,8 @@ type User struct {
 	CurrentSignInIP string
 	ConfirmedAt     *time.Time
 	LockedAt        *time.Time
+
+	Logs []Log
 }
 
 // TableName table name
