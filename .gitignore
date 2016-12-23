@@ -1,0 +1,16 @@
+# Editor
+*.swp
+*.un~
+
+# Build
+/dist
+
+# Go
+/vendor/*/
+
+# Devel
+/public
+/config.toml
+/etc
+/tmp
+*.db
