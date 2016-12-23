@@ -15,10 +15,12 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/facebookgo/inject"
 	"github.com/fvbock/endless"
+	"github.com/goincremental/negroni"
 	"github.com/gorilla/csrf"
 	"github.com/gorilla/mux"
 	"github.com/ikeikeikeike/go-sitemap-generator/stm"
 	"github.com/kapmahc/champak/web"
+	negronilogrus "github.com/meatballhat/negroni-logrus"
 	"github.com/spf13/viper"
 	"github.com/steinbacher/goose"
 	"github.com/urfave/cli"
@@ -43,7 +45,7 @@ func (p *Engine) Shell() []cli.Command {
 				// }
 				// rt := gin.Default()
 				//
-				// theme := viper.GetString("server.theme")
+				//
 				// if tpl, err := p.loadTemplates(theme); err == nil {
 				// 	rt.SetHTMLTemplate(tpl)
 				// } else {
@@ -83,6 +85,14 @@ func (p *Engine) Shell() []cli.Command {
 					csrf.FieldName("authenticity_token"),
 					csrf.Path("/"),
 				)(rt)
+
+				theme := viper.GetString("server.theme")
+
+				ng := negroni.New()
+				ng.Use(negroni.NewRecovery())
+				ng.Use(negronilogrus.NewMiddleware())
+				ng.Use(negroni.NewStatic(http.Dir(path.Join("themes", theme, "assets"))))
+				ng.UseHandler(hnd)
 
 				if web.IsProduction() {
 					return endless.ListenAndServe(adr, hnd)
