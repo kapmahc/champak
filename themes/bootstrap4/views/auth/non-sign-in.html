@@ -1,0 +1,16 @@
+{{define "auth/non-sign-in"}}
+{{$l := .locale}}
+{{template "application/header" .}}
+{{template "form" .form}}
+<div class="row">
+  <ul>
+    <li><a href="/personal/sign-in">{{t $l "auth.personal.sign-in.title"}}</a></li>
+    <li><a href="/personal/sign-up">{{t $l "auth.personal.sign-up.title"}}</a></li>
+    <li><a href="/personal/forgot-password">{{t $l "auth.personal.forgot-password.title"}}</a></li>
+    <li><a href="/personal/confirm">{{t $l "auth.personal.confirm.title"}}</a></li>
+    <li><a href="/personal/unlock">{{t $l "auth.personal.unlock.title"}}</a></li>
+    <li><a href="/leave-words/new">{{t $l "site.leave-words.new.title"}}</a></li>
+  </ul>
+</div>
+{{template "application/footer" .}}
+{{end}}
