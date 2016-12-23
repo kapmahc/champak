@@ -16,6 +16,8 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/facebookgo/inject"
 	"github.com/goincremental/negroni"
+	"github.com/goincremental/negroni-sessions"
+	"github.com/goincremental/negroni-sessions/cookiestore"
 	"github.com/gorilla/csrf"
 	"github.com/gorilla/mux"
 	"github.com/kapmahc/champak/web"
@@ -38,8 +40,7 @@ func (p *Engine) Shell() []cli.Command {
 			Name:    "server",
 			Aliases: []string{"s"},
 			Usage:   "start the app server",
-			Action: IocAction(func(*cli.Context, *inject.Graph) error {
-				//TODO
+			Action: IocAction(func(_ *cli.Context, inj *inject.Graph) error {
 				rt := mux.NewRouter()
 				web.Loop(func(en web.Engine) error {
 					en.Mount(rt)
@@ -58,7 +59,15 @@ func (p *Engine) Shell() []cli.Command {
 				theme := viper.GetString("server.theme")
 
 				ng := negroni.New()
+				sss := cookiestore.New([]byte(viper.GetString("secrets.session")))
+				sss.Options(sessions.Options{
+					MaxAge:   0,
+					HTTPOnly: true,
+					Path:     "/",
+					Secure:   IsProduction(),
+				})
 				ng.Use(negroni.NewRecovery())
+				ng.Use(sessions.Sessions("_session_", sss))
 				ng.Use(negronilogrus.NewMiddleware())
 				ng.Use(negroni.NewStatic(http.Dir(path.Join("themes", theme, "assets"))))
 				ng.UseHandler(hnd)

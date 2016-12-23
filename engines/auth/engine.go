@@ -4,34 +4,32 @@ import (
 	"net/http"
 
 	"github.com/facebookgo/inject"
-	"github.com/gorilla/mux"
 	"github.com/ikeikeikeike/go-sitemap-generator/stm"
 	"github.com/jinzhu/gorm"
 	"github.com/kapmahc/champak/web"
 	"github.com/spf13/viper"
+	"github.com/unrolled/render"
 	"golang.org/x/text/language"
 	"golang.org/x/tools/blog/atom"
 )
 
 // Engine auth engine
 type Engine struct {
-	Cache    *web.Cache    `inject:""`
-	Job      *web.Job      `inject:""`
-	I18n     *web.I18n     `inject:""`
-	Settings *web.Settings `inject:""`
-	Layout   *web.Layout   `inject:""`
-	Jwt      *Jwt          `inject:""`
-	Dao      *Dao          `inject:""`
-	Db       *gorm.DB      `inject:""`
+	Cache    *web.Cache     `inject:""`
+	Job      *web.Job       `inject:""`
+	I18n     *web.I18n      `inject:""`
+	Settings *web.Settings  `inject:""`
+	Layout   *web.Layout    `inject:""`
+	Jwt      *Jwt           `inject:""`
+	Dao      *Dao           `inject:""`
+	Db       *gorm.DB       `inject:""`
+	Render   *render.Render `inject:""`
 }
 
 // Map map objects
 func (*Engine) Map(*inject.Graph) error {
 	return nil
 }
-
-// Mount mount web points
-func (*Engine) Mount(*mux.Router) {}
 
 // Dashboard dashboard links(by user)
 func (*Engine) Dashboard(req *http.Request) []web.Dropdown {
@@ -85,7 +83,7 @@ func init() {
 	viper.SetDefault("server", map[string]interface{}{
 		"port":  8080,
 		"name":  "www.change-me.com",
-		"theme": "bootstrap4",
+		"theme": "bootstrap",
 	})
 
 	viper.SetDefault("secrets", map[string]interface{}{

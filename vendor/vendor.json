@@ -271,6 +271,18 @@
 			"revisionTime": "2014-07-29T16:28:58Z"
 		},
 		{
+			"checksumSHA1": "NWPy8gY+9jExHxBYKhjxJ3ir7/0=",
+			"path": "github.com/goincremental/negroni-sessions",
+			"revision": "0055e7581fb0fe0f6ee5f622199672425526e1b2",
+			"revisionTime": "2016-10-17T07:35:17Z"
+		},
+		{
+			"checksumSHA1": "r2at94ZOVarmcNNfp7zwiXXyQac=",
+			"path": "github.com/goincremental/negroni-sessions/cookiestore",
+			"revision": "0055e7581fb0fe0f6ee5f622199672425526e1b2",
+			"revisionTime": "2016-10-17T07:35:17Z"
+		},
+		{
 			"checksumSHA1": "UP2wONSE346WHWwT20G1Xedd6ZI=",
 			"path": "github.com/google/uuid",
 			"revision": "064e2069ce9c359c118179501254f67d7d37ba24",
@@ -299,6 +311,12 @@
 			"path": "github.com/gorilla/securecookie",
 			"revision": "fa5329f913702981df43dcb2a380bac429c810b5",
 			"revisionTime": "2016-10-03T05:16:01Z"
+		},
+		{
+			"checksumSHA1": "vYfmVqC/UFKA66ZZdUJsnIcXR4E=",
+			"path": "github.com/gorilla/sessions",
+			"revision": "83c8db3bdc9be789e57e3756ffbcffd2d7d40176",
+			"revisionTime": "2016-12-22T01:33:42Z"
 		},
 		{
 			"checksumSHA1": "Ok3Csn6Voou7pQT6Dv2mkwpqFtw=",
@@ -509,6 +527,12 @@
 			"path": "github.com/ugorji/go/codec",
 			"revision": "9c7f9b7a2bc3a520f7c7b30b34b7f85f47fe27b6",
 			"revisionTime": "2016-11-30T06:17:42Z"
+		},
+		{
+			"checksumSHA1": "7NRHOe081wHCsmQNV4nYhPY2b7A=",
+			"path": "github.com/unrolled/render",
+			"revision": "df76b7c9818cdcf458b4c81acbe29d093ff3080f",
+			"revisionTime": "2016-12-23T03:48:39Z"
 		},
 		{
 			"checksumSHA1": "LMu1NsthSqcXfKu0m6YGPAmwBcY=",

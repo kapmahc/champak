@@ -3,12 +3,14 @@ package auth
 import (
 	"crypto/aes"
 	"fmt"
+	"path"
 
 	"github.com/SermoDigital/jose/crypto"
 	log "github.com/Sirupsen/logrus"
 	"github.com/facebookgo/inject"
 	"github.com/kapmahc/champak/web"
 	"github.com/spf13/viper"
+	"github.com/unrolled/render"
 	"github.com/urfave/cli"
 	"golang.org/x/text/language"
 )
@@ -45,8 +47,16 @@ func IocAction(fn func(*cli.Context, *inject.Graph) error) cli.ActionFunc {
 		}
 
 		rmq := viper.GetStringMap("rabbitmq")
+		rdr := render.New(render.Options{
+			Directory:     path.Join("themes", viper.GetString("server.theme"), "views"),
+			Layout:        "application",
+			IndentJSON:    !IsProduction(),
+			IndentXML:     !IsProduction(),
+			IsDevelopment: !IsProduction(),
+		})
 
 		if err := inj.Provide(
+			&inject.Object{Value: rdr},
 			&inject.Object{Value: db},
 			&inject.Object{Value: rep},
 			&inject.Object{Value: cip},
