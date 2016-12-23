@@ -1,5 +1,19 @@
 -- +goose Up
 -- SQL in section 'Up' is executed when this migration is applied
+CREATE TABLE leave_words (
+  id         SERIAL PRIMARY KEY,
+  body       TEXT                        NOT NULL,
+  type       VARCHAR(8)                  NOT NULL DEFAULT 'markdown',
+  created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now()
+);
+
+CREATE TABLE notices (
+  id         SERIAL PRIMARY KEY,
+  body       TEXT                        NOT NULL,
+  type       VARCHAR(8)                  NOT NULL DEFAULT 'markdown',
+  created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
+  updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
+);
 
 CREATE TABLE locales (
   id SERIAL PRIMARY KEY,
@@ -168,3 +182,5 @@ DROP TABLE cards;
 DROP TABLE links;
 DROP TABLE settings;
 DROP TABLE locales;
+DROP TABLE notices;
+DROP TABLE leave_words;

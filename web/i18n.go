@@ -2,7 +2,6 @@ package web
 
 import (
 	"bytes"
-	"context"
 	"errors"
 	"fmt"
 	"net/http"
@@ -35,11 +34,10 @@ func (Locale) TableName() string {
 
 //I18n i18n
 type I18n struct {
-	Db        *gorm.DB         `inject:""`
-	Cache     *Cache           `inject:""`
-	Matcher   language.Matcher `inject:"language.matcher"`
-	Languages []string         `inject:"language.tags"`
-	Items     map[string]map[string]string
+	Db      *gorm.DB         `inject:""`
+	Cache   *Cache           `inject:""`
+	Matcher language.Matcher `inject:"language.matcher"`
+	Items   map[string]map[string]string
 }
 
 // F format message
@@ -184,8 +182,8 @@ func (p *I18n) Sync(dir string) error {
 	})
 }
 
-//Handler detect locale from http header
-func (p *I18n) Handler(wrt http.ResponseWriter, req *http.Request, next http.HandlerFunc) {
+//Parse detect locale from http header
+func (p *I18n) Parse(wrt http.ResponseWriter, req *http.Request) string {
 	const key = string(LOCALE)
 	write := false
 
@@ -223,10 +221,5 @@ func (p *I18n) Handler(wrt http.ResponseWriter, req *http.Request, next http.Han
 			Path:    "/",
 		})
 	}
-	ctx := context.WithValue(req.Context(), LOCALE, tag.String())
-	ctx = context.WithValue(ctx, DATA, H{
-		"locale":    tag.String(),
-		"languages": p.Languages,
-	})
-	next(wrt, req.WithContext(ctx))
+	return tag.String()
 }

@@ -6,6 +6,7 @@ import (
 	"github.com/facebookgo/inject"
 	"github.com/gorilla/mux"
 	"github.com/ikeikeikeike/go-sitemap-generator/stm"
+	"github.com/jinzhu/gorm"
 	"github.com/kapmahc/champak/web"
 	"github.com/spf13/viper"
 	"golang.org/x/text/language"
@@ -21,6 +22,7 @@ type Engine struct {
 	Layout   *web.Layout   `inject:""`
 	Jwt      *Jwt          `inject:""`
 	Dao      *Dao          `inject:""`
+	Db       *gorm.DB      `inject:""`
 }
 
 // Map map objects
