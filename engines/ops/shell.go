@@ -15,15 +15,14 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/facebookgo/inject"
 	"github.com/fvbock/endless"
-	"github.com/gin-contrib/sessions"
 	"github.com/gorilla/csrf"
+	"github.com/gorilla/mux"
 	"github.com/ikeikeikeike/go-sitemap-generator/stm"
 	"github.com/kapmahc/champak/web"
 	"github.com/spf13/viper"
 	"github.com/steinbacher/goose"
 	"github.com/urfave/cli"
 	"golang.org/x/text/language"
-	gin "gopkg.in/gin-gonic/gin.v1"
 )
 
 const (
@@ -39,36 +38,38 @@ func (p *Engine) Shell() []cli.Command {
 			Aliases: []string{"s"},
 			Usage:   "start the app server",
 			Action: web.IocAction(func(*cli.Context, *inject.Graph) error {
-				if web.IsProduction() {
-					gin.SetMode(gin.ReleaseMode)
-				}
-				rt := gin.Default()
+				// if web.IsProduction() {
+				// 	gin.SetMode(gin.ReleaseMode)
+				// }
+				// rt := gin.Default()
+				//
+				// theme := viper.GetString("server.theme")
+				// if tpl, err := p.loadTemplates(theme); err == nil {
+				// 	rt.SetHTMLTemplate(tpl)
+				// } else {
+				// 	return err
+				// }
+				// rt.Static("/assets", path.Join("themes", theme, "assets"))
+				//
+				// sss := sessions.NewCookieStore([]byte(viper.GetString("secrets.session")))
+				// sss.Options(sessions.Options{
+				// 	MaxAge:   0,
+				// 	HttpOnly: true,
+				// 	Path:     "/",
+				// 	Secure:   web.IsProduction(),
+				// })
+				// rt.Use(
+				// 	sessions.Sessions("_session_", sss),
+				// 	p.I18n.Handler(),
+				// 	csrfHandler,
+				// 	flashsHandler,
+				// 	p.authorHandler,
+				// 	p.Jwt.CurrentUserHandler,
+				// 	p.Session.CurrentUserHandler,
+				// )
 
-				theme := viper.GetString("server.theme")
-				if tpl, err := p.loadTemplates(theme); err == nil {
-					rt.SetHTMLTemplate(tpl)
-				} else {
-					return err
-				}
-				rt.Static("/assets", path.Join("themes", theme, "assets"))
-
-				sss := sessions.NewCookieStore([]byte(viper.GetString("secrets.session")))
-				sss.Options(sessions.Options{
-					MaxAge:   0,
-					HttpOnly: true,
-					Path:     "/",
-					Secure:   web.IsProduction(),
-				})
-				rt.Use(
-					sessions.Sessions("_session_", sss),
-					p.I18n.Handler(),
-					csrfHandler,
-					flashsHandler,
-					p.authorHandler,
-					p.Jwt.CurrentUserHandler,
-					p.Session.CurrentUserHandler,
-				)
-
+				//TODO
+				rt := mux.NewRouter()
 				web.Loop(func(en web.Engine) error {
 					en.Mount(rt)
 					return nil
@@ -602,17 +603,21 @@ func (p *Engine) Shell() []cli.Command {
 			Aliases: []string{"rt"},
 			Usage:   "print out all defined routes",
 			Action: func(*cli.Context) error {
-				gin.SetMode(gin.ReleaseMode)
-				rt := gin.New()
+				rt := mux.NewRouter()
 				web.Loop(func(en web.Engine) error {
 					en.Mount(rt)
 					return nil
 				})
-				fmt.Println("METHOD\tPATH")
-				for _, r := range rt.Routes() {
-					fmt.Printf("%s\t%s\n", r.Method, r.Path)
-				}
-				return nil
+				tpl := "%24s\t%s\n"
+				fmt.Printf(tpl, "NAME", "PATH")
+				return rt.Walk(func(route *mux.Route, router *mux.Router, ancestors []*mux.Route) error {
+
+					pth, err := route.GetPathTemplate()
+					if err == nil {
+						fmt.Printf(tpl, route.GetName(), pth)
+					}
+					return nil
+				})
 			},
 		},
 		{

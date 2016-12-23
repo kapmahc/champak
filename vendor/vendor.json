@@ -331,6 +331,12 @@
 			"revisionTime": "2016-12-01T11:50:36Z"
 		},
 		{
+			"checksumSHA1": "TvTR/Eptmxmp5+DeGJRkBsrTMJk=",
+			"path": "github.com/goincremental/negroni",
+			"revision": "1e579c8371056db031c1668e7e41beedf7d6c5e4",
+			"revisionTime": "2014-07-29T16:28:58Z"
+		},
+		{
 			"checksumSHA1": "kBeNcaKk56FguvPSUCEaH6AxpRc=",
 			"path": "github.com/golang/protobuf/proto",
 			"revision": "8ee79997227bf9b34611aee7946ae64735e6fd93",
@@ -353,6 +359,12 @@
 			"path": "github.com/gorilla/csrf",
 			"revision": "69581736821c33d85bbf378f42f6ad864dbd85de",
 			"revisionTime": "2016-11-22T16:45:00Z"
+		},
+		{
+			"checksumSHA1": "urMd7A9QPAJYY0GZJL9qBhlUmD8=",
+			"path": "github.com/gorilla/mux",
+			"revision": "757bef944d0f21880861c2dd9c871ca543023cba",
+			"revisionTime": "2016-09-20T23:08:13Z"
 		},
 		{
 			"checksumSHA1": "veX5bpYOBjZZWMyWxXxys8EH9d8=",

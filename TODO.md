@@ -1,5 +1,6 @@
 # TODO
 
+- merge ops, site to auth
 - session store in redis
 - Languae match
 - RabbitMQ for queue
