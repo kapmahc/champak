@@ -19,6 +19,8 @@ type Engine struct {
 	I18n     *web.I18n     `inject:""`
 	Settings *web.Settings `inject:""`
 	Layout   *web.Layout   `inject:""`
+	Jwt      *Jwt          `inject:""`
+	Dao      *Dao          `inject:""`
 }
 
 // Map map objects
@@ -28,9 +30,6 @@ func (*Engine) Map(*inject.Graph) error {
 
 // Mount mount web points
 func (*Engine) Mount(*mux.Router) {}
-
-// Worker background jobs
-func (*Engine) Worker() {}
 
 // Dashboard dashboard links(by user)
 func (*Engine) Dashboard(req *http.Request) []web.Dropdown {
