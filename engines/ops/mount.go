@@ -29,4 +29,11 @@ func (p *Engine) Mount(rt *gin.Engine) {
 	og.GET("/leave-words", p.indexLeaveWords)
 	og.DELETE("/leave-words/:id", web.FlashHandler("/ops/leave-words", p.destoryLeaveWord))
 
+	og.GET("/notices", p.indexNotices)
+	og.GET("/notices/new", p.newNotice)
+	og.POST("/notices", web.PostFormHandler("/ops/notices", &fmNotice{}, p.createNotice))
+	og.POST("/notices/:id", web.PostFormHandler("/ops/notices", &fmNotice{}, p.updateNotice))
+	og.DELETE("/notices/:id", web.FlashHandler("/ops/notices", p.destoryNotice))
+	og.GET("/notices/:id/edit", web.FlashHandler("/ops/notices", p.editNotice))
+
 }
