@@ -13,4 +13,8 @@ const (
 	DATA = KEY("data")
 	// TO key of to
 	TO = "to"
+	// APPLICATION application layout
+	APPLICATION = "application"
+	// DASHBOARD dashboard layout
+	DASHBOARD = "dashboard"
 )

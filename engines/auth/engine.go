@@ -22,6 +22,7 @@ type Engine struct {
 	Dao      *Dao          `inject:""`
 	Db       *gorm.DB      `inject:""`
 	Render   *Render       `inject:""`
+	Helper   *Helper       `inject:""`
 }
 
 // Map map objects

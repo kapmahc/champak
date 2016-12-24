@@ -28,7 +28,7 @@ func TestI18n(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	p := &web.I18n{Db: db}
+	p := &web.I18n{Db: db, Cache: &web.Cache{Redis: OpenRedis()}}
 	key := "hello"
 	val := "你好"
 	p.Set(lang, key, val)

@@ -105,7 +105,10 @@ func (p *I18n) Del(lng, code string) {
 }
 
 func (p *I18n) getMessage(lng, code string) (string, error) {
-
+	var msg string
+	if err := p.Cache.Get(p.key(lng, code), &msg); err == nil {
+		return msg, nil
+	}
 	var l Locale
 	if err := p.Db.
 		Select("message").
@@ -113,6 +116,7 @@ func (p *I18n) getMessage(lng, code string) (string, error) {
 		First(&l).Error; err != nil {
 		return "", err
 	}
+	p.Cache.Set(p.key(lng, code), l.Message, 60*60*24)
 
 	return l.Message, nil
 }
@@ -160,4 +164,8 @@ func (p *I18n) Sync(dir string) error {
 		}
 		return nil
 	})
+}
+
+func (p *I18n) key(lng, code string) string {
+	return fmt.Sprintf("locales/%s/%s", lng, code)
 }
