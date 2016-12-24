@@ -523,6 +523,12 @@
 			"revisionTime": "2016-12-22T15:31:02Z"
 		},
 		{
+			"checksumSHA1": "ELUuwsAxinHXTzCvb13i/zS6n2A=",
+			"path": "github.com/thoas/stats",
+			"revision": "152b5d051953fdb6e45f14b6826962aadc032324",
+			"revisionTime": "2016-07-26T12:02:48Z"
+		},
+		{
 			"checksumSHA1": "+ajZXCpD7wIHE4F9jD8/tO+shBo=",
 			"path": "github.com/ugorji/go/codec",
 			"revision": "9c7f9b7a2bc3a520f7c7b30b34b7f85f47fe27b6",

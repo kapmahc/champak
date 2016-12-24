@@ -19,11 +19,11 @@ type Engine struct {
 	Job      *web.Job       `inject:""`
 	I18n     *web.I18n      `inject:""`
 	Settings *web.Settings  `inject:""`
-	Layout   *web.Layout    `inject:""`
 	Jwt      *Jwt           `inject:""`
 	Dao      *Dao           `inject:""`
 	Db       *gorm.DB       `inject:""`
 	Render   *render.Render `inject:""`
+	Inject   *Inject        `inject:""`
 }
 
 // Map map objects

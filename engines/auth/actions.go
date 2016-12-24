@@ -3,11 +3,14 @@ package auth
 import (
 	"crypto/aes"
 	"fmt"
+	"html/template"
 	"path"
+	"time"
 
 	"github.com/SermoDigital/jose/crypto"
 	log "github.com/Sirupsen/logrus"
 	"github.com/facebookgo/inject"
+	"github.com/jinzhu/gorm"
 	"github.com/kapmahc/champak/web"
 	"github.com/spf13/viper"
 	"github.com/unrolled/render"
@@ -22,8 +25,42 @@ func (p *injectLogger) Debugf(format string, v ...interface{}) {
 	log.Debugf(format, v...)
 }
 
-// IocAction ioc action
-func IocAction(fn func(*cli.Context, *inject.Graph) error) cli.ActionFunc {
+// Inject inject contatiner
+type Inject struct {
+	I18n *web.I18n `inject:""`
+	Db   *gorm.DB  `inject:""`
+}
+
+func (p *Inject) t(lng, code string, args ...interface{}) string {
+	return p.I18n.T(lng, code, args...)
+}
+
+func (p *Inject) links(loc string) []Link {
+	var items []Link
+	if err := p.Db.
+		Select([]string{"label", "href"}).
+		Where("loc = ?", loc).
+		Order("sort_order ASC").
+		Find(&items).Error; err != nil {
+		log.Error(err)
+	}
+	return items
+}
+
+func (p *Inject) cards(loc string) []Card {
+	var items []Card
+	if err := p.Db.
+		Select([]string{"title", "summary", "logo", "href"}).
+		Where("loc = ?", loc).
+		Order("sort_order ASC").
+		Find(&items).Error; err != nil {
+		log.Error(err)
+	}
+	return items
+}
+
+// Action  action
+func (p *Inject) Action(fn func(*cli.Context) error) cli.ActionFunc {
 	return Action(func(ctx *cli.Context) error {
 		inj := inject.Graph{Logger: &injectLogger{}}
 		// ----------------
@@ -48,8 +85,26 @@ func IocAction(fn func(*cli.Context, *inject.Graph) error) cli.ActionFunc {
 
 		rmq := viper.GetStringMap("rabbitmq")
 		rdr := render.New(render.Options{
-			Directory:     path.Join("themes", viper.GetString("server.theme"), "views"),
-			Layout:        "application",
+			Directory:  path.Join("themes", viper.GetString("server.theme"), "views"),
+			Layout:     "application",
+			Extensions: []string{".html"},
+			Funcs: []template.FuncMap{
+				{
+					"t":     p.t,
+					"links": p.links,
+					"cards": p.cards,
+					"fmt":   fmt.Sprintf,
+					"eq": func(arg1, arg2 interface{}) bool {
+						return arg1 == arg2
+					},
+					"str2htm": func(s string) template.HTML {
+						return template.HTML(s)
+					},
+					"dtf": func(t time.Time) string {
+						return t.Format("Mon Jan _2 15:04:05 2006")
+					},
+				},
+			},
 			IndentJSON:    !IsProduction(),
 			IndentXML:     !IsProduction(),
 			IsDevelopment: !IsProduction(),
@@ -92,7 +147,7 @@ func IocAction(fn func(*cli.Context, *inject.Graph) error) cli.ActionFunc {
 		if err := inj.Populate(); err != nil {
 			return err
 		}
-		return fn(ctx, &inj)
+		return fn(ctx)
 	})
 }
 

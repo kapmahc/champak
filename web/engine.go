@@ -10,6 +10,12 @@ import (
 	"golang.org/x/tools/blog/atom"
 )
 
+// Link link
+type Link struct {
+	Label string
+	Href  string
+}
+
 // Dropdown drop-down
 type Dropdown struct {
 	Label string

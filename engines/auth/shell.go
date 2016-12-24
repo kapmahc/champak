@@ -14,8 +14,6 @@ import (
 
 	"github.com/BurntSushi/toml"
 	log "github.com/Sirupsen/logrus"
-	"github.com/facebookgo/inject"
-	"github.com/goincremental/negroni"
 	"github.com/goincremental/negroni-sessions"
 	"github.com/goincremental/negroni-sessions/cookiestore"
 	"github.com/gorilla/csrf"
@@ -25,6 +23,7 @@ import (
 	"github.com/spf13/viper"
 	"github.com/steinbacher/goose"
 	"github.com/urfave/cli"
+	"github.com/urfave/negroni"
 	"golang.org/x/text/language"
 )
 
@@ -40,7 +39,7 @@ func (p *Engine) Shell() []cli.Command {
 			Name:    "server",
 			Aliases: []string{"s"},
 			Usage:   "start the app server",
-			Action: IocAction(func(_ *cli.Context, inj *inject.Graph) error {
+			Action: p.Inject.Action(func(*cli.Context) error {
 				rt := mux.NewRouter()
 				web.Loop(func(en web.Engine) error {
 					en.Mount(rt)
@@ -67,9 +66,11 @@ func (p *Engine) Shell() []cli.Command {
 					Secure:   IsProduction(),
 				})
 				ng.Use(negroni.NewRecovery())
-				ng.Use(sessions.Sessions("_session_", sss))
 				ng.Use(negronilogrus.NewMiddleware())
+				// ng.Use(stats.New())
+				ng.Use(sessions.Sessions("_session_", sss))
 				ng.Use(negroni.NewStatic(http.Dir(path.Join("themes", theme, "assets"))))
+
 				ng.UseHandler(hnd)
 
 				if IsProduction() {
@@ -84,7 +85,7 @@ func (p *Engine) Shell() []cli.Command {
 			Name:    "worker",
 			Aliases: []string{"w"},
 			Usage:   "start the worker progress",
-			Action: IocAction(func(_ *cli.Context, inj *inject.Graph) error {
+			Action: p.Inject.Action(func(*cli.Context) error {
 				forever := make(chan bool)
 
 				web.Loop(func(en web.Engine) error {
@@ -119,7 +120,7 @@ func (p *Engine) Shell() []cli.Command {
 					Name:    "list",
 					Usage:   "list all cache keys",
 					Aliases: []string{"l"},
-					Action: IocAction(func(*cli.Context, *inject.Graph) error {
+					Action: p.Inject.Action(func(*cli.Context) error {
 						keys, err := p.Cache.Keys()
 						if err != nil {
 							return err
@@ -134,7 +135,7 @@ func (p *Engine) Shell() []cli.Command {
 					Name:    "clear",
 					Usage:   "clear cache items",
 					Aliases: []string{"c"},
-					Action: IocAction(func(*cli.Context, *inject.Graph) error {
+					Action: p.Inject.Action(func(*cli.Context) error {
 						return p.Cache.Flush()
 					}),
 				},
@@ -618,7 +619,7 @@ func (p *Engine) Shell() []cli.Command {
 					Name:    "sync",
 					Aliases: []string{"s"},
 					Usage:   "sync locales from files",
-					Action: IocAction(func(*cli.Context, *inject.Graph) error {
+					Action: p.Inject.Action(func(*cli.Context) error {
 						return p.I18n.Sync("locales")
 					}),
 				},
@@ -633,7 +634,7 @@ func (p *Engine) Shell() []cli.Command {
 					Name:    "list",
 					Aliases: []string{"l"},
 					Usage:   "list users",
-					Action: IocAction(func(*cli.Context, *inject.Graph) error {
+					Action: p.Inject.Action(func(*cli.Context) error {
 						var users []User
 						if err := p.Db.
 							Select([]string{"full_name", "email", "uid"}).
@@ -672,7 +673,7 @@ func (p *Engine) Shell() []cli.Command {
 							Usage: "deny mode",
 						},
 					},
-					Action: IocAction(func(c *cli.Context, _ *inject.Graph) error {
+					Action: p.Inject.Action(func(c *cli.Context) error {
 						uid := c.String("user")
 						name := c.String("name")
 						deny := c.Bool("deny")

@@ -29,6 +29,38 @@ const (
 	DefaultResourceID = 0
 )
 
+// Link link
+type Link struct {
+	web.Model
+
+	Loc       string
+	Label     string
+	Href      string
+	SortOrder int
+}
+
+// TableName table name
+func (Link) TableName() string {
+	return "links"
+}
+
+// Card card
+type Card struct {
+	web.Model
+
+	Loc       string
+	Title     string
+	Sumamry   string
+	Logo      string
+	Href      string
+	SortOrder int
+}
+
+// TableName table name
+func (Card) TableName() string {
+	return "cards"
+}
+
 // LeaveWord leave word
 type LeaveWord struct {
 	ID        uint
