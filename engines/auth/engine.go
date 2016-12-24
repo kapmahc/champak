@@ -23,6 +23,7 @@ type Engine struct {
 	Db       *gorm.DB      `inject:""`
 	Render   *Render       `inject:""`
 	Helper   *Helper       `inject:""`
+	Security *web.Security `inject:""`
 }
 
 // Map map objects

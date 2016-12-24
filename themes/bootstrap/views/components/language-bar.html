@@ -6,7 +6,7 @@
   <div class="dropdown-menu dropdown-menu-right" aria-labelledby="language-bar">
     {{range .languages}}
       {{$m := fmt "languages.%s" .}}
-      <a class="dropdown-item" href="/?locale={{.}}">{{t $l $m}}</a>
+      <a class="dropdown-item" href="{{url "home"}}?locale={{.}}">{{t $l $m}}</a>
     {{end}}
   </div>
 </li>

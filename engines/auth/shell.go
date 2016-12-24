@@ -39,7 +39,6 @@ func (p *Engine) Shell() []cli.Command {
 			Aliases: []string{"s"},
 			Usage:   "start the app server",
 			Action: InjectAction(func(*cli.Context) error {
-				p.Render.Open()
 				rt := mux.NewRouter()
 				web.Loop(func(en web.Engine) error {
 					en.Mount(rt)
@@ -71,6 +70,7 @@ func (p *Engine) Shell() []cli.Command {
 				ng.Use(negroni.NewStatic(http.Dir(path.Join("themes", theme, "assets"))))
 				// ng.Use(stats.New())
 
+				p.Render.Open(rt)
 				ng.UseHandler(rt)
 
 				adr := fmt.Sprintf(":%d", viper.GetInt("server.port"))

@@ -1,6 +1,4 @@
-{{define "auth/non-sign-in"}}
 {{$l := .locale}}
-{{template "application/header" .}}
 {{template "form" .form}}
 <div class="row">
   <ul>
@@ -12,5 +10,3 @@
     <li><a href="/leave-words/new">{{t $l "site.leave-words.new.title"}}</a></li>
   </ul>
 </div>
-{{template "application/footer" .}}
-{{end}}
