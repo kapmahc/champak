@@ -39,7 +39,7 @@ func (p *Engine) Shell() []cli.Command {
 			Name:    "server",
 			Aliases: []string{"s"},
 			Usage:   "start the app server",
-			Action: p.Inject.Action(func(*cli.Context) error {
+			Action: InjectAction(func(*cli.Context) error {
 				rt := mux.NewRouter()
 				web.Loop(func(en web.Engine) error {
 					en.Mount(rt)
@@ -67,7 +67,15 @@ func (p *Engine) Shell() []cli.Command {
 				})
 				ng.Use(negroni.NewRecovery())
 				ng.Use(negronilogrus.NewMiddleware())
-				ng.Use(p.LocaleMiddleware)
+
+				langs := viper.GetStringSlice("languages")
+				if mid, err := NewLocaleMiddleware(langs...); err == nil {
+					ng.Use(mid)
+				} else {
+					return err
+				}
+
+				ng.Use(&CsrfMiddleware{})
 				ng.Use(sessions.Sessions("_session_", sss))
 				ng.Use(negroni.NewStatic(http.Dir(path.Join("themes", theme, "assets"))))
 				// ng.Use(stats.New())
@@ -86,7 +94,7 @@ func (p *Engine) Shell() []cli.Command {
 			Name:    "worker",
 			Aliases: []string{"w"},
 			Usage:   "start the worker progress",
-			Action: p.Inject.Action(func(*cli.Context) error {
+			Action: InjectAction(func(*cli.Context) error {
 				forever := make(chan bool)
 
 				web.Loop(func(en web.Engine) error {
@@ -121,7 +129,7 @@ func (p *Engine) Shell() []cli.Command {
 					Name:    "list",
 					Usage:   "list all cache keys",
 					Aliases: []string{"l"},
-					Action: p.Inject.Action(func(*cli.Context) error {
+					Action: InjectAction(func(*cli.Context) error {
 						keys, err := p.Cache.Keys()
 						if err != nil {
 							return err
@@ -136,7 +144,7 @@ func (p *Engine) Shell() []cli.Command {
 					Name:    "clear",
 					Usage:   "clear cache items",
 					Aliases: []string{"c"},
-					Action: p.Inject.Action(func(*cli.Context) error {
+					Action: InjectAction(func(*cli.Context) error {
 						return p.Cache.Flush()
 					}),
 				},
@@ -620,7 +628,7 @@ func (p *Engine) Shell() []cli.Command {
 					Name:    "sync",
 					Aliases: []string{"s"},
 					Usage:   "sync locales from files",
-					Action: p.Inject.Action(func(*cli.Context) error {
+					Action: InjectAction(func(*cli.Context) error {
 						return p.I18n.Sync("locales")
 					}),
 				},
@@ -635,7 +643,7 @@ func (p *Engine) Shell() []cli.Command {
 					Name:    "list",
 					Aliases: []string{"l"},
 					Usage:   "list users",
-					Action: p.Inject.Action(func(*cli.Context) error {
+					Action: InjectAction(func(*cli.Context) error {
 						var users []User
 						if err := p.Db.
 							Select([]string{"full_name", "email", "uid"}).
@@ -674,7 +682,7 @@ func (p *Engine) Shell() []cli.Command {
 							Usage: "deny mode",
 						},
 					},
-					Action: p.Inject.Action(func(c *cli.Context) error {
+					Action: InjectAction(func(c *cli.Context) error {
 						uid := c.String("user")
 						name := c.String("name")
 						deny := c.Bool("deny")

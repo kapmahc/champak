@@ -15,16 +15,14 @@ import (
 
 // Engine auth engine
 type Engine struct {
-	Cache            *web.Cache            `inject:""`
-	Job              *web.Job              `inject:""`
-	I18n             *web.I18n             `inject:""`
-	Settings         *web.Settings         `inject:""`
-	Jwt              *Jwt                  `inject:""`
-	Dao              *Dao                  `inject:""`
-	Db               *gorm.DB              `inject:""`
-	Render           *render.Render        `inject:""`
-	Inject           *Inject               `inject:""`
-	LocaleMiddleware *web.LocaleMiddleware `inject:""`
+	Cache    *web.Cache     `inject:""`
+	Job      *web.Job       `inject:""`
+	I18n     *web.I18n      `inject:""`
+	Settings *web.Settings  `inject:""`
+	Jwt      *Jwt           `inject:""`
+	Dao      *Dao           `inject:""`
+	Db       *gorm.DB       `inject:""`
+	Render   *render.Render `inject:""`
 }
 
 // Map map objects

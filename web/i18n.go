@@ -2,74 +2,17 @@ package web
 
 import (
 	"bytes"
-	"context"
 	"errors"
 	"fmt"
-	"net/http"
 	"os"
 	"path/filepath"
 	"text/template"
-	"time"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/go-ini/ini"
 	"github.com/jinzhu/gorm"
 	"golang.org/x/text/language"
 )
-
-// LocaleMiddleware detect locale from http header
-type LocaleMiddleware struct {
-	Matcher   language.Matcher `inject:"language.matcher"`
-	Languages []string         `inject:"language.tags"`
-}
-
-func (p *LocaleMiddleware) ServeHTTP(wrt http.ResponseWriter, req *http.Request, next http.HandlerFunc) {
-	const key = string(LOCALE)
-	write := false
-
-	// 1. Check URL arguments.
-	lng := req.URL.Query().Get(key)
-
-	// 2. Get language information from cookies.
-	if len(lng) == 0 {
-		if ck, er := req.Cookie(key); er == nil {
-			lng = ck.Value
-		} else {
-			write = true
-		}
-	} else {
-		write = true
-	}
-
-	// 3. Get language information from 'Accept-Language'.
-	if len(lng) == 0 {
-		write = true
-		al := req.Header.Get("Accept-Language")
-		if len(al) > 4 {
-			lng = al[:5]
-		}
-	}
-
-	tag, _, _ := p.Matcher.Match(language.Make(lng))
-
-	// Write cookie
-	if write {
-		http.SetCookie(wrt, &http.Cookie{
-			Name:    key,
-			Value:   tag.String(),
-			Expires: time.Now().AddDate(10, 0, 0),
-			Path:    "/",
-		})
-	}
-	ctx := context.WithValue(req.Context(), LOCALE, tag.String())
-	ctx = context.WithValue(ctx, DATA, H{
-		"locale":    tag.String(),
-		"languages": p.Languages,
-	})
-	next(wrt, req.WithContext(ctx))
-}
-
-// -----------------------------------------------------------------------------
 
 //Locale locale model
 type Locale struct {
@@ -91,7 +34,6 @@ func (Locale) TableName() string {
 type I18n struct {
 	Db    *gorm.DB `inject:""`
 	Cache *Cache   `inject:""`
-	Items map[string]map[string]string
 }
 
 // F format message
@@ -140,18 +82,9 @@ func (p *I18n) Set(lng string, code, message string) {
 		l.Message = message
 		err = p.Db.Save(&l).Error
 	}
-	if err == nil {
-		p.setItems(lng, code, message)
-	} else {
+	if err != nil {
 		log.Error(err)
 	}
-}
-
-func (p *I18n) setItems(lng, code, message string) {
-	if _, ok := p.Items[lng]; !ok {
-		p.Items[lng] = make(map[string]string)
-	}
-	p.Items[lng][code] = message
 }
 
 //Get get locale
@@ -172,12 +105,6 @@ func (p *I18n) Del(lng, code string) {
 }
 
 func (p *I18n) getMessage(lng, code string) (string, error) {
-	if _, ok := p.Items[lng]; !ok {
-		p.Items[lng] = make(map[string]string)
-	}
-	if msg, ok := p.Items[lng][code]; ok {
-		return msg, nil
-	}
 
 	var l Locale
 	if err := p.Db.
@@ -187,7 +114,6 @@ func (p *I18n) getMessage(lng, code string) (string, error) {
 		return "", err
 	}
 
-	p.setItems(lng, code, l.Message)
 	return l.Message, nil
 }
 
