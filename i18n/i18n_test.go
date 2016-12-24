@@ -30,7 +30,7 @@ func TestI18n(t *testing.T) {
 		t.Fatal(err)
 	}
 	i18n.DS(db)
-	cache.Open("localhost", 6379, 0, "test")
+	cache.New("localhost", 6379, 0, "test")
 
 	key := "hello"
 	val := "你好"

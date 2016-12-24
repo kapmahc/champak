@@ -12,8 +12,8 @@ import (
 var namespace string
 var pool *redis.Pool
 
-// Open open redis connection
-func Open(host string, port, db int, ns string) {
+// New open redis connection
+func New(host string, port, db int, ns string) {
 	namespace = ns
 	pool = &redis.Pool{
 		MaxIdle:     3,

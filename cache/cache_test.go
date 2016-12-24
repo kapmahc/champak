@@ -12,7 +12,7 @@ type S struct {
 }
 
 func TestCache(t *testing.T) {
-	cache.Open("localhost", 6379, 0, "test")
+	cache.New("localhost", 6379, 0, "test")
 
 	s1 := S{IV: 100, SV: "hello, champak!"}
 	if err := cache.Set("hello", &s1, 60); err != nil {
