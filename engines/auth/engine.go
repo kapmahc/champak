@@ -8,21 +8,20 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/kapmahc/champak/web"
 	"github.com/spf13/viper"
-	"github.com/unrolled/render"
 	"golang.org/x/text/language"
 	"golang.org/x/tools/blog/atom"
 )
 
 // Engine auth engine
 type Engine struct {
-	Cache    *web.Cache     `inject:""`
-	Job      *web.Job       `inject:""`
-	I18n     *web.I18n      `inject:""`
-	Settings *web.Settings  `inject:""`
-	Jwt      *Jwt           `inject:""`
-	Dao      *Dao           `inject:""`
-	Db       *gorm.DB       `inject:""`
-	Render   *render.Render `inject:""`
+	Cache    *web.Cache    `inject:""`
+	Job      *web.Job      `inject:""`
+	I18n     *web.I18n     `inject:""`
+	Settings *web.Settings `inject:""`
+	Jwt      *Jwt          `inject:""`
+	Dao      *Dao          `inject:""`
+	Db       *gorm.DB      `inject:""`
+	Render   *Render       `inject:""`
 }
 
 // Map map objects
