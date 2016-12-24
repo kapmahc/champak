@@ -1,4 +1,3 @@
-{{define "personal-bar"}}
 {{$l := .locale}}
 {{if .current_user}}
 <li class="nav-item dropdown float-xs-right">
@@ -23,5 +22,4 @@
     <a class="dropdown-item" href="/personal/unlock">{{t $l "auth.personal.unlock.title"}}</a>
   </div>
 </li>
-{{end}}
 {{end}}

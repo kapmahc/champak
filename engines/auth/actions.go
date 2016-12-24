@@ -128,6 +128,7 @@ func InjectAction(fn func(*cli.Context) error) cli.ActionFunc {
 			}
 			return inj.Provide(&inject.Object{Value: en})
 		})
+
 		if err := inj.Populate(); err != nil {
 			return err
 		}

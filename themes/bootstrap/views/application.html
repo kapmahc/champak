@@ -1,11 +1,28 @@
 <!DOCTYPE html>
 <html lang="{{.locale}}">
-
 <head>
-  {{template "metas" .}}
+  {{template "components/metas" .}}
 </head>
-
 <body>
-  {{yield}}
+  {{$l := .locale}}
+  <nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
+    <a href="/" class="navbar-brand">{{t $l "site.subTitle"}}</a>
+    <ul class="nav navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="/">{{t $l "header.home"}} <span class="sr-only">(current)</span></a>
+      </li>
+      {{range links "top"}}
+        <li class="nav-item">
+          <a class="nav-link" href="{{$.Href}}">{{t $l $.label}}</a>
+        </li>
+      {{end}}
+      {{template "components/personal-bar" .}}
+      {{template "components/language-bar" .}}
+    </ul>
+  </nav>
+  <div class="container">
+    {{yield}}
+    {{template "components/footer" .}}
+  </div>  
 </body>
 </html>

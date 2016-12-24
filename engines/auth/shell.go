@@ -10,8 +10,6 @@ import (
 	"path/filepath"
 	"time"
 
-	graceful "gopkg.in/tylerb/graceful.v1"
-
 	"github.com/BurntSushi/toml"
 	log "github.com/Sirupsen/logrus"
 	"github.com/goincremental/negroni-sessions"
@@ -25,6 +23,7 @@ import (
 	"github.com/urfave/cli"
 	"github.com/urfave/negroni"
 	"golang.org/x/text/language"
+	graceful "gopkg.in/tylerb/graceful.v1"
 )
 
 const (
@@ -45,15 +44,6 @@ func (p *Engine) Shell() []cli.Command {
 					en.Mount(rt)
 					return nil
 				})
-
-				adr := fmt.Sprintf(":%d", viper.GetInt("server.port"))
-				hnd := csrf.Protect(
-					[]byte(viper.GetString("secrets.csrf")),
-					csrf.Secure(IsProduction()),
-					csrf.CookieName("_csrf_token_"),
-					csrf.FieldName("authenticity_token"),
-					csrf.Path("/"),
-				)(rt)
 
 				theme := viper.GetString("server.theme")
 
@@ -80,14 +70,22 @@ func (p *Engine) Shell() []cli.Command {
 				ng.Use(negroni.NewStatic(http.Dir(path.Join("themes", theme, "assets"))))
 				// ng.Use(stats.New())
 
-				ng.UseHandler(hnd)
+				ng.UseHandler(rt)
+
+				adr := fmt.Sprintf(":%d", viper.GetInt("server.port"))
+				hnd := csrf.Protect(
+					[]byte(viper.GetString("secrets.csrf")),
+					csrf.Secure(IsProduction()),
+					csrf.CookieName("_csrf_token_"),
+					csrf.FieldName("authenticity_token"),
+					csrf.Path("/"),
+				)(ng)
 
 				if IsProduction() {
-					graceful.Run(adr, 10*time.Second, ng)
-				} else {
-					ng.Run(adr)
+					graceful.Run(adr, 10*time.Second, hnd)
+					return nil
 				}
-				return nil
+				return http.ListenAndServe(adr, hnd)
 			}),
 		},
 		{
