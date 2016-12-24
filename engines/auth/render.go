@@ -16,8 +16,9 @@ import (
 // Render render
 type Render struct {
 	*render.Render
-	Db   *gorm.DB  `inject:""`
-	I18n *web.I18n `inject:""`
+	Db    *gorm.DB   `inject:""`
+	I18n  *web.I18n  `inject:""`
+	Cache *web.Cache `inject:""`
 }
 
 // Open init config
@@ -30,7 +31,11 @@ func (p *Render) Open() {
 			{
 				"t": p.I18n.T,
 				"cards": func(loc string) []Card {
+					key := fmt.Sprintf("cards/%s", loc)
 					var items []Card
+					if err := p.Cache.Get(key, &items); err == nil {
+						return items
+					}
 					if err := p.Db.
 						Select([]string{"title", "summary", "logo", "href"}).
 						Where("loc = ?", loc).
@@ -38,10 +43,15 @@ func (p *Render) Open() {
 						Find(&items).Error; err != nil {
 						log.Error(err)
 					}
+					p.Cache.Set(key, items, 60*60*24)
 					return items
 				},
 				"links": func(loc string) []Link {
+					key := fmt.Sprintf("links/%s", loc)
 					var items []Link
+					if err := p.Cache.Get(key, &items); err == nil {
+						return items
+					}
 					if err := p.Db.
 						Select([]string{"label", "href"}).
 						Where("loc = ?", loc).
@@ -49,6 +59,7 @@ func (p *Render) Open() {
 						Find(&items).Error; err != nil {
 						log.Error(err)
 					}
+					p.Cache.Set(key, items, 60*60*24)
 					return items
 				},
 				"fmt": fmt.Sprintf,
