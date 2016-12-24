@@ -2,6 +2,7 @@ package web
 
 import (
 	"bytes"
+	"context"
 	"errors"
 	"fmt"
 	"net/http"
@@ -15,6 +16,60 @@ import (
 	"github.com/jinzhu/gorm"
 	"golang.org/x/text/language"
 )
+
+// LocaleMiddleware detect locale from http header
+type LocaleMiddleware struct {
+	Matcher   language.Matcher `inject:"language.matcher"`
+	Languages []string         `inject:"language.tags"`
+}
+
+func (p *LocaleMiddleware) ServeHTTP(wrt http.ResponseWriter, req *http.Request, next http.HandlerFunc) {
+	const key = string(LOCALE)
+	write := false
+
+	// 1. Check URL arguments.
+	lng := req.URL.Query().Get(key)
+
+	// 2. Get language information from cookies.
+	if len(lng) == 0 {
+		if ck, er := req.Cookie(key); er == nil {
+			lng = ck.Value
+		} else {
+			write = true
+		}
+	} else {
+		write = true
+	}
+
+	// 3. Get language information from 'Accept-Language'.
+	if len(lng) == 0 {
+		write = true
+		al := req.Header.Get("Accept-Language")
+		if len(al) > 4 {
+			lng = al[:5]
+		}
+	}
+
+	tag, _, _ := p.Matcher.Match(language.Make(lng))
+
+	// Write cookie
+	if write {
+		http.SetCookie(wrt, &http.Cookie{
+			Name:    key,
+			Value:   tag.String(),
+			Expires: time.Now().AddDate(10, 0, 0),
+			Path:    "/",
+		})
+	}
+	ctx := context.WithValue(req.Context(), LOCALE, tag.String())
+	ctx = context.WithValue(ctx, DATA, H{
+		"locale":    tag.String(),
+		"languages": p.Languages,
+	})
+	next(wrt, req.WithContext(ctx))
+}
+
+// -----------------------------------------------------------------------------
 
 //Locale locale model
 type Locale struct {
@@ -34,10 +89,9 @@ func (Locale) TableName() string {
 
 //I18n i18n
 type I18n struct {
-	Db      *gorm.DB         `inject:""`
-	Cache   *Cache           `inject:""`
-	Matcher language.Matcher `inject:"language.matcher"`
-	Items   map[string]map[string]string
+	Db    *gorm.DB `inject:""`
+	Cache *Cache   `inject:""`
+	Items map[string]map[string]string
 }
 
 // F format message
@@ -180,46 +234,4 @@ func (p *I18n) Sync(dir string) error {
 		}
 		return nil
 	})
-}
-
-//Parse detect locale from http header
-func (p *I18n) Parse(wrt http.ResponseWriter, req *http.Request) string {
-	const key = string(LOCALE)
-	write := false
-
-	// 1. Check URL arguments.
-	lng := req.URL.Query().Get(key)
-
-	// 2. Get language information from cookies.
-	if len(lng) == 0 {
-		if ck, er := req.Cookie(key); er == nil {
-			lng = ck.Value
-		} else {
-			write = true
-		}
-	} else {
-		write = true
-	}
-
-	// 3. Get language information from 'Accept-Language'.
-	if len(lng) == 0 {
-		write = true
-		al := req.Header.Get("Accept-Language")
-		if len(al) > 4 {
-			lng = al[:5]
-		}
-	}
-
-	tag, _, _ := p.Matcher.Match(language.Make(lng))
-
-	// Write cookie
-	if write {
-		http.SetCookie(wrt, &http.Cookie{
-			Name:    key,
-			Value:   tag.String(),
-			Expires: time.Now().AddDate(10, 0, 0),
-			Path:    "/",
-		})
-	}
-	return tag.String()
 }

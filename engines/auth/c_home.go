@@ -7,5 +7,6 @@ import (
 )
 
 func (p *Engine) getHome(wrt http.ResponseWriter, req *http.Request) {
-	p.Render.HTML(wrt, http.StatusOK, "auth/home", web.H{})
+	data := req.Context().Value(web.DATA)
+	p.Render.HTML(wrt, http.StatusOK, "auth/home", data)
 }

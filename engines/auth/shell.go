@@ -67,9 +67,10 @@ func (p *Engine) Shell() []cli.Command {
 				})
 				ng.Use(negroni.NewRecovery())
 				ng.Use(negronilogrus.NewMiddleware())
-				// ng.Use(stats.New())
+				ng.Use(p.LocaleMiddleware)
 				ng.Use(sessions.Sessions("_session_", sss))
 				ng.Use(negroni.NewStatic(http.Dir(path.Join("themes", theme, "assets"))))
+				// ng.Use(stats.New())
 
 				ng.UseHandler(hnd)
 
