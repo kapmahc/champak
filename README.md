@@ -49,4 +49,5 @@ go get -u github.com/golang/lint/golint
 - [negroni](https://github.com/urfave/negroni)
 - [cli](https://github.com/urfave/cli)
 - [viper](https://github.com/spf13/viper)
+- [machinery](https://github.com/RichardKnop/machinery)
 - [RabbitMQ](https://www.rabbitmq.com/getstarted.html)
