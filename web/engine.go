@@ -5,6 +5,7 @@ import (
 
 	"github.com/facebookgo/inject"
 	"github.com/ikeikeikeike/go-sitemap-generator/stm"
+	"github.com/kapmahc/champak/web/mux"
 	"github.com/urfave/cli"
 	"golang.org/x/tools/blog/atom"
 )
@@ -27,7 +28,7 @@ type DashboardHandler func(req *http.Request) []Dropdown
 // Engine engine
 type Engine interface {
 	Map(*inject.Graph) error
-	Mount()
+	Mount(*mux.Router)
 	Worker()
 	Dashboard() DashboardHandler
 	Shell() []cli.Command

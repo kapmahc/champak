@@ -11,12 +11,14 @@ import (
 	"time"
 
 	"github.com/BurntSushi/toml"
-	log "github.com/Sirupsen/logrus"
 	"github.com/goincremental/negroni-sessions"
 	"github.com/goincremental/negroni-sessions/cookiestore"
 	"github.com/gorilla/csrf"
-	"github.com/gorilla/mux"
+	_mux "github.com/gorilla/mux"
 	"github.com/kapmahc/champak/web"
+	"github.com/kapmahc/champak/web/cache"
+	"github.com/kapmahc/champak/web/i18n"
+	"github.com/kapmahc/champak/web/mux"
 	negronilogrus "github.com/meatballhat/negroni-logrus"
 	"github.com/spf13/viper"
 	"github.com/steinbacher/goose"
@@ -40,9 +42,9 @@ func (p *Engine) Shell() []cli.Command {
 			Usage:   "start the app server",
 			Action: InjectAction(func(*cli.Context) error {
 
-				rt := mux.NewRouter()
+				rt := _mux.NewRouter()
 				web.Walk(func(en web.Engine) error {
-					en.Mount()
+					en.Mount(&mux.Router{Router: rt})
 					return nil
 				})
 
@@ -71,7 +73,6 @@ func (p *Engine) Shell() []cli.Command {
 				ng.Use(negroni.NewStatic(http.Dir(path.Join("themes", theme, "assets"))))
 				// ng.Use(stats.New())
 
-				p.Render.Open(rt)
 				ng.UseHandler(rt)
 
 				adr := fmt.Sprintf(":%d", viper.GetInt("server.port"))
@@ -95,15 +96,7 @@ func (p *Engine) Shell() []cli.Command {
 			Aliases: []string{"w"},
 			Usage:   "start the worker progress",
 			Action: InjectAction(func(*cli.Context) error {
-				forever := make(chan bool)
-
-				web.Loop(func(en web.Engine) error {
-					go en.Worker()
-					return nil
-				})
-				log.Printf(" [*] Waiting for tasks. To exit press CTRL+C")
-
-				<-forever
+				//TODO
 				return nil
 			}),
 		},
@@ -129,8 +122,8 @@ func (p *Engine) Shell() []cli.Command {
 					Name:    "list",
 					Usage:   "list all cache keys",
 					Aliases: []string{"l"},
-					Action: InjectAction(func(*cli.Context) error {
-						keys, err := p.Cache.Keys()
+					Action: Action(func(*cli.Context) error {
+						keys, err := cache.Keys()
 						if err != nil {
 							return err
 						}
@@ -144,8 +137,8 @@ func (p *Engine) Shell() []cli.Command {
 					Name:    "clear",
 					Usage:   "clear cache items",
 					Aliases: []string{"c"},
-					Action: InjectAction(func(*cli.Context) error {
-						return p.Cache.Flush()
+					Action: Action(func(*cli.Context) error {
+						return cache.Flush()
 					}),
 				},
 			},
@@ -603,19 +596,15 @@ func (p *Engine) Shell() []cli.Command {
 			Aliases: []string{"rt"},
 			Usage:   "print out all defined routes",
 			Action: func(*cli.Context) error {
-				rt := mux.NewRouter()
-				web.Loop(func(en web.Engine) error {
-					en.Mount(rt)
+				rt := mux.Router{Router: _mux.NewRouter()}
+				web.Walk(func(en web.Engine) error {
+					en.Mount(&rt)
 					return nil
 				})
-				tpl := "%24s\t%s\n"
+				tpl := "%-5s %-24s %s\n"
 				fmt.Printf(tpl, "NAME", "PATH")
-				return rt.Walk(func(route *mux.Route, router *mux.Router, ancestors []*mux.Route) error {
-
-					pth, err := route.GetPathTemplate()
-					if err == nil {
-						fmt.Printf(tpl, route.GetName(), pth)
-					}
+				return rt.Walk(func(m, n, p string) error {
+					fmt.Printf(tpl, m, n, p)
 					return nil
 				})
 			},
@@ -628,8 +617,8 @@ func (p *Engine) Shell() []cli.Command {
 					Name:    "sync",
 					Aliases: []string{"s"},
 					Usage:   "sync locales from files",
-					Action: InjectAction(func(*cli.Context) error {
-						return p.I18n.Sync("locales")
+					Action: Action(func(*cli.Context) error {
+						return i18n.Sync("locales")
 					}),
 				},
 			},

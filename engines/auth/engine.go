@@ -5,21 +5,21 @@ import (
 
 	"github.com/facebookgo/inject"
 	"github.com/ikeikeikeike/go-sitemap-generator/stm"
+	"github.com/jinzhu/gorm"
 	"github.com/kapmahc/champak/web"
 	"golang.org/x/tools/blog/atom"
 )
 
 // Engine auth engine
 type Engine struct {
+	Dao *Dao     `inject:""`
+	Db  *gorm.DB `inject:""`
 }
 
 // Map inject objects
 func (p *Engine) Map(*inject.Graph) error {
 	return nil
 }
-
-// Mount mount web points
-func (p *Engine) Mount() {}
 
 // Worker register background jobs
 func (p *Engine) Worker() {}
