@@ -7,6 +7,24 @@
 			"revision": ""
 		},
 		{
+			"checksumSHA1": "hqDDDpue/5363luidNMBS8z8eJU=",
+			"path": "github.com/BurntSushi/toml",
+			"revision": "99064174e013895bbd9b025c31100bd1d9b590ca",
+			"revisionTime": "2016-07-17T15:07:09Z"
+		},
+		{
+			"checksumSHA1": "t+uej2kiyqRyQYguygI8t9nJH2w=",
+			"path": "github.com/SermoDigital/jose",
+			"revision": "2bd9b81ac51d6d6134fcd4fd846bd2e7347a15f9",
+			"revisionTime": "2016-12-05T22:51:55Z"
+		},
+		{
+			"checksumSHA1": "u92C5yEz1FLBeoXp8jujn3tUNFI=",
+			"path": "github.com/SermoDigital/jose/crypto",
+			"revision": "2bd9b81ac51d6d6134fcd4fd846bd2e7347a15f9",
+			"revisionTime": "2016-12-05T22:51:55Z"
+		},
+		{
 			"checksumSHA1": "h5Q1o+kA7VMAR5QpBzVJZbBEgC0=",
 			"path": "github.com/Sirupsen/logrus",
 			"revision": "881bee4e20a5d11a6a88a5667c6f292072ac1963",
@@ -229,16 +247,52 @@
 			"revisionTime": "2016-12-24T12:10:19Z"
 		},
 		{
+			"checksumSHA1": "NWPy8gY+9jExHxBYKhjxJ3ir7/0=",
+			"path": "github.com/goincremental/negroni-sessions",
+			"revision": "0055e7581fb0fe0f6ee5f622199672425526e1b2",
+			"revisionTime": "2016-10-17T07:35:17Z"
+		},
+		{
+			"checksumSHA1": "r2at94ZOVarmcNNfp7zwiXXyQac=",
+			"path": "github.com/goincremental/negroni-sessions/cookiestore",
+			"revision": "0055e7581fb0fe0f6ee5f622199672425526e1b2",
+			"revisionTime": "2016-10-17T07:35:17Z"
+		},
+		{
+			"checksumSHA1": "UP2wONSE346WHWwT20G1Xedd6ZI=",
+			"path": "github.com/google/uuid",
+			"revision": "064e2069ce9c359c118179501254f67d7d37ba24",
+			"revisionTime": "2016-11-28T19:12:14Z"
+		},
+		{
 			"checksumSHA1": "g/V4qrXjUGG9B+e3hB+4NAYJ5Gs=",
 			"path": "github.com/gorilla/context",
 			"revision": "08b5f424b9271eedf6f9f0ce86cb9396ed337a42",
 			"revisionTime": "2016-08-17T18:46:32Z"
 		},
 		{
+			"checksumSHA1": "2ieXR7YGRBDmQWVeUpjk5ay8iCE=",
+			"path": "github.com/gorilla/csrf",
+			"revision": "69581736821c33d85bbf378f42f6ad864dbd85de",
+			"revisionTime": "2016-11-22T16:45:00Z"
+		},
+		{
 			"checksumSHA1": "urMd7A9QPAJYY0GZJL9qBhlUmD8=",
 			"path": "github.com/gorilla/mux",
 			"revision": "757bef944d0f21880861c2dd9c871ca543023cba",
 			"revisionTime": "2016-09-20T23:08:13Z"
+		},
+		{
+			"checksumSHA1": "veX5bpYOBjZZWMyWxXxys8EH9d8=",
+			"path": "github.com/gorilla/securecookie",
+			"revision": "fa5329f913702981df43dcb2a380bac429c810b5",
+			"revisionTime": "2016-10-03T05:16:01Z"
+		},
+		{
+			"checksumSHA1": "vYfmVqC/UFKA66ZZdUJsnIcXR4E=",
+			"path": "github.com/gorilla/sessions",
+			"revision": "83c8db3bdc9be789e57e3756ffbcffd2d7d40176",
+			"revisionTime": "2016-12-22T01:33:42Z"
 		},
 		{
 			"checksumSHA1": "Ok3Csn6Voou7pQT6Dv2mkwpqFtw=",
@@ -343,6 +397,12 @@
 			"revisionTime": "2016-08-03T19:07:31Z"
 		},
 		{
+			"checksumSHA1": "p+Bj1OSkp9/zxr6oZGzBAvYsdm0=",
+			"path": "github.com/kylelemons/go-gypsy/yaml",
+			"revision": "08cad365cd28a7fba23bb1e57aa43c5e18ad8bb8",
+			"revisionTime": "2016-09-05T02:00:20Z"
+		},
+		{
 			"checksumSHA1": "e+1BYI9y5LUyfSC+lwQF0AXP5sA=",
 			"path": "github.com/lib/pq",
 			"revision": "5bf161122cd640c2a5a2c1d7fa49ea9befff31dd",
@@ -373,6 +433,12 @@
 			"revisionTime": "2016-12-15T04:15:57Z"
 		},
 		{
+			"checksumSHA1": "pGRxz78nr9/02cKrrco43Ul6I+s=",
+			"path": "github.com/meatballhat/negroni-logrus",
+			"revision": "7c570a907cfc69cdc004ad506c6f5e234815b936",
+			"revisionTime": "2016-06-28T04:38:43Z"
+		},
+		{
 			"checksumSHA1": "LAR/G/IY1GviHYkGAoi6kVXq1Jg=",
 			"path": "github.com/mitchellh/mapstructure",
 			"revision": "bfdb1a85537d60bc7e954e600c250219ea497417",
@@ -389,6 +455,12 @@
 			"path": "github.com/pelletier/go-toml",
 			"revision": "017119f7a78a0b5fc0ea39ef6be09f03acf3345d",
 			"revisionTime": "2016-12-13T14:20:06Z"
+		},
+		{
+			"checksumSHA1": "ynJSWoF6v+3zMnh9R0QmmG6iGV8=",
+			"path": "github.com/pkg/errors",
+			"revision": "248dadf4e9068a0b3e79f02ed0a610d935de5302",
+			"revisionTime": "2016-10-29T09:36:37Z"
 		},
 		{
 			"checksumSHA1": "KEzQv4I7c+tcoTizQM+tavqKsuM=",
@@ -427,6 +499,18 @@
 			"revisionTime": "2016-12-13T09:38:49Z"
 		},
 		{
+			"checksumSHA1": "YvQ7WnFMOBjofstj6eVn7uuEkn0=",
+			"path": "github.com/steinbacher/goose",
+			"revision": "dc457c3195032dd1c3848e21dc95ed02c92f8cfa",
+			"revisionTime": "2016-07-25T13:16:29Z"
+		},
+		{
+			"checksumSHA1": "qik08F9+tO3aD/VsiPY19IbmT7k=",
+			"path": "github.com/streadway/amqp",
+			"revision": "63795daa9a446c920826655f26ba31c81c860fd6",
+			"revisionTime": "2016-12-24T08:20:40Z"
+		},
+		{
 			"checksumSHA1": "7NRHOe081wHCsmQNV4nYhPY2b7A=",
 			"path": "github.com/unrolled/render",
 			"revision": "df76b7c9818cdcf458b4c81acbe29d093ff3080f",
@@ -437,6 +521,12 @@
 			"path": "github.com/urfave/cli",
 			"revision": "0bdeddeeb0f650497d603c4ad7b20cfe685682f6",
 			"revisionTime": "2016-11-22T04:36:10Z"
+		},
+		{
+			"checksumSHA1": "MJw194u4PprQAabBORjIp1tPUwM=",
+			"path": "github.com/urfave/negroni",
+			"revision": "cd9734011043904139c24dbad9a71b21f1586f36",
+			"revisionTime": "2016-11-27T19:24:14Z"
 		},
 		{
 			"checksumSHA1": "9jjO5GjLa0XF/nfWihF02RoH4qc=",
@@ -503,6 +593,12 @@
 			"path": "golang.org/x/tools/blog/atom",
 			"revision": "908849c3379245f71612058fbf92cf6bf58c3c75",
 			"revisionTime": "2016-12-20T20:06:13Z"
+		},
+		{
+			"checksumSHA1": "hiOUviIMDKo7y918uBiEhfJyOkk=",
+			"path": "gopkg.in/tylerb/graceful.v1",
+			"revision": "50a48b6e73fcc75b45e22c05b79629a67c79e938",
+			"revisionTime": "2016-08-29T01:00:30Z"
 		},
 		{
 			"checksumSHA1": "12GqsW8PiRPnezDDy0v4brZrndM=",
