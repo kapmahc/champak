@@ -10,6 +10,9 @@ import (
 // KEY request context key type
 type KEY string
 
+// H hash
+type H map[string]interface{}
+
 const (
 	// LOCALE locale key
 	LOCALE = KEY("locale")

@@ -1,6 +1,7 @@
 package gorilla
 
 import (
+	"fmt"
 	"net/http"
 
 	log "github.com/Sirupsen/logrus"
@@ -8,9 +9,9 @@ import (
 )
 
 // New new gorilla router
-func New() *Router {
+func New(r *mux.Router) *Router {
 	return &Router{
-		rt: mux.NewRouter(),
+		rt: r,
 	}
 }
 
@@ -28,7 +29,11 @@ func (p *Router) Add(method, name, path string, hnd http.HandlerFunc) {
 }
 
 // URL url by name
-func (p *Router) URL(name string, pairs ...string) string {
+func (p *Router) URL(name string, args ...interface{}) string {
+	var pairs []string
+	for _, v := range args {
+		pairs = append(pairs, fmt.Sprintf("%v", v))
+	}
 	if r := p.rt.Get(name); r != nil {
 		u, e := r.URL(pairs...)
 		if e == nil {

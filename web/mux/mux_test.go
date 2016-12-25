@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"testing"
 
+	_mux "github.com/gorilla/mux"
 	"github.com/kapmahc/champak/web/mux"
 	"github.com/kapmahc/champak/web/mux/gorilla"
 	"github.com/kapmahc/champak/web/mux/logging"
@@ -14,7 +15,10 @@ func h(w http.ResponseWriter, r *http.Request) {
 }
 
 func TestGorills(t *testing.T) {
-	testMux(t, gorilla.New())
+	r := gorilla.New(_mux.NewRouter())
+	testMux(t, r)
+	name := "cms.article.edit"
+	t.Logf("%s => %s", name, r.URL(name, "id", 111))
 }
 
 func TestLogging(t *testing.T) {
@@ -26,10 +30,7 @@ func TestLogging(t *testing.T) {
 }
 
 func testMux(t *testing.T, r mux.Router) {
-	mux.Use(r)
-	mux.Crud("cms.articles", "/cms/articles", h, h, h, h, h, h, h)
-	mux.Form("users.sign-in", "/users/sign-in", h, h)
-
-	name := "cms.article.edit"
-	t.Logf("%s => %s", name, mux.URL(name, "id", 111))
+	m := mux.New(r)
+	m.Crud("cms.articles", "/cms/articles", h, h, h, h, h, h, h)
+	m.Form("users.sign-in", "/users/sign-in", h, h)
 }
