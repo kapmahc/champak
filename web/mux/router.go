@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net/http"
 
-	_mux "github.com/gorilla/mux"
 	"github.com/jinzhu/inflection"
 )
 
@@ -21,31 +20,35 @@ const (
 	DELETE = "DELETE"
 )
 
-var root = _mux.NewRouter()
+// Router http router
+type Router interface {
+	Add(method, name, path string, hnd http.HandlerFunc)
+	URL(name string, pairs ...string) string
+}
 
 // Get http get
 func Get(name, path string, hnd http.HandlerFunc) {
-	Add(GET, name, path, hnd)
+	router.Add(GET, name, path, hnd)
 }
 
 // Post http post
 func Post(name, path string, hnd http.HandlerFunc) {
-	Add(POST, name, path, hnd)
+	router.Add(POST, name, path, hnd)
 }
 
 // Patch http patch
 func Patch(name, path string, hnd http.HandlerFunc) {
-	Add(PATCH, name, path, hnd)
+	router.Add(PATCH, name, path, hnd)
 }
 
 // Put http put
 func Put(name, path string, hnd http.HandlerFunc) {
-	Add(PUT, name, path, hnd)
+	router.Add(PUT, name, path, hnd)
 }
 
 // Delete http delete
 func Delete(name, path string, hnd http.HandlerFunc) {
-	Add(DELETE, name, path, hnd)
+	router.Add(DELETE, name, path, hnd)
 }
 
 // Crud http crud resources
@@ -90,11 +93,16 @@ func Form(name, path string, get http.HandlerFunc, post http.HandlerFunc) {
 	Post("", path, post)
 }
 
-// Add add route
-func Add(method, name, path string, hnd http.HandlerFunc) {
-	rt := root.HandleFunc(path, hnd).Methods(method)
-	if name != "" {
-		rt.Name(name)
+// URL url by name
+func URL(name string, args ...interface{}) string {
+	var pairs []string
+	for _, v := range args {
+		switch v.(type) {
+		case string:
+			pairs = append(pairs, v.(string))
+		default:
+			pairs = append(pairs, fmt.Sprintf("%v", v))
+		}
 	}
-	add(method, name, path, hnd)
+	return router.URL(name, pairs...)
 }

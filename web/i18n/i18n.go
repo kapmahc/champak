@@ -112,7 +112,9 @@ func get(lang, code string) (string, error) {
 	}
 	v, e = store.Get(lang, code)
 	if e == nil {
-		cache.Set(k, v, 24*time.Hour)
+		if e = cache.Set(k, v, 24*time.Hour); e != nil {
+			log.Error(e)
+		}
 	}
 	return v, e
 }
