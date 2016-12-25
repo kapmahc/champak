@@ -18,6 +18,7 @@ type Engine struct {
 	Dao    *Dao        `inject:""`
 	Db     *gorm.DB    `inject:""`
 	Helper *web.Helper `inject:""`
+	Jwt    *Jwt        `inject:""`
 }
 
 // Map inject objects

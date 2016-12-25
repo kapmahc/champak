@@ -6,6 +6,7 @@ import (
 	"path"
 	"time"
 
+	"github.com/SermoDigital/jose/crypto"
 	log "github.com/Sirupsen/logrus"
 	"github.com/facebookgo/inject"
 	"github.com/kapmahc/champak/web"
@@ -49,7 +50,6 @@ func InjectAction(fn func(*cli.Context) error) cli.ActionFunc {
 		// ----------------------
 		rdr := render.New(render.Options{
 			Directory:  path.Join("themes", viper.GetString("server.theme"), "views"),
-			Layout:     "application",
 			Extensions: []string{".html"},
 			Funcs: []template.FuncMap{
 				{
@@ -114,6 +114,8 @@ func InjectAction(fn func(*cli.Context) error) cli.ActionFunc {
 			&inject.Object{Value: db},
 			&inject.Object{Value: rep},
 			&inject.Object{Value: namespace, Name: "namespace"},
+			&inject.Object{Value: []byte(viper.GetString("secrets.jwt")), Name: "jwt.key"},
+			&inject.Object{Value: crypto.SigningMethodHS512, Name: "jwt.method"},
 		); err != nil {
 			return err
 		}

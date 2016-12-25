@@ -31,6 +31,12 @@ func Use(r *_mux.Router) {
 	router = r
 }
 
+// Param params
+func Param(r *http.Request, k string) string {
+	v := _mux.Vars(r)
+	return v[k]
+}
+
 // Get http get
 func Get(name, path string, hnd http.HandlerFunc) {
 	add(GET, name, path, hnd)

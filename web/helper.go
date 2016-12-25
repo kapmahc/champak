@@ -26,13 +26,22 @@ type Helper struct {
 }
 
 // HTML render html
-func (p *Helper) HTML(name string, f func(w http.ResponseWriter, r *http.Request) error) http.HandlerFunc {
+func (p *Helper) HTML(tpl, lay string, f func(http.ResponseWriter, *http.Request) (H, error)) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		if err := f(w, r); err != nil {
+		sts := http.StatusOK
+		val, err := f(w, r)
+		if err != nil {
 			ss := sessions.GetSession(r)
 			ss.AddFlash(err.Error(), ALERT)
+			sts = http.StatusInternalServerError
 		}
-		p.Render.HTML(w, http.StatusOK, name, r.Context().Value(DATA))
+		p.Render.HTML(
+			w,
+			sts,
+			tpl,
+			val,
+			render.HTMLOptions{Layout: lay},
+		)
 	}
 }
 

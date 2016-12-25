@@ -7,13 +7,16 @@ import (
 	"time"
 
 	"github.com/gorilla/csrf"
-
 	"golang.org/x/text/language"
 )
 
 const (
-	// DATA data-key
+	// DATA data key
 	DATA = KEY("data")
+	// LOCALE locale key
+	LOCALE = KEY("locale")
+	// ClientIP client-ip key
+	ClientIP = KEY("client_ip")
 )
 
 // NewLocaleMiddleware create a locale middleware
@@ -39,7 +42,7 @@ type LocaleMiddleware struct {
 }
 
 func (p *LocaleMiddleware) ServeHTTP(wrt http.ResponseWriter, req *http.Request, next http.HandlerFunc) {
-	const key = "locale"
+	const key = string(LOCALE)
 	write := false
 
 	// 1. Check URL arguments.
@@ -77,16 +80,12 @@ func (p *LocaleMiddleware) ServeHTTP(wrt http.ResponseWriter, req *http.Request,
 		})
 	}
 
-	next(wrt, req.WithContext(
-		context.WithValue(
-			req.Context(),
-			DATA,
-			H{
-				"locale":    tag.String(),
-				"languages": p.languages,
-			},
-		),
-	))
+	ctx := context.WithValue(req.Context(), LOCALE, tag.String())
+	ctx = context.WithValue(ctx, DATA, H{
+		"locale":    tag.String(),
+		"languages": p.languages,
+	})
+	next(wrt, req.WithContext(ctx))
 }
 
 // CsrfMiddleware csrf
@@ -111,7 +110,5 @@ func (p *ClientIPMiddleware) ServeHTTP(wrt http.ResponseWriter, req *http.Reques
 		ip, _, _ = net.SplitHostPort(req.RemoteAddr)
 	}
 
-	data := req.Context().Value(DATA).(H)
-	data["client-ip"] = ip
-	next(wrt, req.WithContext(context.WithValue(req.Context(), DATA, data)))
+	next(wrt, req.WithContext(context.WithValue(req.Context(), ClientIP, ip)))
 }
