@@ -1,0 +1,18 @@
+{{define "site/dashboard"}}
+{{$l := .locale}}
+{{template "dashboard/header" .}}
+<div class="row">
+  {{range .links}}
+    <div class="col-md-4">
+      <h4>{{t $l .Label}}</h4>
+      <hr/>
+      <div class="list-group">
+        {{range .Links}}
+          <a class="list-group-item list-group-item-action" href="{{.Href}}">{{t $l .Label}}</a>
+        {{end}}
+      </div>
+    </div>
+  {{end}}
+</div>
+{{template "dashboard/footer" .}}
+{{end}}

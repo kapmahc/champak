@@ -1,0 +1,7 @@
+{{define "dropdown-links"}}
+{{$lng := .locale}}
+{{$items := links .loc }}
+{{range $k, $v := $items}}
+<a href="{{$v.Href}}">{{t $lng $v.Label}}<a>
+{{end}}
+{{end}}

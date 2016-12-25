@@ -28,7 +28,7 @@ type Helper struct {
 // HTML render html
 func (p *Helper) HTML(name string, f func(w http.ResponseWriter, r *http.Request) error) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		if err := f(w, r); err == nil {
+		if err := f(w, r); err != nil {
 			ss := sessions.GetSession(r)
 			ss.AddFlash(err.Error(), ALERT)
 		}
