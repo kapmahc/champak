@@ -793,10 +793,10 @@
 			"revisionTime": "2016-07-18T13:41:25Z"
 		},
 		{
-			"checksumSHA1": "x5e85RqGPQn2pL/wTwHQKOY+U1k=",
+			"checksumSHA1": "YzD9TiKGR11jUuNPGvpj3kTrTJY=",
 			"path": "gopkg.in/go-playground/validator.v9",
-			"revision": "49fccadad19338f93f46a5abdafc44cd731cf7a7",
-			"revisionTime": "2016-12-07T01:51:45Z"
+			"revision": "077c3830f3971d4a44a94c2249b67ce8c53198fc",
+			"revisionTime": "2016-12-23T02:45:03Z"
 		},
 		{
 			"checksumSHA1": "12GqsW8PiRPnezDDy0v4brZrndM=",

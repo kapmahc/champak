@@ -23,10 +23,12 @@ ls -l dist
 
 - git-plus
 - go-plus
-```bash
-go get -u github.com/zmb3/gogetdoc
-go get -u github.com/golang/lint/golint
-```
+
+  ```bash
+  go get -u github.com/zmb3/gogetdoc
+  go get -u github.com/golang/lint/golint
+  ```
+
 - atom-beautify
 - autosave(remember to enable it)
 
@@ -42,8 +44,11 @@ go get -u github.com/golang/lint/golint
 
 ## Documents
 
+- [Go Code Review Comments](https://github.com/golang/go/wiki/CodeReviewComments)
 - [gorm](http://jinzhu.me/gorm/)
 - [gin](https://github.com/gin-gonic/gin/)
 - [cli](https://github.com/urfave/cli)
 - [viper](https://github.com/spf13/viper)
+- [machinery](https://github.com/RichardKnop/machinery)
+- [validator](https://github.com/go-playground/validator)
 - [RabbitMQ](https://www.rabbitmq.com/getstarted.html)
