@@ -51,6 +51,7 @@ func InjectAction(fn func(*cli.Context) error) cli.ActionFunc {
 		rdr := render.New(render.Options{
 			Directory:  path.Join("themes", viper.GetString("server.theme"), "views"),
 			Extensions: []string{".html"},
+			Layout:     "application",
 			Funcs: []template.FuncMap{
 				{
 					"url": mux.URL,

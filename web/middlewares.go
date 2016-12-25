@@ -2,7 +2,6 @@ package web
 
 import (
 	"context"
-	"net"
 	"net/http"
 	"time"
 
@@ -15,8 +14,6 @@ const (
 	DATA = KEY("data")
 	// LOCALE locale key
 	LOCALE = KEY("locale")
-	// ClientIP client-ip key
-	ClientIP = KEY("client_ip")
 )
 
 // NewLocaleMiddleware create a locale middleware
@@ -98,17 +95,4 @@ func (p *CsrfMiddleware) ServeHTTP(wrt http.ResponseWriter, req *http.Request, n
 	wrt.Header().Set("X-CSRF-Token", tkn)
 	data["csrf"] = tkn
 	next(wrt, req.WithContext(context.WithValue(req.Context(), DATA, data)))
-}
-
-// ClientIPMiddleware client ip
-type ClientIPMiddleware struct {
-}
-
-func (p *ClientIPMiddleware) ServeHTTP(wrt http.ResponseWriter, req *http.Request, next http.HandlerFunc) {
-	ip := req.Header.Get("X-FORWARDED-FOR")
-	if ip == "" {
-		ip, _, _ = net.SplitHostPort(req.RemoteAddr)
-	}
-
-	next(wrt, req.WithContext(context.WithValue(req.Context(), ClientIP, ip)))
 }

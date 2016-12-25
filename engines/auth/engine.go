@@ -9,16 +9,19 @@ import (
 	"github.com/kapmahc/champak/web"
 	"github.com/kapmahc/champak/web/crypto"
 	"github.com/spf13/viper"
+	"github.com/unrolled/render"
 	"golang.org/x/text/language"
 	"golang.org/x/tools/blog/atom"
 )
 
 // Engine auth engine
 type Engine struct {
-	Dao    *Dao        `inject:""`
-	Db     *gorm.DB    `inject:""`
-	Helper *web.Helper `inject:""`
-	Jwt    *Jwt        `inject:""`
+	Dao                   *Dao                   `inject:""`
+	Db                    *gorm.DB               `inject:""`
+	Helper                *Helper                `inject:""`
+	Render                *render.Render         `inject:""`
+	Jwt                   *Jwt                   `inject:""`
+	CurrentUserMiddleware *CurrentUserMiddleware `inject:""`
 }
 
 // Map inject objects

@@ -50,4 +50,5 @@ go get -u github.com/golang/lint/golint
 - [cli](https://github.com/urfave/cli)
 - [viper](https://github.com/spf13/viper)
 - [machinery](https://github.com/RichardKnop/machinery)
+- [validator](https://github.com/go-playground/validator)
 - [RabbitMQ](https://www.rabbitmq.com/getstarted.html)

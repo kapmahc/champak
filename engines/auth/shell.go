@@ -67,9 +67,9 @@ func (p *Engine) Shell() []cli.Command {
 				} else {
 					return err
 				}
-				ng.Use(&web.ClientIPMiddleware{})
 				ng.Use(&web.CsrfMiddleware{})
 				ng.Use(sessions.Sessions("_session_", sss))
+				ng.Use(p.CurrentUserMiddleware)
 				ng.Use(negroni.NewStatic(http.Dir(path.Join("themes", theme, "assets"))))
 				// ng.Use(stats.New())
 

@@ -2,6 +2,7 @@ package auth
 
 import (
 	"fmt"
+	"net/http"
 	"time"
 
 	"github.com/SermoDigital/jose/crypto"
@@ -20,11 +21,26 @@ type Jwt struct {
 //Validate check jwt
 func (p *Jwt) Validate(buf []byte) (jwt.Claims, error) {
 	tk, err := jws.ParseJWT(buf)
-	if err == nil {
+	if err != nil {
 		return nil, err
 	}
 	err = tk.Validate(p.Key, p.Method)
-	return tk.Claims(), err
+	if err != nil {
+		return nil, err
+	}
+	return tk.Claims(), nil
+}
+
+// Parse parse from request
+func (p *Jwt) Parse(req *http.Request) (jwt.Claims, error) {
+	tk, err := jws.ParseJWTFromRequest(req)
+	if err != nil {
+		return nil, err
+	}
+	if err = tk.Validate(p.Key, p.Method); err != nil {
+		return nil, err
+	}
+	return tk.Claims(), nil
 }
 
 func (p *Jwt) key(kid string) string {

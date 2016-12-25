@@ -6,7 +6,7 @@ import (
 	"github.com/kapmahc/champak/web"
 )
 
-func (p *Engine) getHome(wrt http.ResponseWriter, req *http.Request) (web.H, error) {
+func (p *Engine) getHome(wrt http.ResponseWriter, req *http.Request) {
 	data := req.Context().Value(web.DATA).(web.H)
-	return data, nil
+	p.Render.HTML(wrt, http.StatusOK, "home", data)
 }

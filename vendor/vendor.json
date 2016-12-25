@@ -259,6 +259,12 @@
 			"revisionTime": "2016-12-21T12:03:40Z"
 		},
 		{
+			"checksumSHA1": "WSkAwMi+VpbHgGmhhF3TncUhV84=",
+			"path": "github.com/go-playground/form",
+			"revision": "d18f24949d2fcf4b367cff1424a9e1a60dd5507f",
+			"revisionTime": "2016-08-31T12:50:07Z"
+		},
+		{
 			"checksumSHA1": "QD6LqgLz2JMxXqns8TaxtK9AuHs=",
 			"path": "github.com/go-sql-driver/mysql",
 			"revision": "2e00b5cd70399450106cec6431c2e2ce3cae5034",
