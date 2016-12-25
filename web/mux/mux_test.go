@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/kapmahc/champak/mux"
+	"github.com/kapmahc/champak/web/mux"
 )
 
 func h(w http.ResponseWriter, r *http.Request) {

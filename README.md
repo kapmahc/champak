@@ -41,6 +41,7 @@ go get -u github.com/golang/lint/golint
   ```
 
 ## Documents
+- [Build Web Application with Golang](https://astaxie.gitbooks.io/build-web-application-with-golang/content/en/preface.html)
 - [Go Code Review Comments](https://github.com/golang/go/wiki/CodeReviewComments)
 - [gorm](http://jinzhu.me/gorm/)
 - [mux](https://github.com/gorilla/mux)

@@ -5,32 +5,37 @@ import (
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
-	"github.com/kapmahc/champak/cache"
-	"github.com/kapmahc/champak/i18n"
+	"github.com/kapmahc/champak/web/cache"
+	"github.com/kapmahc/champak/web/cache/redis"
+	"github.com/kapmahc/champak/web/i18n"
+	_gorm "github.com/kapmahc/champak/web/i18n/gorm"
 	"golang.org/x/text/language"
 )
 
 var lang = language.SimplifiedChinese.String()
 
-func openDatabase() (*gorm.DB, error) {
+func TestGorm(t *testing.T) {
+	db, err := openDb()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	testI18n(t, _gorm.New(db, true))
+
+}
+
+func openDb() (*gorm.DB, error) {
 	db, err := gorm.Open("sqlite3", "test.db")
 	if err != nil {
 		return nil, err
 	}
 	db.LogMode(true)
-
-	db.AutoMigrate(&i18n.Locale{})
-	db.Model(&i18n.Locale{}).AddUniqueIndex("idx_locales_lang_code", "lang", "code")
 	return db, nil
 }
 
-func TestI18n(t *testing.T) {
-	db, err := openDatabase()
-	if err != nil {
-		t.Fatal(err)
-	}
-	i18n.DS(db)
-	cache.New("localhost", 6379, 0, "test")
+func testI18n(t *testing.T, s i18n.Store) {
+	cache.Use(redis.New("localhost", 6379, 0, "test"))
+	i18n.Use(s)
 
 	key := "hello"
 	val := "你好"
@@ -39,7 +44,7 @@ func TestI18n(t *testing.T) {
 	if val1 := i18n.T(lang, key); val != val1 {
 		t.Errorf("want %s, get %s", val, val1)
 	}
-	ks, err := i18n.Codes(lang)
+	ks, err := i18n.All(lang)
 	if err != nil {
 		t.Fatal(err)
 	}

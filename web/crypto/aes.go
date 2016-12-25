@@ -8,13 +8,6 @@ import (
 
 var aesCip cipher.Block
 
-// AesKey set aes-key
-func AesKey(k []byte) error {
-	var err error
-	aesCip, err = aes.NewCipher(k)
-	return err
-}
-
 // Encrypt aes encrypt
 func Encrypt(buf []byte) ([]byte, error) {
 	iv := make([]byte, aes.BlockSize)

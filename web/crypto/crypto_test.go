@@ -3,13 +3,13 @@ package crypto_test
 import (
 	"testing"
 
-	"github.com/kapmahc/champak/crypto"
+	"github.com/kapmahc/champak/web/crypto"
 )
 
 const hello = "Hello, Champak!"
 
 func TestAes(t *testing.T) {
-	if err := crypto.AesKey([]byte("1234567890123456")); err != nil {
+	if err := crypto.Use([]byte("1234567890123456"), []byte("123456")); err != nil {
 		t.Fatal(err)
 	}
 
@@ -29,7 +29,6 @@ func TestAes(t *testing.T) {
 }
 
 func TestHmac(t *testing.T) {
-	crypto.HmacKey([]byte("123456"))
 	code := crypto.Sum([]byte(hello))
 	t.Log(string(code))
 	if !crypto.Chk([]byte(hello), code) {
