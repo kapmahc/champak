@@ -22,38 +22,42 @@ const (
 	DELETE = "DELETE"
 )
 
-// Router rest router
-type Router struct {
-	Router *_mux.Router
+var (
+	router *_mux.Router
+)
+
+// Use use
+func Use(r *_mux.Router) {
+	router = r
 }
 
 // Get http get
-func (p *Router) Get(name, path string, hnd http.HandlerFunc) {
-	p.add(GET, name, path, hnd)
+func Get(name, path string, hnd http.HandlerFunc) {
+	add(GET, name, path, hnd)
 }
 
 // Post http post
-func (p *Router) Post(name, path string, hnd http.HandlerFunc) {
-	p.add(POST, name, path, hnd)
+func Post(name, path string, hnd http.HandlerFunc) {
+	add(POST, name, path, hnd)
 }
 
 // Patch http patch
-func (p *Router) Patch(name, path string, hnd http.HandlerFunc) {
-	p.add(PATCH, name, path, hnd)
+func Patch(name, path string, hnd http.HandlerFunc) {
+	add(PATCH, name, path, hnd)
 }
 
 // Put http put
-func (p *Router) Put(name, path string, hnd http.HandlerFunc) {
-	p.add(PUT, name, path, hnd)
+func Put(name, path string, hnd http.HandlerFunc) {
+	add(PUT, name, path, hnd)
 }
 
 // Delete http delete
-func (p *Router) Delete(name, path string, hnd http.HandlerFunc) {
-	p.add(DELETE, name, path, hnd)
+func Delete(name, path string, hnd http.HandlerFunc) {
+	add(DELETE, name, path, hnd)
 }
 
 // Crud http crud resources
-func (p *Router) Crud(
+func Crud(
 	name,
 	prefix string,
 	_new http.HandlerFunc,
@@ -66,41 +70,41 @@ func (p *Router) Crud(
 ) {
 	sn := inflection.Singular(name)
 	if _new != nil {
-		p.Get(fmt.Sprintf("%s.new", sn), fmt.Sprintf("%s/new", prefix), _new)
+		Get(fmt.Sprintf("%s.new", sn), fmt.Sprintf("%s/new", prefix), _new)
 	}
 	if create != nil {
-		p.Post("", prefix, create)
+		Post("", prefix, create)
 	}
 	if edit != nil {
-		p.Get(fmt.Sprintf("%s.edit", sn), fmt.Sprintf("%s/{id}/edit", prefix), edit)
+		Get(fmt.Sprintf("%s.edit", sn), fmt.Sprintf("%s/{id}/edit", prefix), edit)
 	}
 	if update != nil {
-		p.Post("", fmt.Sprintf("%s/{id}", prefix), update)
+		Post("", fmt.Sprintf("%s/{id}", prefix), update)
 	}
 	if show != nil {
-		p.Get(fmt.Sprintf("%s.show", sn), fmt.Sprintf("%s/{id}", prefix), show)
+		Get(fmt.Sprintf("%s.show", sn), fmt.Sprintf("%s/{id}", prefix), show)
 	}
 	if destroy != nil {
-		p.Delete("", fmt.Sprintf("%s/{id}", prefix), destroy)
+		Delete("", fmt.Sprintf("%s/{id}", prefix), destroy)
 	}
 	if index != nil {
-		p.Get(name, prefix, index)
+		Get(name, prefix, index)
 	}
 }
 
 // Form get and post
-func (p *Router) Form(name, path string, get http.HandlerFunc, post http.HandlerFunc) {
-	p.Get(name, path, get)
-	p.Post("", path, post)
+func Form(name, path string, get http.HandlerFunc, post http.HandlerFunc) {
+	Get(name, path, get)
+	Post("", path, post)
 }
 
 // URL url by name
-func (p *Router) URL(name string, args ...interface{}) string {
+func URL(name string, args ...interface{}) string {
 	var pairs []string
 	for _, v := range args {
 		pairs = append(pairs, fmt.Sprintf("%v", v))
 	}
-	if r := p.Router.Get(name); r != nil {
+	if r := router.Get(name); r != nil {
 		u, e := r.URL(pairs...)
 		if e == nil {
 			return u.String()
@@ -114,8 +118,8 @@ func (p *Router) URL(name string, args ...interface{}) string {
 type WalkFunc func(method, name, path string) error
 
 // Walk walk routes
-func (p *Router) Walk(fn WalkFunc) error {
-	return p.Router.Walk(
+func Walk(fn WalkFunc) error {
+	return router.Walk(
 		func(route *_mux.Route, router *_mux.Router, ancestors []*_mux.Route) error {
 			pth, err := route.GetPathTemplate()
 			if err != nil {
@@ -129,8 +133,8 @@ func (p *Router) Walk(fn WalkFunc) error {
 	)
 }
 
-func (p *Router) add(method, name, path string, hnd http.HandlerFunc) {
-	r := p.Router.HandleFunc(path, hnd).Methods(method)
+func add(method, name, path string, hnd http.HandlerFunc) {
+	r := router.HandleFunc(path, hnd).Methods(method)
 	if name != "" {
 		r.Name(name)
 	}

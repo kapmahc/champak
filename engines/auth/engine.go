@@ -97,14 +97,6 @@ func init() {
 		"port": 9200,
 	})
 
-	viper.SetDefault("rabbitmq", map[string]interface{}{
-		"host":     "localhost",
-		"port":     5672,
-		"user":     "guest",
-		"password": "guest",
-		"virtual":  "",
-	})
-
 	viper.SetDefault("languages", []string{
 		language.AmericanEnglish.String(),
 		language.SimplifiedChinese.String(),

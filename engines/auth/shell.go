@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/BurntSushi/toml"
+	log "github.com/Sirupsen/logrus"
 	"github.com/goincremental/negroni-sessions"
 	"github.com/goincremental/negroni-sessions/cookiestore"
 	"github.com/gorilla/csrf"
@@ -35,16 +36,15 @@ const (
 //Shell command options
 func (p *Engine) Shell() []cli.Command {
 	return []cli.Command{
-
 		{
 			Name:    "server",
 			Aliases: []string{"s"},
 			Usage:   "start the app server",
 			Action: InjectAction(func(*cli.Context) error {
-
 				rt := _mux.NewRouter()
+				mux.Use(rt)
 				web.Walk(func(en web.Engine) error {
-					en.Mount(&mux.Router{Router: rt})
+					en.Mount()
 					return nil
 				})
 
@@ -84,6 +84,11 @@ func (p *Engine) Shell() []cli.Command {
 					csrf.Path("/"),
 				)(ng)
 
+				log.Infof(
+					"application starting in %s on http://localhost:%d",
+					viper.GetString("env"),
+					viper.GetInt("server.port"),
+				)
 				if IsProduction() {
 					graceful.Run(adr, 10*time.Second, hnd)
 					return nil
@@ -104,7 +109,7 @@ func (p *Engine) Shell() []cli.Command {
 			Name:    "redis",
 			Aliases: []string{"re"},
 			Usage:   "open redis connection",
-			Action: Action(func(*cli.Context) error {
+			Action: InjectAction(func(*cli.Context) error {
 				return Shell(
 					"redis-cli",
 					"-h", viper.GetString("redis.host"),
@@ -122,7 +127,7 @@ func (p *Engine) Shell() []cli.Command {
 					Name:    "list",
 					Usage:   "list all cache keys",
 					Aliases: []string{"l"},
-					Action: Action(func(*cli.Context) error {
+					Action: InjectAction(func(*cli.Context) error {
 						keys, err := cache.Keys()
 						if err != nil {
 							return err
@@ -137,7 +142,7 @@ func (p *Engine) Shell() []cli.Command {
 					Name:    "clear",
 					Usage:   "clear cache items",
 					Aliases: []string{"c"},
-					Action: Action(func(*cli.Context) error {
+					Action: InjectAction(func(*cli.Context) error {
 						return cache.Flush()
 					}),
 				},
@@ -596,14 +601,15 @@ func (p *Engine) Shell() []cli.Command {
 			Aliases: []string{"rt"},
 			Usage:   "print out all defined routes",
 			Action: func(*cli.Context) error {
-				rt := mux.Router{Router: _mux.NewRouter()}
+				rt := _mux.NewRouter()
+				mux.Use(rt)
 				web.Walk(func(en web.Engine) error {
-					en.Mount(&rt)
+					en.Mount()
 					return nil
 				})
-				tpl := "%-5s %-24s %s\n"
-				fmt.Printf(tpl, "NAME", "PATH")
-				return rt.Walk(func(m, n, p string) error {
+				tpl := "%-6s %-24s %s\n"
+				fmt.Printf(tpl, "METHOD", "NAME", "PATH")
+				return mux.Walk(func(m, n, p string) error {
 					fmt.Printf(tpl, m, n, p)
 					return nil
 				})
@@ -617,7 +623,7 @@ func (p *Engine) Shell() []cli.Command {
 					Name:    "sync",
 					Aliases: []string{"s"},
 					Usage:   "sync locales from files",
-					Action: Action(func(*cli.Context) error {
+					Action: InjectAction(func(*cli.Context) error {
 						return i18n.Sync("locales")
 					}),
 				},

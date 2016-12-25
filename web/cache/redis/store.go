@@ -13,6 +13,14 @@ type Store struct {
 	prefix string
 }
 
+// Use use redis pool
+func Use(pool *_redis.Pool, prefix string) *Store {
+	return &Store{
+		pool:   pool,
+		prefix: prefix,
+	}
+}
+
 // New open redis connection
 func New(host string, port, db int, prefix string) *Store {
 	return &Store{
