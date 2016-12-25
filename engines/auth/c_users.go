@@ -18,7 +18,7 @@ const (
 	actResetPassword = "reset-password"
 )
 
-func (p *Engine) getUsersSignIn(wrt http.ResponseWriter, req *http.Request) (web.H, error) {
+func (p *Engine) getUsersSignIn(wrt http.ResponseWriter, req *http.Request) {
 	lng := req.Context().Value(web.LOCALE).(string)
 	data := req.Context().Value(web.DATA).(web.H)
 	title := i18n.T(lng, "auth.users.sign-in.title")
@@ -31,7 +31,7 @@ func (p *Engine) getUsersSignIn(wrt http.ResponseWriter, req *http.Request) (web
 	data["title"] = title
 	data["form"] = fm
 
-	return data, nil
+	p.Render.HTML(wrt, http.StatusOK, "auth/non-sign-in", data)
 }
 
 func (p *Engine) postUsersSignIn(wrt http.ResponseWriter, req *http.Request, o interface{}) error {
@@ -44,20 +44,23 @@ func (p *Engine) postUsersSignIn(wrt http.ResponseWriter, req *http.Request, o i
 	ip := req.Context().Value(web.ClientIP).(string)
 	if !crypto.Chk([]byte(fm.Password), user.Password) {
 		p.Dao.Log(user.ID, ip, i18n.T(lng, "auth.logs.sign-in-failed"))
-		return i18n.E(lng, "auth.errors.email-password-not-match")
+		err = i18n.E(lng, "auth.errors.email-password-not-match")
+		return
 	}
 	if !user.IsConfirm() {
-		return i18n.E(lng, "auth.errors.user-not-confirm")
+		err = i18n.E(lng, "auth.errors.user-not-confirm")
+		return
 	}
 	if user.IsLock() {
-		return i18n.E(lng, "auth.errors.user-is-lock")
+		err = i18n.E(lng, "auth.errors.user-is-lock")
+		return
 	}
 
 	p.Dao.signIn(user.ID, ip)
 	p.Dao.Log(user.ID, ip, i18n.T(lng, "auth.logs.sign-in-success"))
 	ss := sessions.GetSession(req)
 	ss.Set("uid", user.UID)
-	return nil
+	return
 }
 
 func (p *Engine) getUsersSignUp(wrt http.ResponseWriter, req *http.Request) (web.H, error) {

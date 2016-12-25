@@ -3,6 +3,8 @@ package web
 import (
 	"net"
 	"net/http"
+
+	"github.com/go-playground/form"
 )
 
 // KEY http request context key type
@@ -25,4 +27,13 @@ func ClientIP(r *http.Request) string {
 		ip, _, _ = net.SplitHostPort(r.RemoteAddr)
 	}
 	return ip
+}
+
+// Bind bind request to form
+func Bind(r *http.Request, v interface{}) error {
+	if err := r.ParseForm(); err != nil {
+		return err
+	}
+	dec := form.NewDecoder()
+	return dec.Decode(v, r.Form)
 }
