@@ -62,13 +62,13 @@ func (p *Engine) Shell() []cli.Command {
 				ng.Use(negronilogrus.NewMiddleware())
 
 				langs := viper.GetStringSlice("languages")
-				if mid, err := NewLocaleMiddleware(langs...); err == nil {
+				if mid, err := web.NewLocaleMiddleware(langs...); err == nil {
 					ng.Use(mid)
 				} else {
 					return err
 				}
-
-				ng.Use(&CsrfMiddleware{})
+				ng.Use(&web.ClientIPMiddleware{})
+				ng.Use(&web.CsrfMiddleware{})
 				ng.Use(sessions.Sessions("_session_", sss))
 				ng.Use(negroni.NewStatic(http.Dir(path.Join("themes", theme, "assets"))))
 				// ng.Use(stats.New())

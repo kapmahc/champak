@@ -15,8 +15,9 @@ import (
 
 // Engine auth engine
 type Engine struct {
-	Dao *Dao     `inject:""`
-	Db  *gorm.DB `inject:""`
+	Dao    *Dao        `inject:""`
+	Db     *gorm.DB    `inject:""`
+	Helper *web.Helper `inject:""`
 }
 
 // Map inject objects
