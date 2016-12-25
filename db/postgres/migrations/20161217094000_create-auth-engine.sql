@@ -15,29 +15,6 @@ CREATE TABLE notices (
   updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
 );
 
-CREATE TABLE locales (
-  id SERIAL PRIMARY KEY,
-  code VARCHAR(255) NOT NULL,
-  lang VARCHAR(8) NOT NULL DEFAULT 'en-US',
-  message TEXT NOT NULL,
-  created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
-  updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
-);
-CREATE UNIQUE INDEX idx_locales_code_lang ON locales (code, lang);
-CREATE INDEX idx_locales_code ON locales (code);
-CREATE INDEX idx_locales_lang ON locales (lang);
-
-
-CREATE TABLE settings (
-  id SERIAL PRIMARY KEY,
-  key VARCHAR(255) NOT NULL,
-  val BYTEA NOT NULL,
-  flag BOOLEAN NOT NULL DEFAULT FALSE,
-  created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
-  updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
-);
-CREATE UNIQUE INDEX idx_settings_key ON settings (key);
-
 CREATE TABLE links (
   id SERIAL PRIMARY KEY,
   href VARCHAR(255) NOT NULL,
@@ -180,7 +157,5 @@ DROP TABLE logs;
 DROP TABLE users;
 DROP TABLE cards;
 DROP TABLE links;
-DROP TABLE settings;
-DROP TABLE locales;
 DROP TABLE notices;
 DROP TABLE leave_words;

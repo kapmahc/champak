@@ -7,6 +7,9 @@ import (
 	"github.com/ikeikeikeike/go-sitemap-generator/stm"
 	"github.com/jinzhu/gorm"
 	"github.com/kapmahc/champak/web"
+	"github.com/kapmahc/champak/web/crypto"
+	"github.com/spf13/viper"
+	"golang.org/x/text/language"
 	"golang.org/x/tools/blog/atom"
 )
 
@@ -42,5 +45,71 @@ func (p *Engine) Sitemap() ([]stm.URL, error) {
 }
 
 func init() {
+	viper.SetEnvPrefix("champak")
+	viper.BindEnv("env")
+	viper.SetDefault("env", "development")
+
+	viper.SetConfigName("config")
+	viper.SetConfigType("toml")
+	viper.AddConfigPath(".")
+
+	viper.SetDefault("app", map[string]interface{}{
+		"name": "champak",
+	})
+
+	viper.SetDefault("redis", map[string]interface{}{
+		"host": "localhost",
+		"port": 6379,
+		"db":   8,
+	})
+
+	viper.SetDefault("database", map[string]interface{}{
+		"driver": "postgres",
+		"args": map[string]interface{}{
+			"host":    "localhost",
+			"port":    5432,
+			"user":    "postgres",
+			"dbname":  "champak_dev",
+			"sslmode": "disable",
+		},
+		"pool": map[string]int{
+			"max_open": 180,
+			"max_idle": 6,
+		},
+	})
+
+	viper.SetDefault("server", map[string]interface{}{
+		"port":  8080,
+		"name":  "www.change-me.com",
+		"theme": "bootstrap",
+	})
+
+	viper.SetDefault("secrets", map[string]interface{}{
+		"jwt":     crypto.Rand(32),
+		"aes":     crypto.Rand(32),
+		"hmac":    crypto.Rand(32),
+		"session": crypto.Rand(32),
+		"csrf":    crypto.Rand(32),
+	})
+
+	viper.SetDefault("elasticsearch", map[string]interface{}{
+		"host": "localhost",
+		"port": 9200,
+	})
+
+	viper.SetDefault("rabbitmq", map[string]interface{}{
+		"host":     "localhost",
+		"port":     5672,
+		"user":     "guest",
+		"password": "guest",
+		"virtual":  "",
+	})
+
+	viper.SetDefault("languages", []string{
+		language.AmericanEnglish.String(),
+		language.SimplifiedChinese.String(),
+		language.TraditionalChinese.String(),
+	})
+
 	web.Register(&Engine{})
 }
