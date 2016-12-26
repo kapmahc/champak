@@ -52,3 +52,6 @@ go get -u github.com/golang/lint/golint
 - [machinery](https://github.com/RichardKnop/machinery)
 - [validator](https://github.com/go-playground/validator)
 - [RabbitMQ](https://www.rabbitmq.com/getstarted.html)
+- [redux](http://redux.js.org/docs/basics/UsageWithReact.html)
+- [react](https://facebook.github.io/react/)
+- [react-bootstrap](https://react-bootstrap.github.io/components.html)
