@@ -28,7 +28,7 @@ func TestI18n(t *testing.T) {
 	}
 	db.AutoMigrate(&web.Locale{})
 	db.Model(&web.Locale{}).AddUniqueIndex("idx_locales_lang_code", "lang", "code")
-	p := &web.I18n{Db: db, Cache: &web.Cache{Redis: OpenRedis(), Namespace: "test"}}
+	p := &web.I18n{Db: db}
 	key := "hello"
 	val := "你好"
 	p.Set(lang, key, val)

@@ -9,7 +9,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-func (p *Engine) getSiteInfo(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func (p *Engine) getSiteInfo(w http.ResponseWriter, r *http.Request, _ httprouter.Params) (interface{}, error) {
 	lng := r.Context().Value(web.LOCALE).(string)
 	rst := web.H{}
 	for _, k := range []string{"title", "sub_title", "keywords", "description", "copyright"} {
@@ -23,5 +23,6 @@ func (p *Engine) getSiteInfo(w http.ResponseWriter, r *http.Request, _ httproute
 	rst[string(web.LOCALE)] = lng
 	rst["author"] = author
 	rst["languages"] = viper.GetStringSlice("languages")
-	p.R.JSON(w, http.StatusOK, rst)
+
+	return rst, nil
 }

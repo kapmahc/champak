@@ -9,7 +9,6 @@ import (
 	"os"
 	"path/filepath"
 	"text/template"
-	"time"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/go-ini/ini"
@@ -35,8 +34,7 @@ func (Locale) TableName() string {
 
 //I18n i18n
 type I18n struct {
-	Db    *gorm.DB `inject:""`
-	Cache *Cache   `inject:""`
+	Db *gorm.DB `inject:""`
 }
 
 // F format message
@@ -85,9 +83,7 @@ func (p *I18n) Set(lng string, code, message string) {
 		l.Message = message
 		err = p.Db.Save(&l).Error
 	}
-	if err == nil {
-		err = p.Cache.Set(p.key(lng, code), message, 24*time.Hour)
-	}
+
 	if err != nil {
 		log.Error(err)
 	}
@@ -118,9 +114,7 @@ func (p *I18n) getMessage(lng, code string) (string, error) {
 		First(&l).Error; err != nil {
 		return "", err
 	}
-	if err := p.Cache.Set(p.key(lng, code), l.Message, 24*time.Hour); err != nil {
-		log.Error(err)
-	}
+
 	return l.Message, nil
 }
 

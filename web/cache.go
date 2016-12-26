@@ -33,24 +33,34 @@ func (p *Cache) Keys() ([]string, error) {
 	return redis.Strings(c.Do("KEYS", p.key("*")))
 }
 
-//Set cache item
-func (p *Cache) Set(key string, val interface{}, ttl time.Duration) error {
+// SetBytes set bytes
+func (p *Cache) SetBytes(key string, val []byte, ttl time.Duration) error {
 	c := p.Redis.Get()
 	defer c.Close()
+	_, err := c.Do("SET", p.key(key), val, "EX", int(ttl/time.Second))
+	return err
+}
+
+//Set cache item
+func (p *Cache) Set(key string, val interface{}, ttl time.Duration) error {
 	var buf bytes.Buffer
 	enc := gob.NewEncoder(&buf)
 	if err := enc.Encode(val); err != nil {
 		return err
 	}
-	_, err := c.Do("SET", p.key(key), buf.Bytes(), "EX", int(ttl/time.Second))
-	return err
+	return p.SetBytes(key, buf.Bytes(), ttl)
+}
+
+// GetBytes get bytes
+func (p *Cache) GetBytes(key string) ([]byte, error) {
+	c := p.Redis.Get()
+	defer c.Close()
+	return redis.Bytes(c.Do("GET", p.key(key)))
 }
 
 //Get get from cache
 func (p *Cache) Get(key string, val interface{}) error {
-	c := p.Redis.Get()
-	defer c.Close()
-	bys, err := redis.Bytes(c.Do("GET", p.key(key)))
+	bys, err := p.GetBytes(key)
 	if err != nil {
 		return err
 	}
