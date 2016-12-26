@@ -79,7 +79,31 @@ func (p *Wrap) Form(f interface{}, h FormHandle) httprouter.Handle {
 }
 
 // JSON wrap handle
-func (p *Wrap) JSON(h Handle, c bool) httprouter.Handle {
+func (p *Wrap) JSON(h Handle) httprouter.Handle {
+	return func(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+		val, err := h(w, r, ps)
+		if err == nil {
+			p.R.JSON(w, http.StatusOK, val)
+			return
+		}
+		p.R.Text(w, http.StatusInternalServerError, err.Error())
+	}
+}
+
+// XML wrap handle
+func (p *Wrap) XML(h Handle) httprouter.Handle {
+	return func(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+		val, err := h(w, r, ps)
+		if err == nil {
+			p.R.XML(w, http.StatusOK, val)
+			return
+		}
+		p.R.Text(w, http.StatusInternalServerError, err.Error())
+	}
+}
+
+// JSONC wrap handle
+func (p *Wrap) JSONC(h Handle) httprouter.Handle {
 	return func(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		const ct = "application/json; charset=UTF-8"
 		key, err := p.cacheKey(w, r, ct)
@@ -88,27 +112,23 @@ func (p *Wrap) JSON(h Handle, c bool) httprouter.Handle {
 		}
 		val, err := h(w, r, ps)
 		if err == nil {
-			if c {
-				var buf bytes.Buffer
-				enc := json.NewEncoder(&buf)
-				err = enc.Encode(val)
-				if err == nil {
-					body := buf.Bytes()
-					p.C.SetBytes(key, body, 24*time.Hour)
-					p.write(w, body, ct)
-					return
-				}
-			} else {
-				p.R.JSON(w, http.StatusOK, val)
+			var buf bytes.Buffer
+			enc := json.NewEncoder(&buf)
+			err = enc.Encode(val)
+			if err == nil {
+				body := buf.Bytes()
+				p.C.SetBytes(key, body, 24*time.Hour)
+				p.write(w, body, ct)
+				return
 			}
 		}
-		p.R.Text(w, http.StatusInternalServerError, err.Error())
 
+		p.R.Text(w, http.StatusInternalServerError, err.Error())
 	}
 }
 
-// XML wrap handle
-func (p *Wrap) XML(h Handle, c bool) httprouter.Handle {
+// XMLC wrap cache handle
+func (p *Wrap) XMLC(h Handle, c bool) httprouter.Handle {
 	return func(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		const ct = "text/xml; charset=UTF-8"
 		key, err := p.cacheKey(w, r, ct)
@@ -117,21 +137,17 @@ func (p *Wrap) XML(h Handle, c bool) httprouter.Handle {
 		}
 		val, err := h(w, r, ps)
 		if err == nil {
-			if c {
-				var buf bytes.Buffer
-				enc := xml.NewEncoder(&buf)
-				err = enc.Encode(val)
-				if err == nil {
-					body := buf.Bytes()
-					p.C.SetBytes(key, body, 24*time.Hour)
-					p.write(w, body, ct)
-					return
-				}
-			} else {
-				p.R.XML(w, http.StatusOK, val)
+			var buf bytes.Buffer
+			enc := xml.NewEncoder(&buf)
+			err = enc.Encode(val)
+			if err == nil {
+				body := buf.Bytes()
+				p.C.SetBytes(key, body, 24*time.Hour)
+				p.write(w, body, ct)
 				return
 			}
 		}
+
 		p.R.Text(w, http.StatusInternalServerError, err.Error())
 	}
 }

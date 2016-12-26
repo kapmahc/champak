@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 	"text/template"
 
 	log "github.com/Sirupsen/logrus"
@@ -165,6 +166,39 @@ func (p *I18n) Sync(dir string) error {
 
 func (p *I18n) key(lng, code string) string {
 	return fmt.Sprintf("%s/%s", lng, code)
+}
+
+//Items list all items
+func (p *I18n) Items(lng string) map[string]interface{} {
+	rt := make(map[string]interface{})
+	var items []Locale
+	if err := p.Db.
+		Select([]string{"code", "message"}).
+		Where("lang = ?", lng).
+		Find(&items).Error; err != nil {
+		log.Error(err)
+	}
+
+	for _, l := range items {
+		if strings.HasPrefix(l.Code, "web.") {
+			k := l.Code[4:]
+			codes := strings.Split(k, ".")
+			tmp := rt
+			for i, c := range codes {
+				if i+1 == len(codes) {
+					tmp[c] = l.Message
+				} else {
+					if tmp[c] == nil {
+						tmp[c] = make(map[string]interface{})
+					}
+					tmp = tmp[c].(map[string]interface{})
+				}
+			}
+
+		}
+
+	}
+	return rt
 }
 
 // -----------------------------------------------------------------------------

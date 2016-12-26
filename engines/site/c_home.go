@@ -9,6 +9,10 @@ import (
 	"github.com/spf13/viper"
 )
 
+func (p *Engine) getLocales(w http.ResponseWriter, r *http.Request, ps httprouter.Params) (interface{}, error) {
+	return p.I18n.Items(ps.ByName("lang")), nil
+}
+
 func (p *Engine) getSiteInfo(w http.ResponseWriter, r *http.Request, _ httprouter.Params) (interface{}, error) {
 	lng := r.Context().Value(web.LOCALE).(string)
 	rst := web.H{}

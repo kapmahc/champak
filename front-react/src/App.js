@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import {refresh} from './actions'
-import {get} from './utils'
+import {get} from './ajax'
 
 class W extends Component {
   componentDidMount() {
@@ -38,7 +38,7 @@ const M = connect(
       onRefresh: () => {
         get('/site/info').then(function(rst) {
           dispatch(refresh(rst))
-        })      
+        })
       }
     }
   }
