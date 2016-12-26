@@ -18,6 +18,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 	"github.com/kapmahc/champak/web"
 	negronilogrus "github.com/meatballhat/negroni-logrus"
+	"github.com/rs/cors"
 	"github.com/spf13/viper"
 	"github.com/steinbacher/goose"
 	"github.com/urfave/cli"
@@ -57,7 +58,8 @@ func (p *Engine) Shell() []cli.Command {
 					return e
 				}
 
-				ng.UseHandler(rt)
+				hnd := cors.Default().Handler(rt)
+				ng.UseHandler(hnd)
 
 				log.Infof(
 					"application starting in %s on http://localhost:%d",

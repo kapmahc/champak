@@ -56,4 +56,5 @@ go get -u github.com/golang/lint/golint
 - [RabbitMQ](https://www.rabbitmq.com/getstarted.html)
 - [redux](http://redux.js.org/docs/basics/UsageWithReact.html)
 - [react](https://facebook.github.io/react/)
+- [create-react-app](https://github.com/facebookincubator/create-react-app)
 - [react-bootstrap](https://react-bootstrap.github.io/components.html)
