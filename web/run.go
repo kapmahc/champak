@@ -62,7 +62,7 @@ func init() {
 
 	viper.SetDefault("server", map[string]interface{}{
 		"port":    8080,
-		"front":   "http://localhost:4200",
+		"front":   "http://localhost:3000",
 		"backend": "http://localhost:8080",
 	})
 
