@@ -61,11 +61,11 @@ export const SignUp = React.createClass({
   handleSubmit(e) {
     e.preventDefault();
     post('/users/sign-up', this.state)
-      .then((rst)=>{
+      .then((rst)=>{        
         console.log(rst)
       })
       .catch((err) => {
-        console.log(err);
+        alert(err)
       })
   },
   render (){

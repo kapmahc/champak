@@ -9,11 +9,10 @@ import (
 	"net/http"
 	"time"
 
-	validator "gopkg.in/go-playground/validator.v8"
-
 	"github.com/go-playground/form"
 	"github.com/julienschmidt/httprouter"
 	"github.com/unrolled/render"
+	validator "gopkg.in/go-playground/validator.v9"
 )
 
 // KEY context key type
@@ -75,10 +74,10 @@ func (p *Wrap) Form(f interface{}, h FormHandle) httprouter.Handle {
 			err = dec.Decode(f, r.Form)
 		}
 		if err == nil {
-			val, err = h(w, r, ps, f)
+			err = p.V.Struct(f)
 		}
 		if err == nil {
-			err = p.V.Struct(f)
+			val, err = h(w, r, ps, f)
 		}
 		if err == nil {
 			p.R.JSON(w, http.StatusOK, val)

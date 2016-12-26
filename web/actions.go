@@ -3,6 +3,8 @@ package web
 import (
 	"crypto/aes"
 
+	validator "gopkg.in/go-playground/validator.v9"
+
 	"github.com/SermoDigital/jose/crypto"
 	log "github.com/Sirupsen/logrus"
 	"github.com/facebookgo/inject"
@@ -33,6 +35,7 @@ func IocAction(fn func(*cli.Context, *inject.Graph) error) cli.ActionFunc {
 			&inject.Object{Value: render.New(render.Options{
 				IsDevelopment: !IsProduction(),
 			})},
+			&inject.Object{Value: validator.New()},
 			&inject.Object{Value: db},
 			&inject.Object{Value: rep},
 			&inject.Object{Value: cip},
