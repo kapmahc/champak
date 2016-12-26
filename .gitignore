@@ -1,0 +1,15 @@
+# Editor
+*.swp
+*.un~
+
+# Build
+/dist
+
+# Go
+/vendor/*/
+*.db
+/config.toml
+/etc
+/tmp
+
+# React
