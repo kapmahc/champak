@@ -4,14 +4,16 @@ import (
 	"github.com/facebookgo/inject"
 	"github.com/ikeikeikeike/go-sitemap-generator/stm"
 	"github.com/kapmahc/champak/web"
+	"github.com/unrolled/render"
 	"golang.org/x/tools/blog/atom"
 )
 
 // Engine site engine
 type Engine struct {
-	Cache    *web.Cache    `inject:""`
-	I18n     *web.I18n     `inject:""`
-	Settings *web.Settings `inject:""`
+	Cache    *web.Cache     `inject:""`
+	I18n     *web.I18n      `inject:""`
+	Settings *web.Settings  `inject:""`
+	R        *render.Render `inject:""`
 }
 
 // Map inject objects

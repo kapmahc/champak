@@ -25,6 +25,18 @@
 			"revisionTime": "2016-12-05T22:51:55Z"
 		},
 		{
+			"checksumSHA1": "FJP5enLaw1JzZNu6Fen+eEKY7Lo=",
+			"path": "github.com/SermoDigital/jose/jws",
+			"revision": "2bd9b81ac51d6d6134fcd4fd846bd2e7347a15f9",
+			"revisionTime": "2016-12-05T22:51:55Z"
+		},
+		{
+			"checksumSHA1": "3gGGWQ3PcKHE+2cVlkJmIlBfBlw=",
+			"path": "github.com/SermoDigital/jose/jwt",
+			"revision": "2bd9b81ac51d6d6134fcd4fd846bd2e7347a15f9",
+			"revisionTime": "2016-12-05T22:51:55Z"
+		},
+		{
 			"checksumSHA1": "h5Q1o+kA7VMAR5QpBzVJZbBEgC0=",
 			"path": "github.com/Sirupsen/logrus",
 			"revision": "881bee4e20a5d11a6a88a5667c6f292072ac1963",
@@ -247,6 +259,12 @@
 			"revisionTime": "2016-12-24T12:10:19Z"
 		},
 		{
+			"checksumSHA1": "UP2wONSE346WHWwT20G1Xedd6ZI=",
+			"path": "github.com/google/uuid",
+			"revision": "064e2069ce9c359c118179501254f67d7d37ba24",
+			"revisionTime": "2016-11-28T19:12:14Z"
+		},
+		{
 			"checksumSHA1": "Ok3Csn6Voou7pQT6Dv2mkwpqFtw=",
 			"path": "github.com/hashicorp/hcl",
 			"revision": "80e628d796135357b3d2e33a985c666b9f35eee1",
@@ -443,6 +461,12 @@
 			"path": "github.com/steinbacher/goose",
 			"revision": "dc457c3195032dd1c3848e21dc95ed02c92f8cfa",
 			"revisionTime": "2016-07-25T13:16:29Z"
+		},
+		{
+			"checksumSHA1": "7NRHOe081wHCsmQNV4nYhPY2b7A=",
+			"path": "github.com/unrolled/render",
+			"revision": "df76b7c9818cdcf458b4c81acbe29d093ff3080f",
+			"revisionTime": "2016-12-23T03:48:39Z"
 		},
 		{
 			"checksumSHA1": "LMu1NsthSqcXfKu0m6YGPAmwBcY=",

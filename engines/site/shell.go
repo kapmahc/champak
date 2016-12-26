@@ -13,8 +13,6 @@ import (
 	"runtime"
 	"time"
 
-	graceful "gopkg.in/tylerb/graceful.v1"
-
 	"github.com/BurntSushi/toml"
 	log "github.com/Sirupsen/logrus"
 	"github.com/facebookgo/inject"
@@ -27,6 +25,7 @@ import (
 	"github.com/urfave/cli"
 	"github.com/urfave/negroni"
 	"golang.org/x/text/language"
+	graceful "gopkg.in/tylerb/graceful.v1"
 )
 
 const (
@@ -36,7 +35,6 @@ const (
 // Shell console commands
 func (p *Engine) Shell() []cli.Command {
 	return []cli.Command{
-
 		{
 			Name:    "server",
 			Aliases: []string{"s"},
@@ -55,6 +53,11 @@ func (p *Engine) Shell() []cli.Command {
 				ng.Use(negronilogrus.NewMiddleware())
 				ng.UseHandler(rt)
 
+				log.Infof(
+					"application starting in %s on http://localhost:%d",
+					viper.GetString("env"),
+					viper.GetInt("server.port"),
+				)
 				if web.IsProduction() {
 					return graceful.RunWithErr(adr, 10*time.Second, ng)
 				}

@@ -3,13 +3,17 @@ package auth
 import (
 	"github.com/facebookgo/inject"
 	"github.com/ikeikeikeike/go-sitemap-generator/stm"
+	"github.com/jinzhu/gorm"
 	"github.com/kapmahc/champak/web"
-	"github.com/urfave/cli"
+	"github.com/unrolled/render"
 	"golang.org/x/tools/blog/atom"
 )
 
 // Engine auth engine
 type Engine struct {
+	R   *render.Render `inject:""`
+	Dao *Dao           `inject:""`
+	Db  *gorm.DB       `inject:""`
 }
 
 // Map inject objects
@@ -25,11 +29,6 @@ func (p *Engine) Mount(web.Router) {
 // Worker background jobs
 func (p *Engine) Worker() {
 
-}
-
-// Shell console commands
-func (p *Engine) Shell() []cli.Command {
-	return []cli.Command{}
 }
 
 // Atom rss-atom

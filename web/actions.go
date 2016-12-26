@@ -4,8 +4,10 @@ import (
 	"crypto/aes"
 
 	"github.com/SermoDigital/jose/crypto"
+	log "github.com/Sirupsen/logrus"
 	"github.com/facebookgo/inject"
 	"github.com/spf13/viper"
+	"github.com/unrolled/render"
 	"github.com/urfave/cli"
 	"golang.org/x/text/language"
 )
@@ -35,6 +37,9 @@ func IocAction(fn func(*cli.Context, *inject.Graph) error) cli.ActionFunc {
 		}
 
 		if err := inj.Provide(
+			&inject.Object{Value: render.New(render.Options{
+				IsDevelopment: !IsProduction(),
+			})},
 			&inject.Object{Value: db},
 			&inject.Object{Value: rep},
 			&inject.Object{Value: cip},
@@ -67,6 +72,7 @@ func IocAction(fn func(*cli.Context, *inject.Graph) error) cli.ActionFunc {
 // Action cfg action
 func Action(f cli.ActionFunc) cli.ActionFunc {
 	return func(c *cli.Context) error {
+		log.Infof("read config from config.toml")
 		if err := viper.ReadInConfig(); err != nil {
 			return err
 		}

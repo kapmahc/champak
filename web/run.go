@@ -3,10 +3,9 @@ package web
 import (
 	"os"
 
-	"golang.org/x/text/language"
-
 	"github.com/spf13/viper"
 	"github.com/urfave/cli"
+	"golang.org/x/text/language"
 )
 
 // Run main entry
