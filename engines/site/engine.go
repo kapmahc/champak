@@ -14,6 +14,7 @@ type Engine struct {
 	I18n     *web.I18n      `inject:""`
 	Settings *web.Settings  `inject:""`
 	R        *render.Render `inject:""`
+	W        *web.Wrap      `inject:""`
 }
 
 // Map inject objects

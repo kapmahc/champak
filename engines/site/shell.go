@@ -9,8 +9,6 @@ import (
 	"os"
 	"path"
 	"path/filepath"
-	"reflect"
-	"runtime"
 	"time"
 
 	"github.com/BurntSushi/toml"
@@ -590,10 +588,11 @@ func (p *Engine) Shell() []cli.Command {
 					en.Mount(rt)
 					return nil
 				})
-				tpl := "%-6s %-24s %s\n"
-				fmt.Printf(tpl, "METHOD", "PATH", "HANDLE")
+				tpl := "%-8s %s\n"
+				fmt.Printf(tpl, "METHOD", "PATH")
 				return rt.Walk(func(m, p string, h httprouter.Handle) error {
-					fmt.Printf(tpl, m, p, runtime.FuncForPC(reflect.ValueOf(h).Pointer()).Name())
+					// n :=runtime.FuncForPC(reflect.ValueOf(h).Pointer()).Name()
+					fmt.Printf(tpl, m, p)
 					return nil
 				})
 			},
