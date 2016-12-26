@@ -28,7 +28,9 @@ go get -u github.com/zmb3/gogetdoc
 go get -u github.com/golang/lint/golint
 ```
 - atom-beautify
+- atom-react
 - autosave(remember to enable it)
+- [Chrome extension](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi)
 
 ## Notes
 
