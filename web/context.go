@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"time"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/go-playground/form"
 	"github.com/julienschmidt/httprouter"
 	"github.com/unrolled/render"
@@ -68,14 +69,15 @@ func (p *Wrap) Form(f interface{}, h FormHandle) httprouter.Handle {
 	return func(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		dec := form.NewDecoder()
 		err := r.ParseForm()
-		var val interface{}
-
+		r.ParseMultipartForm(32 << 10)
+		log.Debugf("bind form %+v", r.Form)
 		if err == nil {
 			err = dec.Decode(f, r.Form)
 		}
 		if err == nil {
 			err = p.V.Struct(f)
 		}
+		var val interface{}
 		if err == nil {
 			val, err = h(w, r, ps, f)
 		}

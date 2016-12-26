@@ -1,7 +1,7 @@
 import React from 'react'
 import i18n from 'i18next'
-import { Link } from 'react-router'
 import {FormGroup, HelpBlock, Button, ControlLabel, FormControl} from 'react-bootstrap'
+import { Link, browserHistory } from 'react-router'
 
 import {post} from '../ajax'
 
@@ -60,9 +60,15 @@ export const SignUp = React.createClass({
   },
   handleSubmit(e) {
     e.preventDefault();
-    post('/users/sign-up', this.state)
-      .then((rst)=>{        
-        console.log(rst)
+    var data = new FormData()
+    data.append('fullName', this.state.fullName)
+    data.append('email', this.state.email)
+    data.append('password', this.state.password)
+    data.append('passwordConfirmation', this.state.passwordConfirmation)
+    post('/users/sign-up', data)
+      .then((rst)=>{
+        alert(rst.message)
+        browserHistory.push('/users/sign-in')
       })
       .catch((err) => {
         alert(err)
