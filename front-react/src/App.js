@@ -17,8 +17,8 @@ class W extends Component {
       <Header />
       <div className="container">
         {children}
+        <Footer />
       </div>
-      <Footer />
     </div>
   }
 }
@@ -36,9 +36,7 @@ const M = connect(
   (dispatch) => {
     return {
       onRefresh: () => {
-        get('/site/info').then(function(rst) {
-          dispatch(refresh(rst))
-        })
+        get('/site/info', (rst)=> {dispatch(refresh(rst))})
       }
     }
   }

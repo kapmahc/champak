@@ -58,7 +58,11 @@ func (p *Engine) Shell() []cli.Command {
 					return e
 				}
 
-				hnd := cors.Default().Handler(rt)
+				hnd := cors.New(cors.Options{
+					AllowCredentials: true,
+					AllowedMethods:   []string{"GET", "POST", "PUT", "PATCH", "DELETE"},
+					Debug:            !web.IsProduction(),
+				}).Handler(rt)
 				ng.UseHandler(hnd)
 
 				log.Infof(

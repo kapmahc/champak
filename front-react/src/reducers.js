@@ -9,7 +9,7 @@ export const currentUser = (state={}, action) => {
   }
 }
 
-export const siteInfo = (state={title:'', copyright:''}, action) => {
+export const siteInfo = (state={languages: []}, action) => {
   switch(action.type) {
     case 'REFRESH':
       return action.info
