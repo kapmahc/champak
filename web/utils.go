@@ -1,22 +1,11 @@
 package web
 
 import (
-	"fmt"
 	"math/rand"
 	"os"
 	"os/exec"
 	"syscall"
-
-	"github.com/spf13/viper"
 )
-
-// Home get home url
-func Home() string {
-	if IsProduction() {
-		return fmt.Sprintf("https://%s", viper.GetString("server.name"))
-	}
-	return fmt.Sprintf("http://localhost:%d", viper.GetInt("server.port"))
-}
 
 //Shell exec shell command
 func Shell(cmd string, args ...string) error {

@@ -1,27 +1,17 @@
 package web
 
 import (
-	"net/http"
-
 	"github.com/facebookgo/inject"
 	"github.com/ikeikeikeike/go-sitemap-generator/stm"
-	"github.com/julienschmidt/httprouter"
 	"github.com/urfave/cli"
 	"golang.org/x/tools/blog/atom"
 )
 
-// Link link
-type Link struct {
-	Link string
-	Href string
-}
-
 // Engine engine
 type Engine interface {
 	Map(*inject.Graph) error
-	Mount(*httprouter.Router)
+	Mount(Router)
 	Worker()
-	Dashboard(*http.Request) []Link
 	Shell() []cli.Command
 	Atom() ([]*atom.Entry, error)
 	Sitemap() ([]stm.URL, error)

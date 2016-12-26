@@ -4,19 +4,11 @@ import (
 	"crypto/aes"
 
 	"github.com/SermoDigital/jose/crypto"
-	log "github.com/Sirupsen/logrus"
 	"github.com/facebookgo/inject"
 	"github.com/spf13/viper"
 	"github.com/urfave/cli"
 	"golang.org/x/text/language"
 )
-
-type injectLogger struct {
-}
-
-func (p *injectLogger) Debugf(format string, v ...interface{}) {
-	log.Debugf(format, v...)
-}
 
 // IocAction ioc action
 func IocAction(fn func(*cli.Context, *inject.Graph) error) cli.ActionFunc {
