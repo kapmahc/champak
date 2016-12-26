@@ -2,8 +2,10 @@ package web
 
 import (
 	"bytes"
+	"context"
 	"errors"
 	"fmt"
+	"net/http"
 	"os"
 	"path/filepath"
 	"text/template"
@@ -33,9 +35,8 @@ func (Locale) TableName() string {
 
 //I18n i18n
 type I18n struct {
-	Db      *gorm.DB         `inject:""`
-	Cache   *Cache           `inject:""`
-	Matcher language.Matcher `inject:"language.matcher"`
+	Db    *gorm.DB `inject:""`
+	Cache *Cache   `inject:""`
 }
 
 // F format message
@@ -170,4 +171,70 @@ func (p *I18n) Sync(dir string) error {
 
 func (p *I18n) key(lng, code string) string {
 	return fmt.Sprintf("%s/%s", lng, code)
+}
+
+// -----------------------------------------------------------------------------
+
+const (
+	// LOCALE locale key
+	LOCALE = KEY("locale")
+)
+
+// NewLocaleMiddleware create a locale middleware
+func NewLocaleMiddleware(languages ...string) (*LocaleMiddleware, error) {
+	var tags []language.Tag
+	for _, l := range languages {
+		if lng, err := language.Parse(l); err == nil {
+			tags = append(tags, lng)
+		} else {
+			return nil, err
+		}
+	}
+	return &LocaleMiddleware{
+		matcher:   language.NewMatcher(tags),
+		languages: languages,
+	}, nil
+}
+
+// LocaleMiddleware detect locale from http header
+type LocaleMiddleware struct {
+	matcher   language.Matcher
+	languages []string
+}
+
+func (p *LocaleMiddleware) ServeHTTP(wrt http.ResponseWriter, req *http.Request, next http.HandlerFunc) {
+	const key = string(LOCALE)
+
+	// 1. Check URL arguments.
+	lng := req.URL.Query().Get(key)
+
+	// 2. Get language information from cookies.
+	if len(lng) == 0 {
+		if ck, er := req.Cookie(key); er == nil {
+			lng = ck.Value
+		}
+	}
+
+	// 3. Get language information from 'Accept-Language'.
+	if len(lng) == 0 {
+		al := req.Header.Get("Accept-Language")
+		if len(al) > 4 {
+			lng = al[:5]
+		}
+	}
+
+	tag, _, _ := p.matcher.Match(language.Make(lng))
+
+	// Write cookie
+	// if write {
+	// 	http.SetCookie(wrt, &http.Cookie{
+	// 		Name:    key,
+	// 		Value:   tag.String(),
+	// 		Expires: time.Now().AddDate(10, 0, 0),
+	// 		Path:    "/",
+	// 	})
+	// }
+
+	ctx := context.WithValue(req.Context(), LOCALE, tag.String())
+	next(wrt, req.WithContext(ctx))
 }

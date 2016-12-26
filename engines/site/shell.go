@@ -51,6 +51,14 @@ func (p *Engine) Shell() []cli.Command {
 				ng := negroni.New()
 				ng.Use(negroni.NewRecovery())
 				ng.Use(negronilogrus.NewMiddleware())
+				langs := viper.GetStringSlice("languages")
+
+				if m, e := web.NewLocaleMiddleware(langs...); e == nil {
+					ng.Use(m)
+				} else {
+					return e
+				}
+
 				ng.UseHandler(rt)
 
 				log.Infof(
