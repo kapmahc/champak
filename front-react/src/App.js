@@ -36,7 +36,9 @@ const M = connect(
   (dispatch) => {
     return {
       onRefresh: () => {
-        get('/site/info', (rst)=> {dispatch(refresh(rst))})
+        get('/site/info', ).then(
+          (rst)=> { dispatch(refresh(rst)) }
+        )
       }
     }
   }

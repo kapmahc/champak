@@ -11,19 +11,16 @@ import (
 
 // Engine auth engine
 type Engine struct {
-	R   *render.Render `inject:""`
-	Dao *Dao           `inject:""`
-	Db  *gorm.DB       `inject:""`
+	R    *render.Render `inject:""`
+	Dao  *Dao           `inject:""`
+	Db   *gorm.DB       `inject:""`
+	I18n *web.I18n      `inject:""`
+	W    *web.Wrap      `inject:""`
 }
 
 // Map inject objects
 func (p *Engine) Map(*inject.Graph) error {
 	return nil
-}
-
-// Mount mount web points
-func (p *Engine) Mount(web.Router) {
-
 }
 
 // Worker background jobs

@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
+	"net"
 	"net/http"
 	"time"
 
@@ -32,6 +33,15 @@ type Wrap struct {
 	R *render.Render      `inject:""`
 	V *validator.Validate `inject:""`
 	C *Cache              `inject:""`
+}
+
+// ClientIP get client ip
+func (p *Wrap) ClientIP(r *http.Request) string {
+	ip := r.Header.Get("X-FORWARDED-FOR")
+	if ip == "" {
+		ip, _, _ = net.SplitHostPort(r.RemoteAddr)
+	}
+	return ip
 }
 
 // Rest wrap rest handles
