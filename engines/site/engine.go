@@ -21,11 +21,6 @@ func (p *Engine) Map(*inject.Graph) error {
 	return nil
 }
 
-// Mount mount web points
-func (p *Engine) Mount(web.Router) {
-
-}
-
 // Worker background jobs
 func (p *Engine) Worker() {
 
