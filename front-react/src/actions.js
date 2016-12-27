@@ -9,10 +9,10 @@ export const refresh = (info) => {
   }
 }
 
-export const signIn = (user) => {
+export const signIn = (token) => {
   return {
     type: 'SIGN_IN',
-    user
+    token
   }
 }
 

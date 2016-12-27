@@ -11,6 +11,7 @@
     "i18next": "^4.1.4",
     "i18next-browser-languagedetector": "^1.0.1",
     "i18next-xhr-backend": "^1.2.1",
+    "jwt-decode": "^2.1.0",
     "react": "^15.4.1",
     "react-bootstrap": "^0.30.7",
     "react-dom": "^15.4.1",

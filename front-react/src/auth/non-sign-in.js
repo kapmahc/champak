@@ -1,11 +1,14 @@
-import React from 'react'
+import React, {PropTypes} from 'react'
+import { connect } from 'react-redux'
 import i18n from 'i18next'
 import {FormGroup, HelpBlock, Button, ControlLabel, FormControl} from 'react-bootstrap'
 import { Link, browserHistory } from 'react-router'
 
 import {post} from '../ajax'
+import {signIn} from '../actions'
+import {TOKEN} from '../constants'
 
-export const SignIn = React.createClass({
+export const SignInW = React.createClass({
   getInitialState() {
     return {
       email: '',
@@ -17,11 +20,19 @@ export const SignIn = React.createClass({
     data[e.target.id] = e.target.value
     this.setState(data);
   },
+  handleSubmit(e) {
+    e.preventDefault();
+    const {onSignIn} = this.props
+    var data = new FormData()
+    data.append('email', this.state.email)
+    data.append('password', this.state.password)
+    onSignIn(data)
+  },
   render (){
     return <div className="row">
       <h2>{i18n.t('auth.users.sign-in.title')}</h2>
       <hr/>
-      <form>
+      <form onSubmit={this.handleSubmit}>
         <FormGroup controlId="email">
           <ControlLabel>{i18n.t('attributes.email')}</ControlLabel>
           <FormControl type="email" value={this.state.email} onChange={this.handleChange} />
@@ -40,6 +51,32 @@ export const SignIn = React.createClass({
     </div>
   }
 })
+
+SignInW.propTypes = {
+  onSignIn: PropTypes.func.isRequired
+}
+
+export const SignIn = connect(
+  (state) => {
+    return {}
+  },
+  (dispatch) => {
+    return {
+      onSignIn: (data) => {
+        post('/users/sign-in', data)
+          .then((rst)=>{
+            window.sessionStorage.setItem(TOKEN, rst.token)
+            dispatch(signIn(rst.token))
+            browserHistory.push('/')
+          })
+          .catch((err) => {
+            alert(err)
+          })
+      }
+    }
+  }
+)(SignInW)
+
 // -----------------------------------------------------------------------------
 
 export const ResetPassword = React.createClass({
@@ -59,7 +96,7 @@ export const ResetPassword = React.createClass({
     var data = new FormData()
     data.append('token', this.props.params.token)
     data.append('password', this.state.password)
-    data.append('passwordConfirmation', this.state.passwordConfirmation)    
+    data.append('passwordConfirmation', this.state.passwordConfirmation)
     post('/users/reset-password', data)
       .then((rst)=>{
         alert(rst.message)

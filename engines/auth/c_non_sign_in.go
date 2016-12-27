@@ -62,11 +62,14 @@ func (p *Engine) postUsersSignIn(w http.ResponseWriter, r *http.Request, _ httpr
 	p.Dao.signIn(user.ID, ip)
 	p.Dao.Log(user.ID, ip, p.I18n.T(lng, "auth.logs.sign-in-success"))
 
-	var cm jws.Claims
+	cm := jws.Claims{}
 	cm.Set("name", user.FullName)
 	cm.Set("uid", user.UID)
 	tkn, err := p.Jwt.Sum(cm, 7)
-	return web.H{"token": tkn}, err
+	if err != nil {
+		return nil, err
+	}
+	return web.H{"token": string(tkn)}, err
 }
 
 func (p *Engine) getUsersConfirm(w http.ResponseWriter, r *http.Request, ps httprouter.Params) (interface{}, error) {

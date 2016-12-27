@@ -12,6 +12,7 @@ func (p *Engine) signInURL() string {
 
 // Mount mount web points
 func (p *Engine) Mount(rt web.Router) {
+	rt.POST("/users/sign-in", p.W.Form(&fmSignIn{}, p.postUsersSignIn))
 	rt.POST("/users/sign-up", p.W.Form(&fmSignUp{}, p.postUsersSignUp))
 	rt.GET("/users/confirm/:token", p.W.Redirect(p.signInURL(), p.getUsersConfirm))
 	rt.POST("/users/confirm", p.W.Form(&fmEmail{}, p.postUsersConfirm))
