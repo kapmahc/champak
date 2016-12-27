@@ -44,6 +44,21 @@ func (p *Wrap) ClientIP(r *http.Request) string {
 	return ip
 }
 
+//Redirect redirect
+func (p *Wrap) Redirect(to string, h Handle) httprouter.Handle {
+	return func(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+		var act, msg string
+		if val, err := h(w, r, ps); err == nil {
+			act = "notice"
+			msg = val.(string)
+		} else {
+			act = "alert"
+			msg = err.Error()
+		}
+		http.Redirect(w, r, fmt.Sprintf("%s?%s=%s", to, act, msg), http.StatusFound)
+	}
+}
+
 // Rest wrap rest handles
 func (p *Wrap) Rest(rt Router, path string, create, update, show, destroy, index httprouter.Handle) {
 	if index != nil {

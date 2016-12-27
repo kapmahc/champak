@@ -40,6 +40,59 @@ export const SignIn = React.createClass({
     </div>
   }
 })
+// -----------------------------------------------------------------------------
+
+export const ResetPassword = React.createClass({
+  getInitialState() {
+    return {
+      password: '',
+      passwordConfirmation: '',
+    }
+  },
+  handleChange(e) {
+    var data = {}
+    data[e.target.id] = e.target.value
+    this.setState(data);
+  },
+  handleSubmit(e) {
+    e.preventDefault();
+    var data = new FormData()
+    data.append('token', this.props.params.token)
+    data.append('password', this.state.password)
+    data.append('passwordConfirmation', this.state.passwordConfirmation)    
+    post('/users/reset-password', data)
+      .then((rst)=>{
+        alert(rst.message)
+        browserHistory.push('/users/sign-in')
+      })
+      .catch((err) => {
+        alert(err)
+      })
+  },
+  render (){
+    return <div className="row">
+      <h2>{i18n.t('auth.users.reset-password.title')}</h2>
+      <hr/>
+      <form onSubmit={this.handleSubmit}>
+        <FormGroup controlId="password">
+          <ControlLabel>{i18n.t('attributes.password')}</ControlLabel>
+          <FormControl type="password" value={this.state.password} onChange={this.handleChange} />
+          <FormControl.Feedback />
+          <HelpBlock>{i18n.t('helps.password')}</HelpBlock>
+        </FormGroup>
+        <FormGroup controlId="passwordConfirmation">
+          <ControlLabel>{i18n.t('attributes.passwordConfirmation')}</ControlLabel>
+          <FormControl type="password" value={this.state.passwordConfirmation} onChange={this.handleChange} />
+          <FormControl.Feedback />
+          <HelpBlock>{i18n.t('helps.passwordConfirmation')}</HelpBlock>
+        </FormGroup>
+        <Button type="submit" bsStyle="primary">{i18n.t('buttons.submit')}</Button>
+      </form>
+      <br/>
+      <SharedLinks/>
+    </div>
+  }
+})
 
 // -----------------------------------------------------------------------------
 export const Confirm = ()=> (<EmailForm act='confirm' />)

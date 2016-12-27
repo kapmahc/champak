@@ -5,14 +5,12 @@ import { createStore, combineReducers } from 'redux'
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 
-// import 'bootstrap/dist/css/bootstrap.css';
-// import 'bootstrap/dist/css/bootstrap-theme.css';
 import './main.css';
 
 import * as reducers from './reducers'
 
 import App from './App';
-import {SignIn, SignUp, Confirm, Unlock, ForgotPassword} from './auth/users'
+import {SignIn, SignUp, Confirm, Unlock, ForgotPassword, ResetPassword} from './auth/users'
 import Home from './components/Home'
 
 let store = createStore(
@@ -34,6 +32,7 @@ render(
         <Route path="users/confirm" component={Confirm}/>
         <Route path="users/unlock" component={Unlock}/>
         <Route path="users/forgot-password" component={ForgotPassword}/>
+        <Route path="users/reset-password/:token" component={ResetPassword}/>
       </Route>
     </Router>
   </Provider>,

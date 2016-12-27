@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 
 import Header from './components/Header'
 import Footer from './components/Footer'
+import Flash from './components/Flash'
 import {refresh} from './actions'
 import {get} from './ajax'
 
@@ -16,6 +17,7 @@ class W extends Component {
     return <div>
       <Header />
       <div className="container">
+        <Flash msg={this.props.location.query}/>
         {children}
         <Footer />
       </div>

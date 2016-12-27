@@ -76,14 +76,15 @@ func (p *Engine) getUsersConfirm(w http.ResponseWriter, r *http.Request, ps http
 		return nil, err
 	}
 	if user.IsConfirm() {
-		return nil, p.I18n.E(lng, "auth.errors.user-already-confirm")
+		err = p.I18n.E(lng, "auth.errors.user-already-confirm")
+		return nil, err
 	}
 	if err = p.Db.Model(user).Update("confirmed_at", time.Now()).Error; err != nil {
 		return nil, err
 	}
 	p.Dao.Log(user.ID, p.W.ClientIP(r), p.I18n.T(lng, "auth.logs.confirm"))
 
-	return web.H{"message": p.I18n.T(lng, "auth.messages.confirm-success")}, nil
+	return p.I18n.T(lng, "auth.messages.confirm-success"), nil
 }
 
 func (p *Engine) postUsersConfirm(w http.ResponseWriter, r *http.Request, _ httprouter.Params, o interface{}) (interface{}, error) {
@@ -131,7 +132,7 @@ func (p *Engine) postUsersResetPassword(w http.ResponseWriter, r *http.Request, 
 
 func (p *Engine) getUsersUnlock(w http.ResponseWriter, r *http.Request, ps httprouter.Params) (interface{}, error) {
 	lng := r.Context().Value(web.LOCALE).(string)
-	user, err := p.parseToken(lng, ps.ByName("token"), actConfirm)
+	user, err := p.parseToken(lng, ps.ByName("token"), actUnlock)
 	if err != nil {
 		return nil, err
 	}
@@ -143,7 +144,7 @@ func (p *Engine) getUsersUnlock(w http.ResponseWriter, r *http.Request, ps httpr
 	}
 	p.Dao.Log(user.ID, p.W.ClientIP(r), p.I18n.T(lng, "auth.logs.unlock"))
 
-	return web.H{"message": p.I18n.T(lng, "auth.messages.unlock-success")}, nil
+	return p.I18n.T(lng, "auth.messages.unlock-success"), nil
 }
 
 func (p *Engine) postUsersUnlock(w http.ResponseWriter, r *http.Request, _ httprouter.Params, o interface{}) (interface{}, error) {
