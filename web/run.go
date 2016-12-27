@@ -1,6 +1,7 @@
 package web
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/spf13/viper"
@@ -13,7 +14,7 @@ func Run() error {
 
 	app := cli.NewApp()
 	app.Name = os.Args[0]
-	app.Version = Version
+	app.Version = fmt.Sprintf("git(%s) build(%s)", Version, BuildTime)
 	app.Usage = "CHAMPAK - A complete open source e-commerce solution by Go and React."
 	app.EnableBashCompletion = true
 	app.Commands = []cli.Command{}

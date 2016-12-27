@@ -80,17 +80,36 @@ func (p *Engine) Shell() []cli.Command {
 			Name:    "worker",
 			Aliases: []string{"w"},
 			Usage:   "start the worker progress",
-			Action: web.IocAction(func(_ *cli.Context, inj *inject.Graph) error {
-				forever := make(chan bool)
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:  "name, n",
+					Value: viper.GetString("app.name"),
+					Usage: "worker's name",
+				},
+			},
+			Action: web.IocAction(func(c *cli.Context, _ *inject.Graph) error {
+				name := c.String("name")
+				if name == "" {
+					cli.ShowSubcommandHelp(c)
+					return nil
+				}
 
 				web.Walk(func(en web.Engine) error {
-					go en.Worker()
+					p.Server.RegisterTasks(en.Workers())
 					return nil
 				})
-				log.Printf(" [*] Waiting for tasks. To exit press CTRL+C")
 
-				<-forever
-				return nil
+				return p.Server.NewWorker(name).Launch()
+				// forever := make(chan bool)
+				//
+				// web.Walk(func(en web.Engine) error {
+				// 	go en.Worker()
+				// 	return nil
+				// })
+				// log.Printf(" [*] Waiting for tasks. To exit press CTRL+C")
+				//
+				// <-forever
+				// return nil
 			}),
 		},
 		{

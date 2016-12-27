@@ -1,15 +1,12 @@
 package auth
 
 import (
-	"fmt"
 	"net/http"
 	"time"
 
 	"github.com/SermoDigital/jose/jws"
-	log "github.com/Sirupsen/logrus"
 	"github.com/julienschmidt/httprouter"
 	"github.com/kapmahc/champak/web"
-	"github.com/spf13/viper"
 )
 
 const (
@@ -166,39 +163,6 @@ func (p *Engine) postUsersUnlock(w http.ResponseWriter, r *http.Request, _ httpr
 }
 
 // -----------------------------------------------------------------------------
-
-func (p *Engine) sendEmail(lng string, user *User, act string) {
-	cm := jws.Claims{}
-	cm.Set("act", act)
-	cm.Set("uid", user.UID)
-	tkn, err := p.Jwt.Sum(cm, 1)
-	if err != nil {
-		log.Error(err)
-		return
-	}
-
-	obj := struct {
-		Frontend string
-		Backend  string
-		Token    string
-	}{
-		Frontend: viper.GetString("server.frontend"),
-		Backend:  viper.GetString("server.backend"),
-		Token:    string(tkn),
-	}
-	subject, err := p.I18n.F(lng, fmt.Sprintf("auth.emails.%s.subject", act), obj)
-	if err != nil {
-		log.Error(err)
-		return
-	}
-	body, err := p.I18n.F(lng, fmt.Sprintf("auth.emails.%s.body", act), obj)
-	if err != nil {
-		log.Error(err)
-		return
-	}
-	// TODO
-	log.Debug(subject, body)
-}
 
 func (p *Engine) parseToken(lng, tkn, act string) (*User, error) {
 	cm, err := p.Jwt.Validate([]byte(tkn))

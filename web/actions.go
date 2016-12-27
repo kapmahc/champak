@@ -25,6 +25,11 @@ func IocAction(fn func(*cli.Context, *inject.Graph) error) cli.ActionFunc {
 		// -------------------
 		rep := OpenRedis()
 		// -------------------
+		bws, err := NewWorkerServer()
+		if err != nil {
+			return err
+		}
+		// -------------------
 		cip, err := aes.NewCipher([]byte(viper.GetString("secrets.aes")))
 		if err != nil {
 			return err
@@ -37,6 +42,7 @@ func IocAction(fn func(*cli.Context, *inject.Graph) error) cli.ActionFunc {
 			})},
 			&inject.Object{Value: validator.New()},
 			&inject.Object{Value: db},
+			&inject.Object{Value: bws},
 			&inject.Object{Value: rep},
 			&inject.Object{Value: cip},
 			&inject.Object{Value: cip, Name: "aes.cip"},

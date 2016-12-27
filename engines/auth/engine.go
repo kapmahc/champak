@@ -1,6 +1,7 @@
 package auth
 
 import (
+	machinery "github.com/RichardKnop/machinery/v1"
 	"github.com/facebookgo/inject"
 	"github.com/ikeikeikeike/go-sitemap-generator/stm"
 	"github.com/jinzhu/gorm"
@@ -11,23 +12,19 @@ import (
 
 // Engine auth engine
 type Engine struct {
-	R        *render.Render `inject:""`
-	Dao      *Dao           `inject:""`
-	Db       *gorm.DB       `inject:""`
-	I18n     *web.I18n      `inject:""`
-	W        *web.Wrap      `inject:""`
-	Security *web.Security  `inject:""`
-	Jwt      *Jwt           `inject:""`
+	R        *render.Render    `inject:""`
+	Dao      *Dao              `inject:""`
+	Db       *gorm.DB          `inject:""`
+	I18n     *web.I18n         `inject:""`
+	W        *web.Wrap         `inject:""`
+	Security *web.Security     `inject:""`
+	Jwt      *Jwt              `inject:""`
+	Server   *machinery.Server `inject:""`
 }
 
 // Map inject objects
 func (p *Engine) Map(*inject.Graph) error {
 	return nil
-}
-
-// Worker background jobs
-func (p *Engine) Worker() {
-
 }
 
 // Atom rss-atom

@@ -13,6 +13,58 @@
 			"revisionTime": "2016-07-17T15:07:09Z"
 		},
 		{
+			"path": "github.com/RichardKnop/machinery/logger",
+			"revision": ""
+		},
+		{
+			"checksumSHA1": "KhP9frz3tonueOr6YVuKG1z9phk=",
+			"path": "github.com/RichardKnop/machinery/v1",
+			"revision": "97375d36323015a394b0d586c843c5d68f60ff87",
+			"revisionTime": "2016-12-07T16:03:19Z"
+		},
+		{
+			"checksumSHA1": "k2BVUwD47gpq2FVJdIh3ArSY1Dg=",
+			"path": "github.com/RichardKnop/machinery/v1/backends",
+			"revision": "97375d36323015a394b0d586c843c5d68f60ff87",
+			"revisionTime": "2016-12-07T16:03:19Z"
+		},
+		{
+			"checksumSHA1": "mPOU4ZTa8th1x3ZkUhR4xp1qzaQ=",
+			"path": "github.com/RichardKnop/machinery/v1/brokers",
+			"revision": "97375d36323015a394b0d586c843c5d68f60ff87",
+			"revisionTime": "2016-12-07T16:03:19Z"
+		},
+		{
+			"checksumSHA1": "pgoY4kM+0sI4g7BP0gYjZPFYI7E=",
+			"path": "github.com/RichardKnop/machinery/v1/config",
+			"revision": "97375d36323015a394b0d586c843c5d68f60ff87",
+			"revisionTime": "2016-12-07T16:03:19Z"
+		},
+		{
+			"checksumSHA1": "gohBrAPp11ucCwWQxqdguQfjp8M=",
+			"path": "github.com/RichardKnop/machinery/v1/logger",
+			"revision": "97375d36323015a394b0d586c843c5d68f60ff87",
+			"revisionTime": "2016-12-07T16:03:19Z"
+		},
+		{
+			"checksumSHA1": "MnO+EJ1yzLZ6KG5DnVgNZFbj3Ps=",
+			"path": "github.com/RichardKnop/machinery/v1/signatures",
+			"revision": "97375d36323015a394b0d586c843c5d68f60ff87",
+			"revisionTime": "2016-12-07T16:03:19Z"
+		},
+		{
+			"checksumSHA1": "VCEmyKj1HwZnjngF4mjSw7GmiaI=",
+			"path": "github.com/RichardKnop/machinery/v1/utils",
+			"revision": "97375d36323015a394b0d586c843c5d68f60ff87",
+			"revisionTime": "2016-12-07T16:03:19Z"
+		},
+		{
+			"checksumSHA1": "k/NXLVTpGAhDz7DQM2G8dDuJZpg=",
+			"path": "github.com/RichardKnop/uuid",
+			"revision": "c55201b036063326c5b1b89ccfe45a184973d073",
+			"revisionTime": "2016-02-16T16:37:10Z"
+		},
+		{
 			"checksumSHA1": "t+uej2kiyqRyQYguygI8t9nJH2w=",
 			"path": "github.com/SermoDigital/jose",
 			"revision": "2bd9b81ac51d6d6134fcd4fd846bd2e7347a15f9",
@@ -215,6 +267,12 @@
 			"path": "github.com/beevik/etree",
 			"revision": "4cd0dd976db869f817248477718071a28e978df0",
 			"revisionTime": "2016-12-09T19:49:18Z"
+		},
+		{
+			"checksumSHA1": "un79juR7EIavyegPSipMhklDhj4=",
+			"path": "github.com/bradfitz/gomemcache/memcache",
+			"revision": "2fafb84a66c4911e11a8f50955b01e74fe3ab9c5",
+			"revisionTime": "2016-11-27T23:23:02Z"
 		},
 		{
 			"checksumSHA1": "GqkBIw2lUA6lv/jgh9WIyR0YdWY=",
@@ -499,6 +557,12 @@
 			"revisionTime": "2016-07-25T13:16:29Z"
 		},
 		{
+			"checksumSHA1": "qik08F9+tO3aD/VsiPY19IbmT7k=",
+			"path": "github.com/streadway/amqp",
+			"revision": "63795daa9a446c920826655f26ba31c81c860fd6",
+			"revisionTime": "2016-12-24T08:20:40Z"
+		},
+		{
 			"checksumSHA1": "7NRHOe081wHCsmQNV4nYhPY2b7A=",
 			"path": "github.com/unrolled/render",
 			"revision": "df76b7c9818cdcf458b4c81acbe29d093ff3080f",
@@ -581,6 +645,36 @@
 			"path": "gopkg.in/go-playground/validator.v9",
 			"revision": "077c3830f3971d4a44a94c2249b67ce8c53198fc",
 			"revisionTime": "2016-12-23T02:45:03Z"
+		},
+		{
+			"checksumSHA1": "1D8GzeoFGUs5FZOoyC2DpQg8c5Y=",
+			"path": "gopkg.in/mgo.v2",
+			"revision": "3f83fa5005286a7fe593b055f0d7771a7dce4655",
+			"revisionTime": "2016-08-18T02:01:20Z"
+		},
+		{
+			"checksumSHA1": "YsB2DChSV9HxdzHaKATllAUKWSI=",
+			"path": "gopkg.in/mgo.v2/bson",
+			"revision": "3f83fa5005286a7fe593b055f0d7771a7dce4655",
+			"revisionTime": "2016-08-18T02:01:20Z"
+		},
+		{
+			"checksumSHA1": "XQsrqoNT1U0KzLxOFcAZVvqhLfk=",
+			"path": "gopkg.in/mgo.v2/internal/json",
+			"revision": "3f83fa5005286a7fe593b055f0d7771a7dce4655",
+			"revisionTime": "2016-08-18T02:01:20Z"
+		},
+		{
+			"checksumSHA1": "LEvMCnprte47qdAxWvQ/zRxVF1U=",
+			"path": "gopkg.in/mgo.v2/internal/sasl",
+			"revision": "3f83fa5005286a7fe593b055f0d7771a7dce4655",
+			"revisionTime": "2016-08-18T02:01:20Z"
+		},
+		{
+			"checksumSHA1": "+1WDRPaOphSCmRMxVPIPBV4aubc=",
+			"path": "gopkg.in/mgo.v2/internal/scram",
+			"revision": "3f83fa5005286a7fe593b055f0d7771a7dce4655",
+			"revisionTime": "2016-08-18T02:01:20Z"
 		},
 		{
 			"checksumSHA1": "hiOUviIMDKo7y918uBiEhfJyOkk=",

@@ -11,7 +11,7 @@ import (
 type Engine interface {
 	Map(*inject.Graph) error
 	Mount(Router)
-	Worker()
+	Workers() map[string]interface{}
 	Shell() []cli.Command
 	Atom() ([]*atom.Entry, error)
 	Sitemap() ([]stm.URL, error)

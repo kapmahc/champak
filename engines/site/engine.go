@@ -1,6 +1,7 @@
 package site
 
 import (
+	machinery "github.com/RichardKnop/machinery/v1"
 	"github.com/facebookgo/inject"
 	"github.com/ikeikeikeike/go-sitemap-generator/stm"
 	"github.com/kapmahc/champak/web"
@@ -10,11 +11,12 @@ import (
 
 // Engine site engine
 type Engine struct {
-	Cache    *web.Cache     `inject:""`
-	I18n     *web.I18n      `inject:""`
-	Settings *web.Settings  `inject:""`
-	R        *render.Render `inject:""`
-	W        *web.Wrap      `inject:""`
+	Cache    *web.Cache        `inject:""`
+	I18n     *web.I18n         `inject:""`
+	Settings *web.Settings     `inject:""`
+	R        *render.Render    `inject:""`
+	W        *web.Wrap         `inject:""`
+	Server   *machinery.Server `inject:""`
 }
 
 // Map inject objects
@@ -22,9 +24,9 @@ func (p *Engine) Map(*inject.Graph) error {
 	return nil
 }
 
-// Worker background jobs
-func (p *Engine) Worker() {
-
+// Workers background jobs
+func (p *Engine) Workers() map[string]interface{} {
+	return map[string]interface{}{}
 }
 
 // Atom rss-atom
