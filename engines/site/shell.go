@@ -98,7 +98,6 @@ func (p *Engine) Shell() []cli.Command {
 					p.Server.RegisterTasks(en.Workers())
 					return nil
 				})
-
 				return p.Server.NewWorker(name).Launch()
 				// forever := make(chan bool)
 				//

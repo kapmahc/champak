@@ -12,7 +12,7 @@ import './main.css';
 import * as reducers from './reducers'
 
 import App from './App';
-import {SignIn, SignUp} from './auth/users'
+import {SignIn, SignUp, Confirm, Unlock, ForgotPassword} from './auth/users'
 import Home from './components/Home'
 
 let store = createStore(
@@ -31,6 +31,9 @@ render(
         <IndexRoute component={Home}/>
         <Route path="users/sign-in" component={SignIn}/>
         <Route path="users/sign-up" component={SignUp}/>
+        <Route path="users/confirm" component={Confirm}/>
+        <Route path="users/unlock" component={Unlock}/>
+        <Route path="users/forgot-password" component={ForgotPassword}/>
       </Route>
     </Router>
   </Provider>,

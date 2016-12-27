@@ -11,13 +11,13 @@ import (
 )
 
 const (
-	sendEmailJob = "auth.send-email"
+	sendEmailJob = "authsendemail"
 )
 
 // Workers background jobs
 func (p *Engine) Workers() map[string]interface{} {
 	return map[string]interface{}{
-		sendEmailJob: p.sendEmailWorker,
+		sendEmailJob: sendEmailWorker,
 	}
 }
 
@@ -70,19 +70,17 @@ func (p *Engine) sendEmail(lng string, user *User, act string) {
 		},
 	}
 
-	rst, err := p.Server.SendTask(&task)
-	if err == nil {
-		log.Info("send task %+v", rst)
-	} else {
+	if _, err := p.Server.SendTask(&task); err != nil {
 		log.Error(err)
 	}
 }
 
-func (p *Engine) sendEmailWorker(to, subject, body string) error {
+func sendEmailWorker(to, subject, body string) (interface{}, error) {
+	log.Info("send mail to %s", to)
 	if !web.IsProduction() {
 		log.Info("send mail to %s\n%s\n%s", to, subject, body)
-		return nil
+		return "done", nil
 	}
 	// TODO
-	return nil
+	return "done", nil
 }

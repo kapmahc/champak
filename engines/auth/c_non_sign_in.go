@@ -69,7 +69,7 @@ func (p *Engine) postUsersSignIn(w http.ResponseWriter, r *http.Request, _ httpr
 	return web.H{"token": tkn}, err
 }
 
-func (p *Engine) getUsersConfirmToken(w http.ResponseWriter, r *http.Request, ps httprouter.Params) (interface{}, error) {
+func (p *Engine) getUsersConfirm(w http.ResponseWriter, r *http.Request, ps httprouter.Params) (interface{}, error) {
 	lng := r.Context().Value(web.LOCALE).(string)
 	user, err := p.parseToken(lng, ps.ByName("token"), actConfirm)
 	if err != nil {
@@ -129,7 +129,7 @@ func (p *Engine) postUsersResetPassword(w http.ResponseWriter, r *http.Request, 
 	return web.H{"message": p.I18n.T(lng, "auth.messages.reset-password-success")}, nil
 }
 
-func (p *Engine) getUsersUnlockToken(w http.ResponseWriter, r *http.Request, ps httprouter.Params) (interface{}, error) {
+func (p *Engine) getUsersUnlock(w http.ResponseWriter, r *http.Request, ps httprouter.Params) (interface{}, error) {
 	lng := r.Context().Value(web.LOCALE).(string)
 	user, err := p.parseToken(lng, ps.ByName("token"), actConfirm)
 	if err != nil {

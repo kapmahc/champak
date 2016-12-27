@@ -41,6 +41,55 @@ export const SignIn = React.createClass({
   }
 })
 
+// -----------------------------------------------------------------------------
+export const Confirm = ()=> (<EmailForm act='confirm' />)
+export const Unlock = ()=> (<EmailForm act='unlock' />)
+export const ForgotPassword = ()=> (<EmailForm act='forgot-password' />)
+// -----------------------------------------------------------------------------
+
+const EmailForm = React.createClass({
+  getInitialState() {
+    return {
+      email: '',
+    }
+  },
+  handleChange(e) {
+    var data = {}
+    data[e.target.id] = e.target.value
+    this.setState(data);
+  },
+  handleSubmit(e) {
+    e.preventDefault()
+    const {act} = this.props
+    var data = new FormData()
+    data.append('email', this.state.email)
+    post(`/users/${act}`, data)
+      .then((rst)=>{
+        alert(rst.message)
+        browserHistory.push('/users/sign-in')
+      })
+      .catch((err) => {
+        alert(err)
+      })
+  },
+  render (){
+    const {act} = this.props
+    return <div className="row">
+      <h2>{i18n.t(`auth.users.${act}.title`)}</h2>
+      <hr/>
+      <form onSubmit={this.handleSubmit}>
+        <FormGroup controlId="email">
+          <ControlLabel>{i18n.t('attributes.email')}</ControlLabel>
+          <FormControl type="email" value={this.state.email} onChange={this.handleChange} />
+          <FormControl.Feedback />
+        </FormGroup>
+        <Button type="submit" bsStyle="primary">{i18n.t('buttons.submit')}</Button>
+      </form>
+      <br/>
+      <SharedLinks/>
+    </div>
+  }
+})
 
 // -----------------------------------------------------------------------------
 
