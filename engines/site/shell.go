@@ -95,11 +95,11 @@ func (p *Engine) Shell() []cli.Command {
 				}
 
 				web.Walk(func(en web.Engine) error {
-					p.Server.RegisterTasks(en.Workers())
+					en.Workers()
 					return nil
 				})
-				p.Server.NewWorker(name).Launch()
-				return nil
+
+				return p.Server.NewWorker(name).Launch()
 			}),
 		},
 		{

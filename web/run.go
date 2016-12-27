@@ -14,7 +14,7 @@ func Run() error {
 
 	app := cli.NewApp()
 	app.Name = os.Args[0]
-	app.Version = fmt.Sprintf("git(%s) build(%s)", Version, BuildTime)
+	app.Version = fmt.Sprintf("%s.%s", Version, BuildTime)
 	app.Usage = "CHAMPAK - A complete open source e-commerce solution by Go and React."
 	app.EnableBashCompletion = true
 	app.Commands = []cli.Command{}

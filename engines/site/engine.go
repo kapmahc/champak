@@ -25,8 +25,7 @@ func (p *Engine) Map(*inject.Graph) error {
 }
 
 // Workers background jobs
-func (p *Engine) Workers() map[string]interface{} {
-	return map[string]interface{}{}
+func (p *Engine) Workers() {
 }
 
 // Atom rss-atom

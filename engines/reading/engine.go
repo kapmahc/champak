@@ -23,8 +23,7 @@ func (p *Engine) Mount(web.Router) {
 }
 
 // Workers background jobs
-func (p *Engine) Workers() map[string]interface{} {
-	return map[string]interface{}{}
+func (p *Engine) Workers() {
 }
 
 // Shell console commands

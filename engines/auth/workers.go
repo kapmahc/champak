@@ -15,10 +15,8 @@ const (
 )
 
 // Workers background jobs
-func (p *Engine) Workers() map[string]interface{} {
-	return map[string]interface{}{
-		sendEmailJob: sendEmailWorker,
-	}
+func (p *Engine) Workers() {
+	p.Server.RegisterTask(sendEmailJob, p.doSendEmail)
 }
 
 func (p *Engine) sendEmail(lng string, user *User, act string) {
@@ -75,10 +73,9 @@ func (p *Engine) sendEmail(lng string, user *User, act string) {
 	}
 }
 
-func sendEmailWorker(to, subject, body string) (interface{}, error) {
-	log.Info("send mail to %s", to)
+func (p *Engine) doSendEmail(to, subject, body string) (interface{}, error) {
 	if !web.IsProduction() {
-		log.Info("send mail to %s\n%s\n%s", to, subject, body)
+		log.Infof("to %s\n%s\n%s", to, subject, body)
 		return "done", nil
 	}
 	// TODO
