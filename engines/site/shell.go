@@ -46,25 +46,28 @@ func (p *Engine) Shell() []cli.Command {
 				})
 
 				adr := fmt.Sprintf(":%d", viper.GetInt("server.port"))
-
+				// ----------------------
 				ng := negroni.New()
 				ng.Use(negroni.NewRecovery())
 				ng.Use(negronilogrus.NewMiddleware())
+				// ----------------------
 				langs := viper.GetStringSlice("languages")
-
 				if m, e := web.NewLocaleMiddleware(langs...); e == nil {
 					ng.Use(m)
 				} else {
 					return e
 				}
-
+				ng.Use(p.Jwt)
+				// ----------------------
 				hnd := cors.New(cors.Options{
+					AllowedOrigins:   []string{"*"},
 					AllowCredentials: true,
 					AllowedMethods:   []string{"GET", "POST", "PUT", "PATCH", "DELETE"},
+					AllowedHeaders:   []string{"Authorization"},
 					Debug:            !web.IsProduction(),
 				}).Handler(rt)
 				ng.UseHandler(hnd)
-
+				// ----------------------
 				log.Infof(
 					"application starting in %s on http://localhost:%d",
 					viper.GetString("env"),

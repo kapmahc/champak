@@ -1,30 +1,36 @@
+import {TOKEN} from './constants'
+
 export const api = (path) => {
   return `${process.env.REACT_APP_BACKEND}${path}`
 }
 
-export const parse = (res) => {
+const parse = (res) => {
   return res.status === 200 || res.status === 0 ?
     res.json() :
     res.text().then(err => {throw err;})
 }
 
-export const get = (path) => {
-  return fetch(api(path), { method: 'get', credentials: 'include'  }).then(parse)
+const options = (method) => {
+  return {
+    method: method,
+    mode: 'cors',
+    credentials: 'include',
+    headers: {
+      'Authorization': `BEARER ${window.sessionStorage.getItem(TOKEN)}`
+    }
+  }
 }
 
+export const get = (path) => {
+  return fetch(api(path), options('get')).then(parse)
+}
+
+export const _delete = (path) => {
+  return fetch(api(path), options('delete')).then(parse)
+}
 
 export const post = (path, body) => {
-  return fetch(
-    api(path),
-    {
-      method: 'post',
-      mode: 'cors',
-      headers: {
-        // 'Authorization': 'Basic ' + btoa(authHeader),
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      credentials: 'include',
-      body: body,
-    })
-    .then(parse)
+  var data = options('post')
+  data.body = body
+  return fetch(api(path),data).then(parse)
 }

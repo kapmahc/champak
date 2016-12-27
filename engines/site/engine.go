@@ -4,6 +4,7 @@ import (
 	machinery "github.com/RichardKnop/machinery/v1"
 	"github.com/facebookgo/inject"
 	"github.com/ikeikeikeike/go-sitemap-generator/stm"
+	"github.com/kapmahc/champak/engines/auth"
 	"github.com/kapmahc/champak/web"
 	"github.com/unrolled/render"
 	"golang.org/x/tools/blog/atom"
@@ -17,6 +18,7 @@ type Engine struct {
 	R        *render.Render    `inject:""`
 	W        *web.Wrap         `inject:""`
 	Server   *machinery.Server `inject:""`
+	Jwt      *auth.Jwt         `inject:""`
 }
 
 // Map inject objects

@@ -65,6 +65,9 @@ func (p *Engine) postUsersSignIn(w http.ResponseWriter, r *http.Request, _ httpr
 	cm := jws.Claims{}
 	cm.Set("name", user.FullName)
 	cm.Set("uid", user.UID)
+	if p.Dao.Can(user.ID, RoleAdmin, DefaultResourceType, DefaultResourceID) {
+		cm.Set("admin", true)
+	}
 	tkn, err := p.Jwt.Sum(cm, 7)
 	if err != nil {
 		return nil, err
