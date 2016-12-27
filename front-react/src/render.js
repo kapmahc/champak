@@ -12,6 +12,7 @@ import * as reducers from './reducers'
 import App from './App';
 import Auth from './auth/routes'
 import Home from './components/Home'
+import NoMatch from './components/NoMatch'
 
 let store = createStore(
   combineReducers({
@@ -28,6 +29,7 @@ render(
       <Route path="/" component={App}>
         <IndexRoute component={Home}/>
         {Auth}
+        <Route path="*" component={NoMatch}/>
       </Route>
     </Router>
   </Provider>,
