@@ -12,7 +12,7 @@ export const currentUser = (state={}, action) => {
   }
 }
 
-export const siteInfo = (state={languages: []}, action) => {
+export const siteInfo = (state={languages: [], top:[], bottom: []}, action) => {
   switch(action.type) {
     case 'REFRESH':
       return action.info

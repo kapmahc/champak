@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import i18n from 'i18next'
+import {Link} from 'react-router'
 
 import {LOCALE} from '../constants'
 
@@ -16,8 +17,7 @@ const W = ({info}) => (
       </p>
       <p>
         &copy; {info.copyright} &nbsp;
-        <a href="#">Privacy</a> &middot;
-        <a href="#">Terms</a>
+        {info.bottom.map((v,i) => (<Link key={i} to={v.href}>{i18n.t(v.label)}</Link>) ).join("&middot;")}        
       </p>
     </footer>
   </div>

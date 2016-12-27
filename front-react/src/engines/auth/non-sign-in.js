@@ -4,9 +4,9 @@ import i18n from 'i18next'
 import {FormGroup, HelpBlock, Button, ControlLabel, FormControl} from 'react-bootstrap'
 import { Link, browserHistory } from 'react-router'
 
-import {post} from '../ajax'
-import {signIn} from '../actions'
-import {TOKEN} from '../constants'
+import {post} from '../../ajax'
+import {signIn} from '../../actions'
+import {TOKEN} from '../../constants'
 
 export const SignInW = React.createClass({
   getInitialState() {

@@ -2,7 +2,7 @@ import React from 'react'
 import {render} from 'react-dom'
 import { Provider } from 'react-redux'
 import { createStore, combineReducers } from 'redux'
-import { Router, Route, IndexRoute, browserHistory } from 'react-router'
+import { Router, Route, browserHistory } from 'react-router'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 
 import './main.css';
@@ -10,9 +10,7 @@ import './main.css';
 import * as reducers from './reducers'
 
 import App from './App';
-import Auth from './auth/routes'
-import Home from './components/Home'
-import NoMatch from './components/NoMatch'
+import root from './engines'
 
 let store = createStore(
   combineReducers({
@@ -27,9 +25,7 @@ render(
   <Provider store={store}>
     <Router history={history}>
       <Route path="/" component={App}>
-        <IndexRoute component={Home}/>
-        {Auth}
-        <Route path="*" component={NoMatch}/>
+        {root.routes}
       </Route>
     </Router>
   </Provider>,

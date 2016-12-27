@@ -1,6 +1,9 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import {Navbar, NavItem, MenuItem, Nav, NavDropdown} from 'react-bootstrap'
+import {Link} from 'react-router'
+import {LinkContainer} from 'react-router-bootstrap'
+import i18n from 'i18next'
 
 import LanguageBar from './LanguageBar'
 import PersonalBar from './PersonalBar'
@@ -9,14 +12,20 @@ const W = ({info}) => (
   <Navbar inverse collapseOnSelect fixedTop fluid>
     <Navbar.Header>
       <Navbar.Brand>
-        <a href="#">React-Bootstrap</a>
+        <Link to="/">{info.sub_title}</Link>
       </Navbar.Brand>
       <Navbar.Toggle />
     </Navbar.Header>
     <Navbar.Collapse>
       <Nav>
-        <NavItem eventKey={1} href="#">Link</NavItem>
-        <NavItem eventKey={2} href="#">Link</NavItem>
+        <LinkContainer to="/">
+          <NavItem>{i18n.t('header.home')}</NavItem>
+        </LinkContainer>
+        {info.top.map((v,i) => (
+          <LinkContainer key={i} to={v.href}>
+            <NavItem>{i18n.t(v.label)}</NavItem>
+          </LinkContainer>
+        ))}
         <NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
           <MenuItem eventKey={3.1}>Action</MenuItem>
           <MenuItem eventKey={3.2}>Another action</MenuItem>
