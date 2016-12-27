@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	sendEmailJob = "authsendemail"
+	sendEmailJob = "auth.send-email"
 )
 
 // Workers background jobs

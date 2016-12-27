@@ -98,17 +98,8 @@ func (p *Engine) Shell() []cli.Command {
 					p.Server.RegisterTasks(en.Workers())
 					return nil
 				})
-				return p.Server.NewWorker(name).Launch()
-				// forever := make(chan bool)
-				//
-				// web.Walk(func(en web.Engine) error {
-				// 	go en.Worker()
-				// 	return nil
-				// })
-				// log.Printf(" [*] Waiting for tasks. To exit press CTRL+C")
-				//
-				// <-forever
-				// return nil
+				p.Server.NewWorker(name).Launch()
+				return nil
 			}),
 		},
 		{
