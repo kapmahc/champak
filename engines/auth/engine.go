@@ -11,11 +11,13 @@ import (
 
 // Engine auth engine
 type Engine struct {
-	R    *render.Render `inject:""`
-	Dao  *Dao           `inject:""`
-	Db   *gorm.DB       `inject:""`
-	I18n *web.I18n      `inject:""`
-	W    *web.Wrap      `inject:""`
+	R        *render.Render `inject:""`
+	Dao      *Dao           `inject:""`
+	Db       *gorm.DB       `inject:""`
+	I18n     *web.I18n      `inject:""`
+	W        *web.Wrap      `inject:""`
+	Security *web.Security  `inject:""`
+	Jwt      *Jwt           `inject:""`
 }
 
 // Map inject objects

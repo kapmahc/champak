@@ -14,10 +14,8 @@ import (
 	_ "github.com/lib/pq"
 )
 
-var version string
-
 func main() {
-	if err := web.Run(version); err != nil {
+	if err := web.Run(); err != nil {
 		log.Fatal(err)
 	}
 }

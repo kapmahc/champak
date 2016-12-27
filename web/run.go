@@ -9,11 +9,11 @@ import (
 )
 
 // Run main entry
-func Run(version string) error {
+func Run() error {
 
 	app := cli.NewApp()
 	app.Name = os.Args[0]
-	app.Version = version
+	app.Version = Version
 	app.Usage = "CHAMPAK - A complete open source e-commerce solution by Go and React."
 	app.EnableBashCompletion = true
 	app.Commands = []cli.Command{}
