@@ -3,7 +3,7 @@ import routes from './routes'
 export default {
   dashboard(user){
     var links = []
-    if(user.is_admin){
+    if(user.admin){
       links.push({
         label: 'site.profile',
         links: [

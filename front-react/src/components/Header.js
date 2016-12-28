@@ -1,14 +1,14 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import {Navbar, NavItem, MenuItem, Nav, NavDropdown} from 'react-bootstrap'
+import {Navbar, NavItem, Nav} from 'react-bootstrap'
 import {Link} from 'react-router'
-import {LinkContainer} from 'react-router-bootstrap'
+import {IndexLinkContainer, LinkContainer} from 'react-router-bootstrap'
 import i18n from 'i18next'
 
 import LanguageBar from './LanguageBar'
 import PersonalBar from './PersonalBar'
 
-const W = ({info}) => (
+const W = ({info, user}) => (
   <Navbar inverse collapseOnSelect fixedTop fluid>
     <Navbar.Header>
       <Navbar.Brand>
@@ -18,21 +18,16 @@ const W = ({info}) => (
     </Navbar.Header>
     <Navbar.Collapse>
       <Nav>
-        <LinkContainer to="/">
+        <IndexLinkContainer to="/">
           <NavItem>{i18n.t('header.home')}</NavItem>
-        </LinkContainer>
+        </IndexLinkContainer>
+
         {info.top.map((v,i) => (
           <LinkContainer key={i} to={v.href}>
             <NavItem>{i18n.t(v.label)}</NavItem>
           </LinkContainer>
         ))}
-        <NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
-          <MenuItem eventKey={3.1}>Action</MenuItem>
-          <MenuItem eventKey={3.2}>Another action</MenuItem>
-          <MenuItem eventKey={3.3}>Something else here</MenuItem>
-          <MenuItem divider />
-          <MenuItem eventKey={3.3}>Separated link</MenuItem>
-        </NavDropdown>
+        {user.uid ? <LinkContainer to="/dashboard"><NavItem>{i18n.t('header.dashboard')}</NavItem></LinkContainer> :<NavItem/>}
       </Nav>
       <Nav pullRight>
         <LanguageBar/>
@@ -43,14 +38,22 @@ const W = ({info}) => (
 )
 
 W.propTypes = {
-  info: PropTypes.object.isRequired
+  info: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired
 }
 
 const M = connect(
   (state) => {
-    return {info:state.siteInfo}
+    return {
+      info: state.siteInfo,
+      user: state.currentUser
+    }
   },
-  (dispatch) => { return {} }
+  (dispatch) => { return {} },
+  null,
+  // https://github.com/reactjs/react-redux/blob/master/docs/troubleshooting.md
+  // fix nav-bar active class 
+  {pure: false}
 )(W)
 
 export default M
