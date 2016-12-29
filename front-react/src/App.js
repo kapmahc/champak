@@ -37,9 +37,6 @@ const M = connect(
   },
   (dispatch) => {
     return {
-      checkMessage: () => {
-
-      },
       onRefresh: (q) => {
         var tkn = window.sessionStorage.getItem(TOKEN)
         if(tkn){

@@ -6,6 +6,7 @@ export const currentUser = (state={}, action) => {
   switch (action.type) {
     case SIGN_IN:
       var user = jwtDecode(action.token)
+      user.is_sign_in = function(){return this.uid != null}
       return user
     case SIGN_OUT:
       return {}

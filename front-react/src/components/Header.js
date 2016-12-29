@@ -27,7 +27,7 @@ const W = ({info, user}) => (
             <NavItem>{i18n.t(v.label)}</NavItem>
           </LinkContainer>
         ))}
-        {user.uid ? <LinkContainer to="/dashboard"><NavItem>{i18n.t('header.dashboard')}</NavItem></LinkContainer> :<NavItem/>}
+        {user.uid ? <LinkContainer to="/users/logs"><NavItem>{i18n.t('header.dashboard')}</NavItem></LinkContainer> :<NavItem/>}
       </Nav>
       <Nav pullRight>
         <LanguageBar/>
@@ -52,7 +52,7 @@ const M = connect(
   (dispatch) => { return {} },
   null,
   // https://github.com/reactjs/react-redux/blob/master/docs/troubleshooting.md
-  // fix nav-bar active class 
+  // fix nav-bar active class
   {pure: false}
 )(W)
 

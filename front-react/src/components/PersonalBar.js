@@ -12,7 +12,7 @@ import {TOKEN} from '../constants'
 const W = ({user, onSignOut}) => {
   if(user.uid) {
     return (<NavDropdown title={i18n.t('personal-bar.welcome', {name:user.name})} id="personal-bar">
-      <LinkContainer to={{ pathname: `/dashboard` }}>
+      <LinkContainer to={{ pathname: `/users/logs` }}>
         <MenuItem>{i18n.t('personal-bar.dashboard')}</MenuItem>
       </LinkContainer>
       <MenuItem divider />
