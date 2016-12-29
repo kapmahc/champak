@@ -12,7 +12,7 @@ const W = ({info, user}) => (
   <Navbar inverse collapseOnSelect fixedTop fluid>
     <Navbar.Header>
       <Navbar.Brand>
-        <Link to="/">{info.sub_title}</Link>
+        <Link to="/">{info.subTitle}</Link>
       </Navbar.Brand>
       <Navbar.Toggle />
     </Navbar.Header>

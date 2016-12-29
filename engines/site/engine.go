@@ -3,6 +3,7 @@ package site
 import (
 	machinery "github.com/RichardKnop/machinery/v1"
 	"github.com/facebookgo/inject"
+	"github.com/garyburd/redigo/redis"
 	"github.com/ikeikeikeike/go-sitemap-generator/stm"
 	"github.com/jinzhu/gorm"
 	"github.com/kapmahc/champak/engines/auth"
@@ -21,6 +22,7 @@ type Engine struct {
 	Server   *machinery.Server `inject:""`
 	Jwt      *auth.Jwt         `inject:""`
 	Db       *gorm.DB          `inject:""`
+	Redis    *redis.Pool       `inject:""`
 }
 
 // Map inject objects

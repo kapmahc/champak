@@ -6,12 +6,21 @@ import (
 	"github.com/kapmahc/champak/web"
 )
 
+// SMTP smtp config
+type SMTP struct {
+	Host     string `json:"host"`
+	Port     int    `json:"port"`
+	User     string `json:"user"`
+	Password string `json:"-"`
+	Ssl      bool   `json:"ssl"`
+}
+
 // LeaveWord leave word
 type LeaveWord struct {
 	ID        uint      `json:"id"`
 	Body      string    `json:"body"`
 	Type      string    `json:"type"`
-	CreatedAt time.Time `json:"created_at"`
+	CreatedAt time.Time `json:"createdAt"`
 }
 
 // TableName table name
@@ -39,7 +48,7 @@ type Link struct {
 	Loc       string `json:"loc"`
 	Label     string `json:"label"`
 	Href      string `json:"href"`
-	SortOrder int    `json:"sort_order"`
+	SortOrder int    `json:"sortOrder"`
 }
 
 // TableName table name
@@ -55,7 +64,7 @@ type Card struct {
 	Sumamry   string `json:"summary"`
 	Logo      string `json:"logo"`
 	Href      string `json:"href"`
-	SortOrder int    `json:"sort_order"`
+	SortOrder int    `json:"sortOrder"`
 }
 
 // TableName table name

@@ -99,7 +99,7 @@ export const ChangePassword = React.createClass({
   },
   render(){
     return (<div className="col-md-12">
-      <h2>{i18n.t('auth.users.change-password.title')}</h2>
+      <h3>{i18n.t('auth.users.change-password.title')}</h3>
       <hr/>
       <form onSubmit={this.handleSubmit}>
         <FormGroup controlId="password">

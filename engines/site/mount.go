@@ -25,4 +25,17 @@ func (p *Engine) Mount(rt web.Router) {
 		p.W.JSON(p.destroyLeaveWord),
 		p.W.JSON(p.indexLeaveWords),
 	)
+
+	// -------------------
+	rt.GET("/admin/site/info", p.Jwt.MustAdmin(p.W.JSON(p.getAdminSiteInfo)))
+	rt.POST("/admin/site/info", p.Jwt.MustAdmin(p.W.Form(&fmSiteInfo{}, p.postAdminSiteInfo)))
+	rt.GET("/admin/site/author", p.Jwt.MustAdmin(p.W.JSON(p.getAdminSiteAuthor)))
+	rt.POST("/admin/site/author", p.Jwt.MustAdmin(p.W.Form(&fmSiteAuthor{}, p.postAdminSiteAuthor)))
+	rt.GET("/admin/site/seo", p.Jwt.MustAdmin(p.W.JSON(p.getAdminSiteSeo)))
+	rt.POST("/admin/site/seo", p.Jwt.MustAdmin(p.W.Form(&fmSiteSeo{}, p.postAdminSiteSeo)))
+	rt.GET("/admin/site/smtp", p.Jwt.MustAdmin(p.W.JSON(p.getAdminSiteSMTP)))
+	rt.POST("/admin/site/smtp", p.Jwt.MustAdmin(p.W.Form(&fmSiteSMTP{}, p.postAdminSiteSMTP)))
+	rt.GET("/admin/status/db", p.Jwt.MustAdmin(p.W.JSON(p.getAdminDbStatus)))
+	rt.GET("/admin/status/redis", p.Jwt.MustAdmin(p.W.JSON(p.getAdminRedisStatus)))
+	rt.GET("/admin/status/os", p.Jwt.MustAdmin(p.W.JSON(p.getAdminRuntimeStatus)))
 }

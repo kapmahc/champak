@@ -12,7 +12,9 @@ import (
 	"github.com/SermoDigital/jose/jwt"
 	log "github.com/Sirupsen/logrus"
 	"github.com/google/uuid"
+	"github.com/julienschmidt/httprouter"
 	"github.com/kapmahc/champak/web"
+	"github.com/unrolled/render"
 )
 
 const (
@@ -26,6 +28,7 @@ type Jwt struct {
 	Method crypto.SigningMethod `inject:"jwt.method"`
 	Dao    *Dao                 `inject:""`
 	I18n   *web.I18n            `inject:""`
+	R      *render.Render       `inject:""`
 }
 
 //Validate check jwt
@@ -93,4 +96,29 @@ func (p *Jwt) ServeHTTP(wrt http.ResponseWriter, req *http.Request, next http.Ha
 		log.Debug(err)
 	}
 	next(wrt, req)
+}
+
+// MustSignIn must sign-in
+func (p *Jwt) MustSignIn(h httprouter.Handle) httprouter.Handle {
+	return func(wrt http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+		lng := req.Context().Value(web.LOCALE).(string)
+		if req.Context().Value(CurrentUser) == nil {
+			p.R.Text(wrt, http.StatusForbidden, p.I18n.T(lng, "auth.errors.please-sign-in"))
+			return
+		}
+		h(wrt, req, ps)
+	}
+}
+
+// MustAdmin must have admin role
+func (p *Jwt) MustAdmin(h httprouter.Handle) httprouter.Handle {
+	return func(wrt http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+		lng := req.Context().Value(web.LOCALE).(string)
+		user := req.Context().Value(CurrentUser)
+		if user == nil || !p.Dao.Is(user.(*User).ID, RoleAdmin) {
+			p.R.Text(wrt, http.StatusForbidden, p.I18n.T(lng, "auth.errors.not-allow"))
+			return
+		}
+		h(wrt, req, ps)
+	}
 }

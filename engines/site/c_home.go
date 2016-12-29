@@ -17,12 +17,16 @@ func (p *Engine) getLocales(w http.ResponseWriter, r *http.Request, ps httproute
 func (p *Engine) getSiteInfo(w http.ResponseWriter, r *http.Request, _ httprouter.Params) (interface{}, error) {
 	lng := r.Context().Value(web.LOCALE).(string)
 	rst := web.H{}
-	for _, k := range []string{"title", "sub_title", "keywords", "description", "copyright"} {
+	for _, k := range []string{"title", "subTitle", "keywords", "description", "copyright"} {
 		rst[k] = p.I18n.T(lng, fmt.Sprintf("site.%s", k))
 	}
 	author := web.H{}
 	for _, k := range []string{"name", "email"} {
-		author[k] = p.I18n.T(lng, fmt.Sprintf("site.author.%s", k))
+		var v string
+		if err := p.Settings.Get(fmt.Sprintf("site.author.%s", k), &v); err != nil {
+			log.Error(err)
+		}
+		author[k] = v
 	}
 
 	rst[string(web.LOCALE)] = lng
