@@ -1,49 +1,49 @@
-import React from 'react'
+import React, {PropTypes} from 'react'
+import { connect } from 'react-redux'
 import {Alert} from 'react-bootstrap'
 import i18n from 'i18next'
+import {hideFlash} from '../actions'
 
-const W = React.createClass({
-  getInitialState() {
-    return {
-      show: false,
-      style: '',
-      subject: '',
-      body: '',
-    };
-  },
-  componentDidMount() {
-    const {msg} = this.props
-    if(msg.alert){
-      this.setState({
-        body: msg.alert,
-        subject: i18n.t('flashs.alert'),
-        style: 'danger',
-        show: true
-      })
-    }else if(msg.notice){
-      this.setState({
-        body: msg.notice,
-        subject: i18n.t('flashs.notice'),
-        style: 'success',
-        show: true
-      })
-    }
-  },
-  render() {    
-    if(this.state.show){
-      return (<div className="row">
-        <br/>
-        <Alert bsStyle={this.state.style} onDismiss={this.handleDismiss}>
-          <h4>{this.state.subject}</h4>
-          <p>{this.state.body}</p>
-        </Alert>
-      </div>)
-    }
-    return <div className="row"/>
-  },
-  handleDismiss() {
-    this.setState({show: false});
+const W = ({onHide, msg}) => {
+  var sty
+  switch (msg.type) {
+    case 'notice':
+      sty = 'success'
+      break;
+    case 'alert':
+      sty = 'danger'
+      break
+    default:
+      sty = 'info'
   }
-});
+  if(msg.show){
+    return (<div className="row">
+      <br/>
+      <Alert bsStyle={sty} onDismiss={onHide}>
+        <h4>{i18n.t(`flashs.${msg.type}`)}</h4>
+        <p>{msg.body}</p>
+      </Alert>
+    </div>)
+  }
+  return <div className="row"/>
+}
 
-export default W
+W.propTypes = {
+  msg: PropTypes.object.isRequired,
+  onHide: PropTypes.func.isRequired
+}
+
+const M = connect(
+  (state) => {
+    return {msg: state.flash}
+  },
+  (dispatch) => {
+    return {
+      onHide: () => {
+        dispatch(hideFlash())
+      },
+    }
+  }
+)(W)
+
+export default M

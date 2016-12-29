@@ -1,11 +1,13 @@
 import jwtDecode from 'jwt-decode'
 
+import {SIGN_IN, SIGN_OUT, REFRESH, FLASH} from './constants'
+
 export const currentUser = (state={}, action) => {
   switch (action.type) {
-    case 'SIGN_IN':
+    case SIGN_IN:
       var user = jwtDecode(action.token)
       return user
-    case 'SIGN_OUT':
+    case SIGN_OUT:
       return {}
     default:
       return state
@@ -14,8 +16,17 @@ export const currentUser = (state={}, action) => {
 
 export const siteInfo = (state={languages: [], top:[], bottom: []}, action) => {
   switch(action.type) {
-    case 'REFRESH':
+    case REFRESH:
       return action.info
+    default:
+      return state
+  }
+}
+
+export const flash = (state={}, action) => {
+  switch (action.type) {
+    case FLASH:
+      return action.body
     default:
       return state
   }

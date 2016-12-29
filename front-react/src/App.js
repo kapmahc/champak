@@ -4,22 +4,21 @@ import { connect } from 'react-redux'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import Flash from './components/Flash'
-import {refresh, signIn} from './actions'
+import {refresh, signIn, alertFlash, noticeFlash} from './actions'
 import {get} from './ajax'
 import {TOKEN} from './constants'
 
 class W extends Component {
   componentDidMount() {
-    const {onRefresh, checkSignIn} = this.props
-    onRefresh()
-    checkSignIn()
+    const {onRefresh} = this.props
+    onRefresh(this.props.location.query)
   }
   render () {
     const {children} = this.props
     return <div>
       <Header />
       <div className="container">
-        <Flash msg={this.props.location.query}/>
+        <Flash />
         {children}
         <Footer />
       </div>
@@ -29,7 +28,6 @@ class W extends Component {
 
 W.propTypes = {
   onRefresh: PropTypes.func.isRequired,
-  checkSignIn: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired
 }
 
@@ -39,15 +37,24 @@ const M = connect(
   },
   (dispatch) => {
     return {
-      onRefresh: () => {
+      checkMessage: () => {
+
+      },
+      onRefresh: (q) => {
+        var tkn = window.sessionStorage.getItem(TOKEN)
+        if(tkn){
+          dispatch(signIn(tkn))
+        }
+        // ---------
         get('/site/info', ).then(
           (rst)=> { dispatch(refresh(rst)) }
         )
-      },
-      checkSignIn: () => {
-        var tkn = window.sessionStorage.getItem(TOKEN)
-        if(tkn){          
-          dispatch(signIn(tkn))
+        // --------
+        if(q.alert){
+          dispatch(alertFlash(q.alert))
+        }
+        if(q.notice){
+          dispatch(noticeFlash(q.notice))
         }
       }
     }
