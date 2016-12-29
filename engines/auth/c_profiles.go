@@ -17,15 +17,15 @@ func (p *Engine) getUsersLogs(w http.ResponseWriter, r *http.Request, _ httprout
 	return user.Logs, err
 }
 
-func (p *Engine) getUsersProfile(w http.ResponseWriter, r *http.Request, _ httprouter.Params) (interface{}, error) {
+func (p *Engine) getUsersInfo(w http.ResponseWriter, r *http.Request, _ httprouter.Params) (interface{}, error) {
 	user := r.Context().Value(CurrentUser).(*User)
 	return user, nil
 }
 
-func (p *Engine) postUsersProfile(w http.ResponseWriter, r *http.Request, _ httprouter.Params, o interface{}) (interface{}, error) {
+func (p *Engine) postUsersInfo(w http.ResponseWriter, r *http.Request, _ httprouter.Params, o interface{}) (interface{}, error) {
 	lng := r.Context().Value(web.LOCALE).(string)
 	user := r.Context().Value(CurrentUser).(*User)
-	fm := o.(*fmProfile)
+	fm := o.(*fmUserInfo)
 
 	if err := p.Db.
 		Model(user).
@@ -37,7 +37,7 @@ func (p *Engine) postUsersProfile(w http.ResponseWriter, r *http.Request, _ http
 		return nil, err
 	}
 	p.Dao.Log(user.ID, p.W.ClientIP(r), p.I18n.T(lng, "auth.logs.update-profile"))
-	return web.H{"ok": true}, nil
+	return web.H{}, nil
 }
 
 func (p *Engine) postUsersChangePassword(w http.ResponseWriter, r *http.Request, _ httprouter.Params, o interface{}) (interface{}, error) {

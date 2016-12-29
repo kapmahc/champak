@@ -29,7 +29,7 @@ type fmChangePassword struct {
 	PasswordConfirmation string `form:"passwordConfirmation" validate:"eqfield=NewPassword"`
 }
 
-type fmProfile struct {
+type fmUserInfo struct {
 	FullName string `form:"fullName" validate:"required,max=255"`
 	Home     string `form:"home" validate:"required,max=255"`
 	Logo     string `form:"logo" validate:"required,max=255"`

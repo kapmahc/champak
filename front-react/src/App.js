@@ -43,7 +43,7 @@ const M = connect(
           dispatch(signIn(tkn))
         }
         // ---------
-        get('/site/info', ).then(
+        get('/site/info').then(
           (rst)=> { dispatch(refresh(rst)) }
         )
         // --------

@@ -33,23 +33,23 @@ const (
 type User struct {
 	web.Model
 
-	FullName        string
-	Email           string
-	UID             string
-	Password        []byte
-	ProviderID      string
-	ProviderType    string
-	Home            string
-	Logo            string
-	SignInCount     uint
-	LastSignInAt    *time.Time
-	LastSignInIP    string
-	CurrentSignInAt *time.Time
-	CurrentSignInIP string
-	ConfirmedAt     *time.Time
-	LockedAt        *time.Time
+	FullName        string     `json:"fullName"`
+	Email           string     `json:"email"`
+	UID             string     `json:"uid"`
+	Password        []byte     `json:"-"`
+	ProviderID      string     `json:"-"`
+	ProviderType    string     `json:"providerNype"`
+	Home            string     `json:"home"`
+	Logo            string     `json:"logo"`
+	SignInCount     uint       `json:"signInCount"`
+	LastSignInAt    *time.Time `json:"lastSignInAt"`
+	LastSignInIP    string     `json:"lastSignInIp"`
+	CurrentSignInAt *time.Time `json:"currentSignInAt"`
+	CurrentSignInIP string     `json:"currentSignInIp"`
+	ConfirmedAt     *time.Time `json:"confirmedAt"`
+	LockedAt        *time.Time `json:"lockedAt"`
 
-	Logs []Log
+	Logs []Log `json:"-"`
 }
 
 // TableName table name
@@ -105,13 +105,13 @@ func (Attachment) TableName() string {
 
 // Log log
 type Log struct {
-	ID        uint
-	Message   string
-	CreatedAt time.Time
-	IP        string
+	ID        uint      `json:"id"`
+	Message   string    `json:"message"`
+	CreatedAt time.Time `json:"createdAt"`
+	IP        string    `json:"ip"`
 
-	UserID uint
-	User   User
+	UserID uint `json:"userId"`
+	User   User `json:"-"`
 }
 
 // TableName table name

@@ -22,4 +22,8 @@ func (p *Engine) Mount(rt web.Router) {
 	rt.POST("/users/reset-password", p.W.Form(&fmResetPassword{}, p.postUsersResetPassword))
 
 	rt.DELETE("/users/sign-out", p.W.JSON(p.deleteUsersSignOut))
+	rt.GET("/users/logs", p.W.JSON(p.getUsersLogs))
+	rt.GET("/users/info", p.W.JSON(p.getUsersInfo))
+	rt.POST("/users/info", p.W.Form(&fmUserInfo{}, p.postUsersInfo))
+	rt.POST("/users/change-password", p.W.Form(&fmChangePassword{}, p.postUsersChangePassword))
 }
