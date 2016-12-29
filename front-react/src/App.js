@@ -18,7 +18,7 @@ class W extends Component {
     const {children} = this.props
     return <div>
       <Header />
-      <div className="container">        
+      <div className="container">
         <Flash msg={this.props.location.query}/>
         {children}
         <Footer />
@@ -46,7 +46,7 @@ const M = connect(
       },
       checkSignIn: () => {
         var tkn = window.sessionStorage.getItem(TOKEN)
-        if(tkn){
+        if(tkn){          
           dispatch(signIn(tkn))
         }
       }
