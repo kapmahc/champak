@@ -21,7 +21,7 @@ type fmSiteSeo struct {
 type fmSiteSMTP struct {
 	Host                 string `form:"host" validate:"required,max=255"`
 	Port                 int    `form:"port"`
-	User                 string `form:"host" validate:"required,max=255"`
+	User                 string `form:"user" validate:"required,max=255"`
 	Password             string `form:"password" validate:"min=6,max=32"`
 	PasswordConfirmation string `form:"passwordConfirmation" validate:"eqfield=Password"`
 	Ssl                  bool   `form:"ssl"`
