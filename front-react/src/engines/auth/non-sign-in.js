@@ -8,6 +8,50 @@ import {post} from '../../ajax'
 import {signIn} from '../../actions'
 import {TOKEN} from '../../constants'
 
+
+export const LeaveWord = React.createClass({
+  getInitialState(){
+    return {
+      body: ''
+    }
+  },
+  handleChange(e) {
+    var data = {}
+    data[e.target.id] = e.target.value    
+    this.setState(data);
+  },
+  handleSubmit(e) {
+    e.preventDefault();
+    var data = new FormData()
+    data.append('body', this.state.body)
+    post('/leave-words', data)
+      .then(function(rst){
+        alert(i18n.t('success'))
+        this.setState({body:''})
+      }.bind(this))
+      .catch((err) => {
+        alert(err)
+      })
+  },
+  render () {
+    return <div className="row">
+      <h2>{i18n.t('site.leave-words.new.title')}</h2>
+      <hr/>
+      <form onSubmit={this.handleSubmit}>
+        <FormGroup controlId="body">
+          <ControlLabel>{i18n.t('attributes.body')}</ControlLabel>
+          <FormControl componentClass="textarea" rows={8} value={this.state.body} onChange={this.handleChange}/>
+        </FormGroup>
+        <Button type="submit" bsStyle="primary">{i18n.t('buttons.submit')}</Button>
+      </form>
+      <br/>
+      <SharedLinks/>
+    </div>
+  }
+})
+
+// ---------------------------
+
 export const SignInW = React.createClass({
   getInitialState() {
     return {
@@ -257,5 +301,6 @@ const SharedLinks = () => (
         <Link to={`/users/${v}`}>{i18n.t(`auth.users.${v}.title`)}</Link>
       </li>
     ))}
+    <li><Link to={`/leave-words/new`}>{i18n.t('site.leave-words.new.title')}</Link></li>
   </ul>
 )

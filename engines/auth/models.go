@@ -16,10 +16,6 @@ const (
 	RoleAdmin = "admin"
 	// RoleRoot root role
 	RoleRoot = "root"
-	// InputTypeMarkdown markdown format
-	InputTypeMarkdown = "markdown"
-	// InputTypeHTML html format
-	InputTypeHTML = "html"
 	// UserTypeEmail email user
 	UserTypeEmail = "email"
 

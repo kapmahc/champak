@@ -16,15 +16,10 @@ func (p *Engine) Mount(rt web.Router) {
 		p.W.JSON(p.destroyNotice),
 		p.W.JSON(p.indexNotices),
 	)
-	p.W.Rest(
-		rt,
-		"/leave_words",
-		p.W.Form(&fmLeaveWord{}, p.createLeaveWord),
-		nil,
-		p.W.JSON(p.showLeaveWord),
-		p.W.JSON(p.destroyLeaveWord),
-		p.W.JSON(p.indexLeaveWords),
-	)
+
+	rt.POST("/leave-words", p.W.Form(&fmBody{}, p.createLeaveWord))
+	rt.DELETE("/leave-words/:id", p.Jwt.MustAdmin(p.W.JSON(p.destroyLeaveWord)))
+	rt.GET("/leave-words", p.Jwt.MustAdmin(p.W.JSON(p.indexLeaveWords)))
 
 	// -------------------
 	rt.GET("/admin/site/info", p.Jwt.MustAdmin(p.W.JSON(p.getAdminSiteInfo)))

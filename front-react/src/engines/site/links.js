@@ -9,12 +9,12 @@ const items = (user) => {
         {label: 'site.seo.title', href:'/admin/site/seo'},
         {label: 'site.smtp.title', href:'/admin/site/smtp'},
         {label: 'site.status.title', href:'/admin/site/status'},
-        {label: 'site.leave-words.title', href:'/site/leave-words'},
-        {label: 'site.notices.title', href:'/site/notices'},
-        {label: 'site.links.title', href:'/site/links'},
-        {label: 'site.cards.title', href:'/site/cards'},
-        {label: 'site.locales.title', href:'/site/locales'},
-        {label: 'site.users.title', href:'/site/users'}
+        {label: 'site.leave-words.index.title', href:'/leave-words'},
+        {label: 'site.notices.title', href:'/notices'},
+        {label: 'site.links.title', href:'/links'},
+        {label: 'site.cards.title', href:'/cards'},
+        {label: 'site.locales.title', href:'/locales'},
+        {label: 'site.users.title', href:'/users'}
       ]
     })
   }

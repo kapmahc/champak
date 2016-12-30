@@ -26,3 +26,7 @@ type fmSiteSMTP struct {
 	PasswordConfirmation string `form:"passwordConfirmation" validate:"eqfield=Password"`
 	Ssl                  bool   `form:"ssl"`
 }
+
+type fmBody struct {
+	Body string `form:"body" validate:"required,max=800"`
+}

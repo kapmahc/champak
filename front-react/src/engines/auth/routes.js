@@ -1,7 +1,7 @@
 import React from 'react'
 import {Route} from 'react-router'
 
-import {SignIn, SignUp, Confirm, Unlock, ForgotPassword, ResetPassword} from './non-sign-in'
+import {SignIn, SignUp, Confirm, Unlock, ForgotPassword, ResetPassword, LeaveWord} from './non-sign-in'
 import {Info, ChangePassword, Logs} from './profiles'
 import Dashboard from '../../Dashboard'
 
@@ -18,7 +18,8 @@ const W = [
     <Route path="info" component={Info}/>
     <Route path="change-password" component={ChangePassword}/>
     <Route path="logs" component={Logs}/>
-  </Route>
+  </Route>,
+  <Route key="leave-words.new" path="leave-words/new" component={LeaveWord}/>,
 ]
 
 export default W
