@@ -35,7 +35,5 @@ func (p *Engine) Mount(rt web.Router) {
 	rt.POST("/admin/site/seo", p.Jwt.MustAdmin(p.W.Form(&fmSiteSeo{}, p.postAdminSiteSeo)))
 	rt.GET("/admin/site/smtp", p.Jwt.MustAdmin(p.W.JSON(p.getAdminSiteSMTP)))
 	rt.POST("/admin/site/smtp", p.Jwt.MustAdmin(p.W.Form(&fmSiteSMTP{}, p.postAdminSiteSMTP)))
-	rt.GET("/admin/status/db", p.Jwt.MustAdmin(p.W.JSON(p.getAdminDbStatus)))
-	rt.GET("/admin/status/redis", p.Jwt.MustAdmin(p.W.JSON(p.getAdminRedisStatus)))
-	rt.GET("/admin/status/os", p.Jwt.MustAdmin(p.W.JSON(p.getAdminRuntimeStatus)))
+	rt.GET("/admin/site/status", p.Jwt.MustAdmin(p.W.JSON(p.getAdminSiteStatus)))
 }

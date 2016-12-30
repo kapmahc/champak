@@ -5,8 +5,6 @@ import { createStore, combineReducers } from 'redux'
 import { Router, Route, browserHistory } from 'react-router'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 
-import './main.css';
-
 import * as reducers from './reducers'
 
 import App from './App';

@@ -11,38 +11,36 @@ export const Status = React.createClass({
       cache: {},
       jobs:{},
       os:{},
-      redis:{},
+      redis: '',
       db:{},
     }
   },
   componentDidMount(){
-    get('/admin/status/os').then(function(rst){
-      this.setState({os:rst})
-    }.bind(this))
-    get('/admin/status/redis').then(function(rst){
-      this.setState({redis:rst})
-    }.bind(this))
-    get('/admin/status/db').then(function(rst){
-      this.setState({db:rst})
+    get('/admin/site/status').then(function(rst){
+      this.setState(rst)
     }.bind(this))
   },
   render(){
-    const {os} = this.state
+    const {os, db, redis} = this.state
     return  <div className="row">
       <div className="col-md-4">
         <h3>{i18n.t('site.status.os')}</h3>
         <hr/>
         <ListGroup>
-          {Object.keys(this.state.os).map((k,i)=>(<ListGroupItem key={i}>{k}: {os[k]}</ListGroupItem>))}
+          {Object.keys(os).map((k,i)=>(<ListGroupItem key={i}>{k}: {os[k]}</ListGroupItem>))}
         </ListGroup>
       </div>
       <div className="col-md-4">
         <h3>{i18n.t('site.status.database')}</h3>
         <hr/>
+        <ListGroup>
+          {Object.keys(db).map((k,i)=>(<ListGroupItem key={i}>{k}: {db[k]}</ListGroupItem>))}
+        </ListGroup>
       </div>
       <div className="col-md-4">
         <h3>REDIS</h3>
         <hr/>
+        <pre><code>{redis}</code></pre>
       </div>
       <div className="col-md-4">
         <h3>{i18n.t('site.status.cache')}</h3>
