@@ -19,14 +19,13 @@ export const List = React.createClass({
     if(confirm(i18n.t('are-you-sure'))){
       _delete(`/leave-words/${id}`).then(function(rst){
         var items = this.state.items
-        console.log(id)
-        this.setState({items:items.filter(obj => obj.id !==id )})        
+        this.setState({items:items.filter(obj => obj.id !==id )})
       }.bind(this))
     }
   },
   render(){
     return <div className="col-md-12">
-      <h1>{i18n.t('site.leave-words.index.title')}</h1>
+      <h3>{i18n.t('site.leave-words.index.title')}</h3>
       <hr/>
       <Table striped bordered condensed hover>
         <thead>

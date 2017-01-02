@@ -6,6 +6,7 @@ import NoMatch from './NoMatch'
 import Dashboard from '../../Dashboard'
 import {Info as SiteInfo, Author as SiteAuthor, Seo as SiteSeo, Smtp as SiteSmtp, Status as SiteStatus} from './admin'
 import {List as IndexLeaveWords} from './leave-words'
+import {List as IndexNotices} from './notices'
 
 const W = [
   <IndexRoute key="index" component={Home}/>,
@@ -19,6 +20,9 @@ const W = [
   </Route>,
   <Route key="leave-words" path="leave-words" component={Dashboard}>
     <IndexRoute component={IndexLeaveWords}/>
+  </Route>,
+  <Route key="notices" path="notices" component={Dashboard}>
+    <IndexRoute component={IndexNotices}/>
   </Route>,
   <Route key="no-match" path="*" component={NoMatch}/>
 ]

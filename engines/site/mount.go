@@ -10,10 +10,10 @@ func (p *Engine) Mount(rt web.Router) {
 	p.W.Rest(
 		rt,
 		"/notices",
-		p.W.Form(&fmNotice{}, p.createNotice),
-		p.W.Form(&fmNotice{}, p.updateNotice),
-		p.W.JSON(p.showNotice),
-		p.W.JSON(p.destroyNotice),
+		p.Jwt.MustAdmin(p.W.Form(&fmBody{}, p.createNotice)),
+		p.Jwt.MustAdmin(p.W.Form(&fmBody{}, p.updateNotice)),
+		nil,
+		p.Jwt.MustAdmin(p.W.JSON(p.destroyNotice)),
 		p.W.JSON(p.indexNotices),
 	)
 

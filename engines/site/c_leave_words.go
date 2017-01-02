@@ -7,10 +7,6 @@ import (
 	"github.com/kapmahc/champak/web"
 )
 
-type fmLeaveWord struct {
-	Body string
-}
-
 func (p *Engine) createLeaveWord(w http.ResponseWriter, r *http.Request, _ httprouter.Params, o interface{}) (interface{}, error) {
 	fm := o.(*fmBody)
 	if err := p.Db.Create(&LeaveWord{
