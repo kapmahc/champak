@@ -25,12 +25,10 @@ CREATE UNIQUE INDEX idx_forum_tags_name
   ON forum_tags (name);
 
 CREATE TABLE forum_articles_tags (
-  id         SERIAL PRIMARY KEY,
   article_id BIGINT NOT NULL,
-  tag_id     BIGINT NOT NULL
+  tag_id     BIGINT NOT NULL,
+  PRIMARY KEY (article_id, tag_id)
 );
-CREATE UNIQUE INDEX idx_forum_articles_tags
-  ON forum_articles_tags (article_id, tag_id);
 
 CREATE TABLE forum_comments (
   id         SERIAL PRIMARY KEY,

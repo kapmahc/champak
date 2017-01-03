@@ -11,6 +11,37 @@ import (
 	gin "gopkg.in/gin-gonic/gin.v1"
 )
 
+func (p *Engine) tagsSelect(lng string, art *Article) *web.Select {
+	var options []web.Option
+	var tags []Tag
+	if err := p.Db.
+		Select([]string{"id", "name"}).
+		Order("name ASC").
+		Find(&tags).Error; err != nil {
+		log.Error(err)
+	}
+	if art != nil {
+		if err := p.Db.Model(art).Related(&art.Tags, "Tags").Error; err != nil {
+			log.Error(err)
+		}
+	}
+	for _, i := range tags {
+		o := web.Option{Label: i.Name, Value: i.ID}
+		if art != nil {
+			for _, j := range art.Tags {
+				if i.ID == j.ID {
+					o.Selected = true
+					break
+				}
+			}
+		}
+		options = append(options, o)
+	}
+	sel := web.NewSelect("tags", p.I18n.T(lng, "forum.attributes.articles.tags"), options)
+	sel.Multiple = true
+	return sel
+}
+
 func (p *Engine) newArticle(c *gin.Context) {
 	lng := c.MustGet(web.LOCALE).(string)
 	data := c.MustGet(web.DATA).(gin.H)
@@ -22,6 +53,7 @@ func (p *Engine) newArticle(c *gin.Context) {
 	fm.AddFields(
 		web.NewTextField("title", p.I18n.T(lng, "attributes.title"), ""),
 		web.NewTextArea("summary", p.I18n.T(lng, "attributes.summary"), ""),
+		p.tagsSelect(lng, nil),
 		body,
 	)
 
@@ -34,17 +66,29 @@ type fmArticle struct {
 	Title   string `form:"title" binding:"required,max=255"`
 	Summary string `form:"summary" binding:"required,max=500"`
 	Body    string `form:"body" binding:"required"`
+	Tags    []uint `form:"tags"`
 }
 
 func (p *Engine) createArticle(c *gin.Context, o interface{}) error {
 	lng := c.MustGet(web.LOCALE).(string)
 	user := c.MustGet(auth.CurrentUser).(*auth.User)
 	fm := o.(*fmArticle)
+
+	var tags []Tag
+	for _, i := range fm.Tags {
+		var t Tag
+		if err := p.Db.Where("id = ?", i).First(&t).Error; err != nil {
+			return err
+		}
+		tags = append(tags, t)
+	}
+
 	if err := p.Db.Create(&Article{
 		Title:   fm.Title,
 		Summary: fm.Summary,
 		Body:    fm.Body,
 		UserID:  user.ID,
+		Tags:    tags,
 	}).Error; err != nil {
 		return err
 	}
@@ -78,6 +122,7 @@ func (p *Engine) editArticle(c *gin.Context) (tpl string, err error) {
 	fm.AddFields(
 		web.NewTextField("title", p.I18n.T(lng, "attributes.title"), n.Title),
 		web.NewTextArea("summary", p.I18n.T(lng, "attributes.summary"), n.Summary),
+		p.tagsSelect(lng, &n),
 		body,
 	)
 
@@ -93,11 +138,20 @@ func (p *Engine) updateArticle(c *gin.Context, o interface{}) error {
 
 	var n Article
 	id := c.Param("id")
-	if err := p.Db.Select([]string{"user_id"}).Where("id = ?", id).First(&n).Error; err != nil {
+	if err := p.Db.Where("id = ?", id).First(&n).Error; err != nil {
 		return err
 	}
 	if err := p.check(c, n.UserID); err != nil {
 		return err
+	}
+
+	var tags []Tag
+	for _, i := range fm.Tags {
+		var t Tag
+		if err := p.Db.Where("id = ?", i).First(&t).Error; err != nil {
+			return err
+		}
+		tags = append(tags, t)
 	}
 
 	if err := p.Db.Model(&Article{}).Where("id = ?", id).
@@ -106,6 +160,10 @@ func (p *Engine) updateArticle(c *gin.Context, o interface{}) error {
 			"summary": fm.Summary,
 			"body":    fm.Body,
 		}).Error; err != nil {
+		return err
+	}
+
+	if err := p.Db.Model(&n).Association("Tags").Replace(tags).Error; err != nil {
 		return err
 	}
 

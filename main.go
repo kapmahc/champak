@@ -5,6 +5,7 @@ import (
 
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
+	// _ "github.com/jinzhu/gorm/dialects/sqlite"
 	_ "github.com/kapmahc/champak/engines/auth"
 	_ "github.com/kapmahc/champak/engines/forum"
 	_ "github.com/kapmahc/champak/engines/ops/mail"

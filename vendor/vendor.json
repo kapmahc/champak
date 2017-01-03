@@ -487,6 +487,12 @@
 			"revisionTime": "2017-01-02T12:56:38Z"
 		},
 		{
+			"checksumSHA1": "4VZ1gLZHMumRjV3fclS1aX8S1aQ=",
+			"path": "github.com/jinzhu/gorm/dialects/sqlite",
+			"revision": "f8289099830fa240ffbeb1a88b8a9cec0228b17a",
+			"revisionTime": "2017-01-02T12:56:38Z"
+		},
+		{
 			"checksumSHA1": "VIp1lZm6joWhlNdwhady8u//qRw=",
 			"path": "github.com/jinzhu/inflection",
 			"revision": "1c35d901db3da928c72a72d8458480cc9ade058f",
@@ -539,6 +545,12 @@
 			"path": "github.com/mattn/go-isatty",
 			"revision": "30a891c33c7cde7b02a981314b4228ec99380cca",
 			"revisionTime": "2016-11-23T14:36:37Z"
+		},
+		{
+			"checksumSHA1": "CUXsNsxgfwaOHWOEKUSDe/Cvyf8=",
+			"path": "github.com/mattn/go-sqlite3",
+			"revision": "6f2749a3ca9b233ffb8749ef9684f7f4d88cee7a",
+			"revisionTime": "2017-01-03T13:25:02Z"
 		},
 		{
 			"checksumSHA1": "LAR/G/IY1GviHYkGAoi6kVXq1Jg=",

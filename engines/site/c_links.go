@@ -16,7 +16,7 @@ func (p *Engine) linkLocSelect(lng, value string) *web.Select {
 	for _, v := range []string{"top", "bottom"} {
 		options = append(options, web.Option{Label: v, Value: v, Selected: value == v})
 	}
-	return web.NewSelect("loc", p.I18n.T(lng, "site.attributes.link.loc"), value, options)
+	return web.NewSelect("loc", p.I18n.T(lng, "site.attributes.link.loc"), options)
 }
 
 func (p *Engine) newLink(c *gin.Context) {

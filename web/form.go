@@ -141,7 +141,6 @@ type Select struct {
 	Type        string
 	ID          string
 	Label       string
-	Value       interface{}
 	Help        string
 	Placeholder string
 	ReadOnly    bool
@@ -163,17 +162,16 @@ func NewOrderSelect(id, label string, value, min, max int) *Select {
 		options = append(options, Option{Label: strconv.Itoa(i), Value: value, Selected: i == value})
 	}
 
-	return NewSelect(id, label, value, options)
+	return NewSelect(id, label, options)
 }
 
 // NewSelect new select
-func NewSelect(id, label string, value interface{}, options []Option) *Select {
+func NewSelect(id, label string, options []Option) *Select {
 	return &Select{
 		Require: true,
 		Type:    "select",
 		ID:      id,
 		Label:   label,
-		Value:   value,
 		Options: options,
 	}
 }

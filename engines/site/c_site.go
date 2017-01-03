@@ -20,7 +20,7 @@ func (p *Engine) smtpPortSelect(lng string, port int) *web.Select {
 	for _, i := range []int{25, 465, 587} {
 		options = append(options, web.Option{Label: strconv.Itoa(i), Value: i, Selected: port == i})
 	}
-	return web.NewSelect("port", p.I18n.T(lng, "attributes.port"), port, options)
+	return web.NewSelect("port", p.I18n.T(lng, "attributes.port"), options)
 }
 
 func (p *Engine) getAdminSiteSMTP(c *gin.Context) {

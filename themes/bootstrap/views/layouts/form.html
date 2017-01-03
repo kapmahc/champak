@@ -25,8 +25,7 @@
     {{else if eq .Type "select"}}
       <div class="form-group">
         <label for="{{.ID}}">{{if .Require}}*{{end}}{{.Label}}:</label>
-        <select {{if .Multiple}}multiple{{end}} class="form-control" id="{{.ID}}" name="{{.ID}}">
-          {{$v := .Value}}
+        <select {{if .Multiple}}multiple{{end}} class="form-control" id="{{.ID}}" name="{{.ID}}">          
           {{ range .Options}}
             <option value="{{.Value}}" {{if .Selected}}selected{{end}}>{{.Label}}</option>
           {{ end }}
