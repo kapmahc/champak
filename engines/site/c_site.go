@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"runtime"
+	"strconv"
 	"time"
 
 	log "github.com/Sirupsen/logrus"
@@ -13,6 +14,14 @@ import (
 	"github.com/spf13/viper"
 	gin "gopkg.in/gin-gonic/gin.v1"
 )
+
+func (p *Engine) smtpPortSelect(lng string, port int) *web.Select {
+	var options []web.Option
+	for _, i := range []int{25, 465, 587} {
+		options = append(options, web.Option{Label: strconv.Itoa(i), Value: i, Selected: port == i})
+	}
+	return web.NewSelect("port", p.I18n.T(lng, "attributes.port"), port, options)
+}
 
 func (p *Engine) getAdminSiteSMTP(c *gin.Context) {
 	lng := c.MustGet(web.LOCALE).(string)
@@ -32,10 +41,9 @@ func (p *Engine) getAdminSiteSMTP(c *gin.Context) {
 	pwc := web.NewPasswordField("passwordConfirmation", p.I18n.T(lng, "attributes.passwordConfirmation"))
 	pwc.Help = p.I18n.T(lng, "helps.passwordConfirmation")
 
-	ports := []interface{}{25, 465, 587}
 	fm.AddFields(
 		web.NewTextField("host", p.I18n.T(lng, "attributes.host"), v.Host),
-		web.NewSelect("port", p.I18n.T(lng, "attributes.port"), v.Port, ports...),
+		p.smtpPortSelect(lng, v.Port),
 		web.NewEmailField("user", p.I18n.T(lng, "attributes.user"), v.User),
 		pwd, pwc,
 		web.NewCheckbox("ssl", p.I18n.T(lng, "attributes.ssl"), v.Ssl),

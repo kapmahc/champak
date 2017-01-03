@@ -16,7 +16,7 @@ type Article struct {
 
 	UserID uint
 	User   auth.User
-	Tags   []Tag
+	Tags   []Tag `gorm:"many2many:forum_articles_tags;"`
 }
 
 // TableName table name
@@ -30,7 +30,7 @@ type Tag struct {
 
 	Name string
 
-	Articles []Article
+	Articles []Article `gorm:"many2many:forum_articles_tags;"`
 }
 
 // TableName table name

@@ -11,8 +11,12 @@ import (
 	gin "gopkg.in/gin-gonic/gin.v1"
 )
 
-func (p *Engine) linkLocOptions(id, label, value string) *web.Select {
-	return web.NewSelect(id, label, value, "top", "bottom")
+func (p *Engine) linkLocSelect(lng, value string) *web.Select {
+	var options []web.Option
+	for _, v := range []string{"top", "bottom"} {
+		options = append(options, web.Option{Label: v, Value: v, Selected: value == v})
+	}
+	return web.NewSelect("loc", p.I18n.T(lng, "site.attributes.link.loc"), value, options)
 }
 
 func (p *Engine) newLink(c *gin.Context) {
@@ -23,7 +27,7 @@ func (p *Engine) newLink(c *gin.Context) {
 	fm := web.NewForm(c, "new-links", title, "/links")
 
 	fm.AddFields(
-		p.linkLocOptions("loc", p.I18n.T(lng, "site.attributes.link.loc"), ""),
+		p.linkLocSelect(lng, ""),
 		web.NewTextField("href", p.I18n.T(lng, "site.attributes.link.href"), ""),
 		web.NewTextField("label", p.I18n.T(lng, "site.attributes.link.label"), ""),
 		web.NewOrderSelect("sortOrder", p.I18n.T(lng, "attributes.sortOrder"), 0, -5, 5),
@@ -76,7 +80,7 @@ func (p *Engine) editLink(c *gin.Context) (tpl string, err error) {
 
 	fm := web.NewForm(c, "edit-links", title, fmt.Sprintf("/links/%d", n.ID))
 	fm.AddFields(
-		p.linkLocOptions("loc", p.I18n.T(lng, "site.attributes.link.loc"), n.Loc),
+		p.linkLocSelect(lng, n.Loc),
 		web.NewTextField("href", p.I18n.T(lng, "site.attributes.link.href"), n.Href),
 		web.NewTextField("label", p.I18n.T(lng, "site.attributes.link.label"), n.Label),
 		web.NewOrderSelect("sortOrder", p.I18n.T(lng, "attributes.sortOrder"), n.SortOrder, -5, 5),

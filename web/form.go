@@ -1,6 +1,8 @@
 package web
 
 import (
+	"strconv"
+
 	"github.com/gorilla/csrf"
 	gin "gopkg.in/gin-gonic/gin.v1"
 )
@@ -143,21 +145,29 @@ type Select struct {
 	Help        string
 	Placeholder string
 	ReadOnly    bool
-	Options     []interface{}
+	Multiple    bool
+	Options     []Option
+}
+
+// Option option
+type Option struct {
+	Label    string
+	Value    interface{}
+	Selected bool
 }
 
 // NewOrderSelect new sort order  select
 func NewOrderSelect(id, label string, value, min, max int) *Select {
-	var options []interface{}
+	var options []Option
 	for i := min; i <= max; i++ {
-		options = append(options, i)
+		options = append(options, Option{Label: strconv.Itoa(i), Value: value, Selected: i == value})
 	}
 
-	return NewSelect(id, label, value, options...)
+	return NewSelect(id, label, value, options)
 }
 
 // NewSelect new select
-func NewSelect(id, label string, value interface{}, options ...interface{}) *Select {
+func NewSelect(id, label string, value interface{}, options []Option) *Select {
 	return &Select{
 		Require: true,
 		Type:    "select",
