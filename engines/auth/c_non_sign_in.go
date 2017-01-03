@@ -60,7 +60,8 @@ func (p *Engine) postUsersSignIn(c *gin.Context, o interface{}) error {
 	ss := sessions.Default(c)
 	ss.Set("uid", user.UID)
 	ss.Save()
-	c.Redirect(http.StatusFound, "/")
+
+	c.Set("next", "/")
 	return nil
 }
 
@@ -116,28 +117,31 @@ func (p *Engine) postUsersSignUp(c *gin.Context, o interface{}) error {
 	ss := sessions.Default(c)
 	ss.AddFlash(p.I18n.T(lng, "auth.messages.email-for-confirm"), web.NOTICE)
 	ss.Save()
-	c.Redirect(http.StatusFound, "/users/sign-in")
+
 	return nil
 }
 
-func (p *Engine) getUsersConfirmToken(c *gin.Context) error {
+func (p *Engine) getUsersConfirmToken(c *gin.Context) (url string, err error) {
+	url = "/users/sign-in"
+
 	lng := c.MustGet(web.LOCALE).(string)
 	user, err := p.parseToken(lng, c.Param("token"), actConfirm)
 	if err != nil {
-		return err
+		return
 	}
 	if user.IsConfirm() {
-		return p.I18n.E(lng, "auth.errors.user-already-confirm")
+		err = p.I18n.E(lng, "auth.errors.user-already-confirm")
+		return
 	}
 	if err = p.Db.Model(user).Update("confirmed_at", time.Now()).Error; err != nil {
-		return err
+		return
 	}
 	p.Dao.Log(user.ID, c.ClientIP(), p.I18n.T(lng, "auth.logs.confirm"))
 	ss := sessions.Default(c)
 	ss.AddFlash(p.I18n.T(lng, "auth.messages.confirm-success"), web.NOTICE)
 	ss.Save()
-	c.Redirect(http.StatusFound, "/users/sign-in")
-	return nil
+
+	return
 }
 
 func (p *Engine) getUsersConfirm(c *gin.Context) {
@@ -174,7 +178,7 @@ func (p *Engine) postUsersConfirm(c *gin.Context, o interface{}) error {
 	ss := sessions.Default(c)
 	ss.AddFlash(p.I18n.T(lng, "auth.messages.email-for-confirm"), web.NOTICE)
 	ss.Save()
-	c.Redirect(http.StatusFound, "/users/sign-in")
+
 	return nil
 }
 
@@ -203,7 +207,7 @@ func (p *Engine) postUsersForgotPassword(c *gin.Context, o interface{}) error {
 	ss := sessions.Default(c)
 	ss.AddFlash(p.I18n.T(lng, "auth.messages.email-for-reset-password"), web.NOTICE)
 	ss.Save()
-	c.Redirect(http.StatusFound, "/users/sign-in")
+
 	return nil
 }
 
@@ -247,28 +251,30 @@ func (p *Engine) postUsersResetPassword(c *gin.Context, o interface{}) error {
 	ss := sessions.Default(c)
 	ss.AddFlash(p.I18n.T(lng, "auth.messages.reset-password-success"), web.NOTICE)
 	ss.Save()
-	c.Redirect(http.StatusFound, "/users/sign-in")
+
 	return nil
 }
 
-func (p *Engine) getUsersUnlockToken(c *gin.Context) error {
+func (p *Engine) getUsersUnlockToken(c *gin.Context) (url string, err error) {
+	url = "/users/sign-in"
 	lng := c.MustGet(web.LOCALE).(string)
 	user, err := p.parseToken(lng, c.Param("token"), actUnlock)
 	if err != nil {
-		return err
+		return
 	}
 	if !user.IsLock() {
-		return p.I18n.E(lng, "auth.errors.user-not-lock")
+		err = p.I18n.E(lng, "auth.errors.user-not-lock")
+		return
 	}
 	if err = p.Db.Model(user).Update(map[string]interface{}{"locked_at": nil}).Error; err != nil {
-		return err
+		return
 	}
 	p.Dao.Log(user.ID, c.ClientIP(), p.I18n.T(lng, "auth.logs.unlock"))
 	ss := sessions.Default(c)
 	ss.AddFlash(p.I18n.T(lng, "auth.messages.unlock-success"), web.NOTICE)
 	ss.Save()
-	c.Redirect(http.StatusFound, "/users/sign-in")
-	return nil
+
+	return
 }
 
 func (p *Engine) getUsersUnlock(c *gin.Context) {
@@ -300,6 +306,6 @@ func (p *Engine) postUsersUnlock(c *gin.Context, o interface{}) error {
 	ss := sessions.Default(c)
 	ss.AddFlash(p.I18n.T(lng, "auth.messages.email-for-unlock"), web.NOTICE)
 	ss.Save()
-	c.Redirect(http.StatusFound, "/users/sign-in")
+
 	return nil
 }

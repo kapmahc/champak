@@ -39,7 +39,7 @@ func (p *Engine) createLeaveWord(c *gin.Context, o interface{}) error {
 	ss := sessions.Default(c)
 	ss.AddFlash(p.I18n.T(lng, "success"), web.NOTICE)
 	ss.Save()
-	c.Redirect(http.StatusFound, "/leave-words/new")
+
 	return nil
 }
 
@@ -55,12 +55,11 @@ func (p *Engine) indexLeaveWords(c *gin.Context) {
 	c.HTML(http.StatusOK, "leave-words", data)
 }
 
-func (p *Engine) destoryLeaveWord(c *gin.Context) error {
+func (p *Engine) destoryLeaveWord(c *gin.Context) (interface{}, error) {
 	if err := p.Db.
 		Where("id = ?", c.Param("id")).
 		Delete(LeaveWord{}).Error; err != nil {
-		return err
+		return nil, err
 	}
-	c.JSON(http.StatusOK, gin.H{})
-	return nil
+	return gin.H{}, nil
 }

@@ -41,7 +41,7 @@ func (p *Engine) createNotice(c *gin.Context, o interface{}) error {
 	ss := sessions.Default(c)
 	ss.AddFlash(p.I18n.T(lng, "success"), web.NOTICE)
 	ss.Save()
-	c.Redirect(http.StatusFound, "/notices")
+
 	return nil
 }
 
@@ -79,7 +79,7 @@ func (p *Engine) updateNotice(c *gin.Context, o interface{}) error {
 	ss := sessions.Default(c)
 	ss.AddFlash(p.I18n.T(lng, "success"), web.NOTICE)
 	ss.Save()
-	c.Redirect(http.StatusFound, "/notices")
+
 	return nil
 }
 
@@ -100,12 +100,11 @@ func (p *Engine) indexNotices(c *gin.Context) {
 	c.HTML(http.StatusOK, "notices", data)
 }
 
-func (p *Engine) destoryNotice(c *gin.Context) error {
+func (p *Engine) destoryNotice(c *gin.Context) (interface{}, error) {
 	if err := p.Db.
 		Where("id = ?", c.Param("id")).
 		Delete(Notice{}).Error; err != nil {
-		return err
+		return nil, err
 	}
-	c.JSON(http.StatusOK, gin.H{})
-	return nil
+	return gin.H{}, nil
 }

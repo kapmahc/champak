@@ -22,29 +22,29 @@ func (p *Engine) Mount(rt *gin.Engine) {
 	ag.GET("/site/info", p.getAdminSiteInfo)
 	ag.POST(
 		"/site/info",
-		web.PostFormHandler("/admin/site/info", &fmSiteInfo{}, p.postAdminSiteInfo),
+		web.PostFormHandler(&fmSiteInfo{}, p.postAdminSiteInfo),
 	)
 	ag.GET("/site/author", p.getAdminSiteAuthor)
 	ag.POST(
 		"/site/author",
-		web.PostFormHandler("/admin/site/author", &fmSiteAuthor{}, p.postAdminSiteAuthor),
+		web.PostFormHandler(&fmSiteAuthor{}, p.postAdminSiteAuthor),
 	)
 	ag.GET("/site/seo", p.getAdminSiteSeo)
 	ag.POST(
 		"/site/seo",
-		web.PostFormHandler("/admin/site/seo", &fmSiteSeo{}, p.postAdminSiteSeo),
+		web.PostFormHandler(&fmSiteSeo{}, p.postAdminSiteSeo),
 	)
 	ag.GET("/site/smtp", p.getAdminSiteSMTP)
 	ag.POST(
 		"/site/smtp",
-		web.PostFormHandler("/admin/site/smtp", &SMTP{}, p.postAdminSiteSMTP),
+		web.PostFormHandler(&SMTP{}, p.postAdminSiteSMTP),
 	)
 	ag.GET("/site/status", p.getAdminSiteStatus)
 
 	rt.GET("/leave-words/new", p.newLeaveWord)
 	rt.POST(
 		"/leave-words",
-		web.PostFormHandler("/leave-words/new", &fmLeaveWord{}, p.createLeaveWord),
+		web.PostFormHandler(&fmLeaveWord{}, p.createLeaveWord),
 	)
 	rt.GET(
 		"/leave-words",
@@ -54,7 +54,7 @@ func (p *Engine) Mount(rt *gin.Engine) {
 	rt.DELETE(
 		"/leave-words/:id",
 		p.Session.MustSignInHandler(), p.Session.MustAdminHandler(),
-		web.FlashHandler("/admin/leave-words", p.destoryLeaveWord),
+		web.JSON(p.destoryLeaveWord),
 	)
 
 	rt.GET("/notices", p.indexNotices)
@@ -65,21 +65,21 @@ func (p *Engine) Mount(rt *gin.Engine) {
 	rt.POST(
 		"/notices",
 		p.Session.MustSignInHandler(), p.Session.MustAdminHandler(),
-		web.PostFormHandler("/notices/new", &fmNotice{}, p.createNotice),
+		web.PostFormHandler(&fmNotice{}, p.createNotice),
 	)
 	rt.POST(
 		"/notices/:id",
 		p.Session.MustSignInHandler(), p.Session.MustAdminHandler(),
-		web.PostFormHandler("/notices", &fmNotice{}, p.updateNotice),
+		web.PostFormHandler(&fmNotice{}, p.updateNotice),
 	)
 	rt.DELETE(
 		"/notices/:id",
 		p.Session.MustSignInHandler(), p.Session.MustAdminHandler(),
-		web.FlashHandler("/notices", p.destoryNotice),
+		web.JSON(p.destoryNotice),
 	)
-	rt.GET(
-		"/notices/edit/:id",
-		p.Session.MustSignInHandler(), p.Session.MustAdminHandler(),
-		web.FlashHandler("/notices", p.editNotice),
-	)
+	// rt.GET(
+	// 	"/notices/edit/:id",
+	// 	p.Session.MustSignInHandler(), p.Session.MustAdminHandler(),
+	// 	web.FlashHandler(p.editNotice),
+	// )
 }

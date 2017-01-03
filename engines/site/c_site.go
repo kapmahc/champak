@@ -59,7 +59,7 @@ func (p *Engine) postAdminSiteSMTP(c *gin.Context, o interface{}) error {
 	if err := p.Settings.Set("site.smtp", fm, true); err != nil {
 		log.Error(err)
 	}
-	c.Redirect(http.StatusFound, "/admin/site/smtp")
+
 	return nil
 }
 
@@ -103,7 +103,6 @@ func (p *Engine) postAdminSiteSeo(c *gin.Context, o interface{}) error {
 		}
 	}
 
-	c.Redirect(http.StatusFound, "/admin/site/seo")
 	return nil
 }
 
@@ -210,7 +209,6 @@ func (p *Engine) postAdminSiteInfo(c *gin.Context, o interface{}) error {
 		p.I18n.Set(lng, fmt.Sprintf("site.%s", k), v)
 	}
 
-	c.Redirect(http.StatusFound, "/admin/site/info")
 	return nil
 }
 
@@ -254,6 +252,5 @@ func (p *Engine) postAdminSiteAuthor(c *gin.Context, o interface{}) error {
 		}
 	}
 
-	c.Redirect(http.StatusFound, "/admin/site/author")
 	return nil
 }

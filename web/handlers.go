@@ -10,27 +10,46 @@ import (
 	gin "gopkg.in/gin-gonic/gin.v1"
 )
 
-// FlashHandler show flash
-func FlashHandler(ego string, fn func(*gin.Context) error) gin.HandlerFunc {
+// JSON render json
+func JSON(fn func(*gin.Context) (interface{}, error)) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if err := fn(c); err != nil {
-			ss := sessions.Default(c)
-			ss.AddFlash(err.Error(), ALERT)
-			ss.Save()
-			c.Redirect(http.StatusFound, ego)
+		if val, err := fn(c); err == nil {
+			c.JSON(http.StatusOK, val)
+		} else {
+			c.AbortWithError(http.StatusInternalServerError, err)
 		}
 	}
 }
 
+// FlashHandler redirect to
+func FlashHandler(fn func(*gin.Context) (string, error)) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		url, err := fn(c)
+		if err != nil {
+			ss := sessions.Default(c)
+			ss.AddFlash(err.Error(), ALERT)
+			ss.Save()
+		}
+
+		if nex, ok := c.Get("next"); ok {
+			url = nex.(string)
+		}
+
+		c.Redirect(http.StatusFound, url)
+
+	}
+}
+
 // PostFormHandler fix gin bind error return 400
-func PostFormHandler(ego string, fm interface{}, fn func(*gin.Context, interface{}) error) gin.HandlerFunc {
-	return FlashHandler(ego, func(c *gin.Context) error {
+func PostFormHandler(fm interface{}, fn func(*gin.Context, interface{}) error) gin.HandlerFunc {
+	return FlashHandler(func(c *gin.Context) (string, error) {
 		err := binding.FormPost.Bind(c.Request, fm)
 		if err == nil {
 			err = fn(c, fm)
 		} else {
 			err = errors.New(strings.Replace(err.Error(), "\n", "<br/>", -1))
 		}
-		return err
+
+		return c.PostForm("next"), err
 	})
 }
