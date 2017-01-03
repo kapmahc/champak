@@ -1,0 +1,31 @@
+{{define "forum/tags"}}
+{{template "application/header" .}}
+{{$l := .locale}}
+{{$can := .can}}
+
+<h2>
+  {{.title}}
+  <a class="btn btn-primary btn-sm" href="/forum/tags/new">{{t $l "buttons.new"}}</a>
+</h2>
+<hr/>
+
+<div class="row">
+  {{range .items}}
+    <div class="col-md-2">
+      <div class="card card-block">
+        <h4 class="card-title">
+          <a href="/forum/tags/show/{{.ID}}" class="card-link">{{.Name}}</a>
+        </h4>
+        {{if $can}}
+          <div class="btn-group btn-group-sm" role="group">
+            <a class="btn btn-warning" href="/forum/tags/edit/{{.ID}}">{{t $l "buttons.edit"}}</a>
+            <a data-confirm="{{t $l "are-you-sure"}}" data-next="/forum/tags" data-method="delete" class="btn btn-danger" href="/forum/tags/{{.ID}}">{{t $l "buttons.remove"}}</a>
+          </div>
+        {{end}}
+      </div>
+    </div>
+  {{end}}
+</div>
+
+{{template "footer" .}}
+{{end}}

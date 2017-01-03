@@ -6,7 +6,6 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-contrib/sessions"
-	"github.com/jinzhu/gorm"
 	"github.com/kapmahc/champak/engines/auth"
 	"github.com/kapmahc/champak/web"
 	gin "gopkg.in/gin-gonic/gin.v1"
@@ -116,7 +115,7 @@ func (p *Engine) indexComments(c *gin.Context) {
 	user := c.MustGet(auth.CurrentUser).(*auth.User)
 
 	var items []Comment
-	var db *gorm.DB
+	db := p.Db
 	if !p.Dao.Is(user.ID, auth.RoleAdmin) {
 		db = p.Db.Where("user_id = ?", user.ID)
 	}

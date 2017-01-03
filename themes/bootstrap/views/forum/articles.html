@@ -1,0 +1,52 @@
+{{define "forum/articles"}}
+{{template "dashboard/header" .}}
+{{$l := .locale}}
+<h2>
+  {{.title}}
+  <a class="btn btn-primary btn-sm" href="/forum/articles/new">{{t $l "buttons.new"}}</a>
+</h2>
+<hr/>
+<table class="table table-bordered table-hover">
+  <thead>
+    <tr>
+      <th>{{t $l "attributes.title"}}</th>
+      <th>{{t $l "attributes.updatedAt"}}</th>
+      <th width="15%">{{t $l "buttons.manage"}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{range .items}}
+      <tr>
+        <th scope="row">{{.Title}}</th>
+        <td>{{dtf .UpdatedAt}}</td>
+        <td>
+          <div class="btn-group btn-group-sm" role="group">
+            <a class="btn btn-warning" href="/forum/articles/edit/{{.ID}}">{{t $l "buttons.edit"}}</a>
+            <a data-confirm="{{t $l "are-you-sure"}}" data-next="/forum/articles" data-method="delete" class="btn btn-danger" href="/forum/articles/{{.ID}}">{{t $l "buttons.remove"}}</a>
+          </div>
+        </td>
+      </tr>
+    {{end}}
+  </tbody>
+</table>
+{{template "footer" .}}
+{{end}}
+
+{{define "forum/articles/list"}}
+{{template "dashboard/header" .}}
+{{$l := .locale}}
+<h2>{{.title}}</h2>
+<hr/>
+<div class="row">
+  {{range .items}}
+    <div class="col-md-3">
+      <div class="card card-block">
+        <h4 class="card-title">{{.Title}}</h4>
+        <p class="card-text">{{.Summary}}</p>
+        <a href="/forum/articles/show/{{.ID}}" class="card-link">{{t $l "buttons.view"}}</a>        
+      </div>
+    </div>
+  {{end}}
+</div>
+{{template "footer" .}}
+{{end}}

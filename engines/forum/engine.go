@@ -68,6 +68,7 @@ func (p *Engine) Do() {
 
 // Home home
 func (p *Engine) Home(c *gin.Context) {
+	p.latestArticles(c)
 }
 
 // Shell console commands
