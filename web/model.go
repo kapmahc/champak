@@ -3,10 +3,10 @@ package web
 import "time"
 
 const (
-	// MARKDOWN markdown format
-	MARKDOWN = "markdown"
-	// HTML html format
-	HTML = "html"
+	// TypeMARKDOWN markdown format
+	TypeMARKDOWN = "markdown"
+	// TypeHTML html format
+	TypeHTML = "html"
 )
 
 //Model base model

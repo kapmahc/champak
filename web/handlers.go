@@ -21,8 +21,21 @@ func JSON(fn func(*gin.Context) (interface{}, error)) gin.HandlerFunc {
 	}
 }
 
-// FlashHandler redirect to
-func FlashHandler(fn func(*gin.Context) (string, error)) gin.HandlerFunc {
+// HTML render html
+func HTML(fn func(*gin.Context) (string, error)) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		tpl, err := fn(c)
+		if err != nil {
+			ss := sessions.Default(c)
+			ss.AddFlash(err.Error(), ALERT)
+			ss.Save()
+		}
+		c.HTML(http.StatusOK, tpl, c.MustGet(DATA).(gin.H))
+	}
+}
+
+// RedirectTo redirect to
+func RedirectTo(fn func(*gin.Context) (string, error)) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		url, err := fn(c)
 		if err != nil {
@@ -42,7 +55,7 @@ func FlashHandler(fn func(*gin.Context) (string, error)) gin.HandlerFunc {
 
 // PostFormHandler fix gin bind error return 400
 func PostFormHandler(fm interface{}, fn func(*gin.Context, interface{}) error) gin.HandlerFunc {
-	return FlashHandler(func(c *gin.Context) (string, error) {
+	return RedirectTo(func(c *gin.Context) (string, error) {
 		err := binding.FormPost.Bind(c.Request, fm)
 		if err == nil {
 			err = fn(c, fm)

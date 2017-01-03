@@ -22,7 +22,7 @@ func (p *Engine) Mount(rt *gin.Engine) {
 	ung.GET("/confirm", p.getUsersConfirm)
 	ung.GET(
 		"/confirm/:token",
-		web.FlashHandler(p.getUsersConfirmToken),
+		web.RedirectTo(p.getUsersConfirmToken),
 	)
 	ung.POST(
 		"/confirm",
@@ -31,7 +31,7 @@ func (p *Engine) Mount(rt *gin.Engine) {
 	ung.GET("/unlock", p.getUsersUnlock)
 	ung.GET(
 		"/unlock/:token",
-		web.FlashHandler(p.getUsersUnlockToken),
+		web.RedirectTo(p.getUsersUnlockToken),
 	)
 	ung.POST("/unlock",
 		web.PostFormHandler(&fmEmail{}, p.postUsersUnlock),

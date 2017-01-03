@@ -16,8 +16,10 @@ func (p *Engine) newLeaveWord(c *gin.Context) {
 	title := p.I18n.T(lng, "site.leave-words.new.title")
 	fm := web.NewForm(c, "new-leave-words", title, "/leave-words")
 
+	body := web.NewTextArea("body", p.I18n.T(lng, "attributes.body"), "")
+	body.Help = p.I18n.T(lng, "site.helps.leave-word.body")
 	fm.AddFields(
-		web.NewTextArea("body", p.I18n.T(lng, "attributes.body"), ""),
+		body,
 	)
 
 	data["title"] = title

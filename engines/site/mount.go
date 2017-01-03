@@ -77,9 +77,9 @@ func (p *Engine) Mount(rt *gin.Engine) {
 		p.Session.MustSignInHandler(), p.Session.MustAdminHandler(),
 		web.JSON(p.destoryNotice),
 	)
-	// rt.GET(
-	// 	"/notices/edit/:id",
-	// 	p.Session.MustSignInHandler(), p.Session.MustAdminHandler(),
-	// 	web.FlashHandler(p.editNotice),
-	// )
+	rt.GET(
+		"/notices/edit/:id",
+		p.Session.MustSignInHandler(), p.Session.MustAdminHandler(),
+		web.HTML(p.editNotice),
+	)
 }

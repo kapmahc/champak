@@ -17,9 +17,10 @@ func (p *Engine) newNotice(c *gin.Context) {
 
 	title := p.I18n.T(lng, "site.notices.new.title")
 	fm := web.NewForm(c, "new-notices", title, "/notices")
-
+	body := web.NewTextArea("body", p.I18n.T(lng, "attributes.body"), "")
+	body.Help = p.I18n.T(lng, "helps.markdown")
 	fm.AddFields(
-		web.NewTextArea("body", p.I18n.T(lng, "attributes.body"), ""),
+		body,
 	)
 
 	data["title"] = title
@@ -45,26 +46,30 @@ func (p *Engine) createNotice(c *gin.Context, o interface{}) error {
 	return nil
 }
 
-func (p *Engine) editNotice(c *gin.Context) error {
+func (p *Engine) editNotice(c *gin.Context) (tpl string, err error) {
 	lng := c.MustGet(web.LOCALE).(string)
 	data := c.MustGet(web.DATA).(gin.H)
+	id := c.Param("id")
+	tpl = "auth/form"
 
 	var n Notice
-	if err := p.Db.Where("id = ?", c.Param("id")).First(&n).Error; err != nil {
-		return err
+	if err = p.Db.Where("id = ?", id).First(&n).Error; err != nil {
+		return
 	}
 
 	title := p.I18n.T(lng, "site.notices.edit.title", n.ID)
-	fm := web.NewForm(c, "new-notices", title, fmt.Sprintf("/notices/%d", n.ID))
 
+	fm := web.NewForm(c, "new-notices", title, fmt.Sprintf("/notices/%d", n.ID))
+	body := web.NewTextArea("body", p.I18n.T(lng, "attributes.body"), n.Body)
+	body.Help = p.I18n.T(lng, "helps.markdown")
 	fm.AddFields(
-		web.NewTextArea("body", p.I18n.T(lng, "attributes.body"), n.Body),
+		body,
 	)
 
 	data["title"] = title
 	data["form"] = fm
-	c.HTML(http.StatusOK, "auth/form", data)
-	return nil
+
+	return
 }
 
 func (p *Engine) updateNotice(c *gin.Context, o interface{}) error {
