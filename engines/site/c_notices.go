@@ -6,6 +6,7 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-contrib/sessions"
+	"github.com/kapmahc/champak/engines/auth"
 	"github.com/kapmahc/champak/web"
 	gin "gopkg.in/gin-gonic/gin.v1"
 )
@@ -14,7 +15,7 @@ func (p *Engine) newNotice(c *gin.Context) {
 	lng := c.MustGet(web.LOCALE).(string)
 	data := c.MustGet(web.DATA).(gin.H)
 
-	title := p.I18n.T(lng, "site.admin.notices.new.title")
+	title := p.I18n.T(lng, "site.notices.new.title")
 	fm := web.NewForm(c, "new-notices", title, "/notices")
 
 	fm.AddFields(
@@ -53,8 +54,8 @@ func (p *Engine) editNotice(c *gin.Context) error {
 		return err
 	}
 
-	title := p.I18n.T(lng, "ops.notices.edit.title", n.ID)
-	fm := web.NewForm(c, "new-notices", title, fmt.Sprintf("/ops/notices/%d", n.ID))
+	title := p.I18n.T(lng, "site.notices.edit.title", n.ID)
+	fm := web.NewForm(c, "new-notices", title, fmt.Sprintf("/notices/%d", n.ID))
 
 	fm.AddFields(
 		web.NewTextArea("body", p.I18n.T(lng, "attributes.body"), n.Body),
@@ -78,20 +79,25 @@ func (p *Engine) updateNotice(c *gin.Context, o interface{}) error {
 	ss := sessions.Default(c)
 	ss.AddFlash(p.I18n.T(lng, "success"), web.NOTICE)
 	ss.Save()
-	c.Redirect(http.StatusFound, "/ops/notices")
+	c.Redirect(http.StatusFound, "/notices")
 	return nil
 }
 
 func (p *Engine) indexNotices(c *gin.Context) {
 	lng := c.MustGet(web.LOCALE).(string)
 	data := c.MustGet(web.DATA).(gin.H)
-	data["title"] = p.I18n.T(lng, "ops.notices.index.title")
+	data["title"] = p.I18n.T(lng, "site.notices.index.title")
+
+	if user, ok := c.Get(auth.CurrentUser); ok && p.Dao.Is(user.(*auth.User).ID, auth.RoleAdmin) {
+		data["can"] = true
+	}
+
 	var items []Notice
-	if err := p.Db.Order("updated DESC").Find(&items).Error; err != nil {
+	if err := p.Db.Order("updated_at DESC").Find(&items).Error; err != nil {
 		log.Error(err)
 	}
 	data["items"] = items
-	c.HTML(http.StatusOK, "ops/notices", data)
+	c.HTML(http.StatusOK, "notices", data)
 }
 
 func (p *Engine) destoryNotice(c *gin.Context) error {
@@ -100,6 +106,6 @@ func (p *Engine) destoryNotice(c *gin.Context) error {
 		Delete(Notice{}).Error; err != nil {
 		return err
 	}
-	c.JSON(http.StatusOK, gin.H{web.TO: "/ops/notices"})
+	c.JSON(http.StatusOK, gin.H{web.TO: "/notices"})
 	return nil
 }

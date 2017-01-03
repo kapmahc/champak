@@ -1,0 +1,31 @@
+{{define "notices"}}
+{{template "application/header" .}}
+{{$l := .locale}}
+{{$can := .can}}
+<h2>
+  {{.title}}
+  {{if $can}}
+    <a class="btn btn-primary btn-sm" href="/notices/new">{{t $l "buttons.new"}}</a>
+  {{end}}
+</h2>
+<hr/>
+
+{{range .items}}
+<blockquote class="blockquote">
+  <p class="mb-0">{{.Body}}</p>
+  <footer class="blockquote-footer">
+    {{dtf .UpdatedAt}}
+    {{if $can}}
+      <cite>
+        <div class="btn-group btn-group-sm" role="group">
+          <a class="btn btn-warning" href="/notices/edit/{{.ID}}">{{t $l "buttons.edit"}}</a>
+          <a data-confirm="{{t $l "are-you-sure"}}" data-method="delete" class="btn btn-danger" href="/notices/{{.ID}}">{{t $l "buttons.remove"}}</a>
+        </div>
+      </cite>
+    {{end}}
+  </footer>
+</blockquote>
+{{end}}
+
+{{template "footer" .}}
+{{end}}

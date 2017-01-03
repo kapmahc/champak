@@ -58,9 +58,28 @@ func (p *Engine) Mount(rt *gin.Engine) {
 	)
 
 	rt.GET("/notices", p.indexNotices)
-	ag.GET("/notices/new", p.newNotice)
-	ag.POST("/notices", web.PostFormHandler("/ops/notices", &fmNotice{}, p.createNotice))
-	ag.POST("/notices/:id", web.PostFormHandler("/ops/notices", &fmNotice{}, p.updateNotice))
-	ag.DELETE("/notices/:id", web.FlashHandler("/ops/notices", p.destoryNotice))
-	ag.GET("/notices/edit/:id", web.FlashHandler("/ops/notices", p.editNotice))
+	rt.GET("/notices/new",
+		p.Session.MustSignInHandler(), p.Session.MustAdminHandler(),
+		p.newNotice,
+	)
+	rt.POST(
+		"/notices",
+		p.Session.MustSignInHandler(), p.Session.MustAdminHandler(),
+		web.PostFormHandler("/notices/new", &fmNotice{}, p.createNotice),
+	)
+	rt.POST(
+		"/notices/:id",
+		p.Session.MustSignInHandler(), p.Session.MustAdminHandler(),
+		web.PostFormHandler("/notices", &fmNotice{}, p.updateNotice),
+	)
+	rt.DELETE(
+		"/notices/:id",
+		p.Session.MustSignInHandler(), p.Session.MustAdminHandler(),
+		web.FlashHandler("/notices", p.destoryNotice),
+	)
+	rt.GET(
+		"/notices/edit/:id",
+		p.Session.MustSignInHandler(), p.Session.MustAdminHandler(),
+		web.FlashHandler("/notices", p.editNotice),
+	)
 }
