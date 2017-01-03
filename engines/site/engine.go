@@ -76,8 +76,8 @@ func (p *Engine) Dashboard(c *gin.Context) []web.Dropdown {
 					Href:  "/leave-words",
 				},
 				&web.Link{
-					Label: "site.admin.locales.index.title",
-					Href:  "/admin/locales",
+					Label: "site.locales.index.title",
+					Href:  "/locales",
 				},
 				&web.Link{
 					Label: "site.admin.links.index.title",

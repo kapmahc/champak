@@ -74,7 +74,7 @@ func (p *I18n) T(lng string, code string, args ...interface{}) string {
 }
 
 //Set set locale
-func (p *I18n) Set(lng string, code, message string) {
+func (p *I18n) Set(lng string, code, message string) error {
 	var l Locale
 	var err error
 	if p.Db.Where("lang = ? AND code = ?", lng, code).First(&l).RecordNotFound() {
@@ -86,10 +86,7 @@ func (p *I18n) Set(lng string, code, message string) {
 		l.Message = message
 		err = p.Db.Save(&l).Error
 	}
-
-	if err != nil {
-		log.Error(err)
-	}
+	return err
 }
 
 //Get get locale

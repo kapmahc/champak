@@ -40,7 +40,7 @@ func (p *Engine) Mount(rt *gin.Engine) {
 		web.PostFormHandler(&SMTP{}, p.postAdminSiteSMTP),
 	)
 	ag.GET("/site/status", p.getAdminSiteStatus)
-
+	// -----------
 	rt.GET("/leave-words/new", p.newLeaveWord)
 	rt.POST(
 		"/leave-words",
@@ -56,7 +56,7 @@ func (p *Engine) Mount(rt *gin.Engine) {
 		p.Session.MustSignInHandler(), p.Session.MustAdminHandler(),
 		web.JSON(p.destoryLeaveWord),
 	)
-
+	// -----------
 	rt.GET("/notices", p.indexNotices)
 	rt.GET("/notices/new",
 		p.Session.MustSignInHandler(), p.Session.MustAdminHandler(),
@@ -81,5 +81,32 @@ func (p *Engine) Mount(rt *gin.Engine) {
 		"/notices/edit/:id",
 		p.Session.MustSignInHandler(), p.Session.MustAdminHandler(),
 		web.HTML(p.editNotice),
+	)
+
+	// -----------
+	rt.GET(
+		"/locales/new",
+		p.Session.MustSignInHandler(), p.Session.MustAdminHandler(),
+		p.newLocale,
+	)
+	rt.GET(
+		"/locales/edit/:id",
+		p.Session.MustSignInHandler(), p.Session.MustAdminHandler(),
+		web.HTML(p.editLocale),
+	)
+	rt.POST(
+		"/locales",
+		p.Session.MustSignInHandler(), p.Session.MustAdminHandler(),
+		web.PostFormHandler(&fmLocale{}, p.saveLocale),
+	)
+	rt.GET(
+		"/locales",
+		p.Session.MustSignInHandler(), p.Session.MustAdminHandler(),
+		p.indexLocales,
+	)
+	rt.DELETE(
+		"/locales/:id",
+		p.Session.MustSignInHandler(), p.Session.MustAdminHandler(),
+		web.JSON(p.destoryLocale),
 	)
 }

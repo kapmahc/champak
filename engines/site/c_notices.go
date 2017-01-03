@@ -59,7 +59,7 @@ func (p *Engine) editNotice(c *gin.Context) (tpl string, err error) {
 
 	title := p.I18n.T(lng, "site.notices.edit.title", n.ID)
 
-	fm := web.NewForm(c, "new-notices", title, fmt.Sprintf("/notices/%d", n.ID))
+	fm := web.NewForm(c, "edit-notices", title, fmt.Sprintf("/notices/%d", n.ID))
 	body := web.NewTextArea("body", p.I18n.T(lng, "attributes.body"), n.Body)
 	body.Help = p.I18n.T(lng, "helps.markdown")
 	fm.AddFields(
