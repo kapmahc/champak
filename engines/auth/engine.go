@@ -27,7 +27,13 @@ func (p *Engine) Atom() ([]*atom.Entry, error) {
 
 // Sitemap sitemap.xml.gz
 func (p *Engine) Sitemap() ([]stm.URL, error) {
-	return []stm.URL{}, nil
+	return []stm.URL{
+		{"loc": "/users/sign-in", "changefreq": "monthly"},
+		{"loc": "/users/sign-up", "changefreq": "monthly"},
+		{"loc": "/users/confirm", "changefreq": "monthly"},
+		{"loc": "/users/forgot-password", "changefreq": "monthly"},
+		{"loc": "/users/unlock", "changefreq": "monthly"},
+	}, nil
 }
 
 // Dashboard dashboard links

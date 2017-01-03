@@ -678,7 +678,7 @@ func (p *Engine) Shell() []cli.Command {
 				// sitemap.xml
 				// https://www.sitemaps.org/protocol.html
 				sm := stm.NewSitemap()
-				sm.SetDefaultHost(viper.GetString("server.front"))
+				sm.SetDefaultHost(web.Home())
 				sm.SetPublicPath("public/")
 				sm.SetSitemapsPath("/")
 				sm.SetCompress(true)
