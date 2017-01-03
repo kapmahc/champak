@@ -7,7 +7,6 @@ import (
 	"github.com/SermoDigital/jose/jws"
 	log "github.com/Sirupsen/logrus"
 	"github.com/kapmahc/champak/web"
-	"github.com/spf13/viper"
 )
 
 const (
@@ -30,13 +29,11 @@ func (p *Engine) sendEmail(lng string, user *User, act string) {
 	}
 
 	obj := struct {
-		Frontend string
-		Backend  string
-		Token    string
+		Home  string
+		Token string
 	}{
-		Frontend: viper.GetString("server.frontend"),
-		Backend:  viper.GetString("server.backend"),
-		Token:    string(tkn),
+		Home:  web.Home(),
+		Token: string(tkn),
 	}
 	subject, err := p.I18n.F(lng, fmt.Sprintf("auth.emails.%s.subject", act), obj)
 	if err != nil {

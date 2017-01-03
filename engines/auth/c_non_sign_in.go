@@ -247,7 +247,7 @@ func (p *Engine) postUsersResetPassword(c *gin.Context, o interface{}) error {
 
 func (p *Engine) getUsersUnlockToken(c *gin.Context) error {
 	lng := c.MustGet(web.LOCALE).(string)
-	user, err := p.parseToken(lng, c.Param("token"), actConfirm)
+	user, err := p.parseToken(lng, c.Param("token"), actUnlock)
 	if err != nil {
 		return err
 	}

@@ -6,14 +6,12 @@ import (
 	"github.com/spf13/viper"
 )
 
-// Frontend frontend home
-func Frontend() string {
-	return viper.GetString("server.frontend")
-}
-
-// Backend backend home
-func Backend() string {
-	return viper.GetString("server.backedn")
+// Home home url
+func Home() string {
+	if IsProduction() {
+		return fmt.Sprintf("https://%s", viper.GetString("server.name"))
+	}
+	return fmt.Sprintf("http://localhost:%d", viper.GetInt("server.port"))
 }
 
 // IsProduction production mode ?

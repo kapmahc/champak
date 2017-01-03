@@ -87,6 +87,11 @@ func (p *Engine) Shell() []cli.Command {
 					csrf.Path("/"),
 				)(rt)
 
+				log.Infof(
+					"application starting in %s on http://localhost:%d",
+					viper.GetString("env"),
+					viper.GetInt("server.port"),
+				)
 				if web.IsProduction() {
 					return endless.ListenAndServe(adr, hnd)
 				}
