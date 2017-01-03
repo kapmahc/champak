@@ -61,6 +61,6 @@ func (p *Engine) destoryLeaveWord(c *gin.Context) error {
 		Delete(LeaveWord{}).Error; err != nil {
 		return err
 	}
-	c.JSON(http.StatusOK, gin.H{web.TO: "/leave-words"})
+	c.JSON(http.StatusOK, gin.H{})
 	return nil
 }

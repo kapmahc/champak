@@ -4,6 +4,7 @@
 <hr/>
 <form method="{{.method}}" action="{{.action}}">
   {{ .csrfField }}
+  <input type="hidden" name="next" value="{{.next}}"/>
   {{range .fields}}
     {{if eq .Type "email"}}
       <div class="form-group">

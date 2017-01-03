@@ -106,6 +106,6 @@ func (p *Engine) destoryNotice(c *gin.Context) error {
 		Delete(Notice{}).Error; err != nil {
 		return err
 	}
-	c.JSON(http.StatusOK, gin.H{web.TO: "/notices"})
+	c.JSON(http.StatusOK, gin.H{})
 	return nil
 }

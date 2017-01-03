@@ -19,7 +19,7 @@
       <cite>
         <div class="btn-group btn-group-sm" role="group">
           <a class="btn btn-warning" href="/notices/edit/{{.ID}}">{{t $l "buttons.edit"}}</a>
-          <a data-confirm="{{t $l "are-you-sure"}}" data-method="delete" class="btn btn-danger" href="/notices/{{.ID}}">{{t $l "buttons.remove"}}</a>
+          <a data-confirm="{{t $l "are-you-sure"}}" data-next="/notices" data-method="delete" class="btn btn-danger" href="/notices/{{.ID}}">{{t $l "buttons.remove"}}</a>
         </div>
       </cite>
     {{end}}

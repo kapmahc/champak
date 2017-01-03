@@ -5,11 +5,6 @@ import (
 	gin "gopkg.in/gin-gonic/gin.v1"
 )
 
-const (
-	//TO key of to
-	TO = "to"
-)
-
 // Form form
 type Form map[string]interface{}
 
@@ -28,6 +23,7 @@ func NewForm(ctx *gin.Context, id, title, action string) Form {
 	fm["title"] = title
 	fm["method"] = "post"
 	fm["action"] = action
+	fm["next"] = ctx.Request.URL.Path
 	fm["fields"] = make([]interface{}, 0)
 	return fm
 }

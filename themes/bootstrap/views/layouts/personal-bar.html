@@ -7,7 +7,7 @@
   </a>
   <div class="dropdown-menu dropdown-menu-right" aria-labelledby="personal-bar">
     <a class="dropdown-item" href="/dashboard">{{t $l "header.dashboard"}}</a>
-    <a data-confirm="{{t $l "are-you-sure"}}" data-method="delete" class="dropdown-item" href="/users/sign-out">{{t $l "personal-bar.sign-out"}}</a>
+    <a data-confirm="{{t $l "are-you-sure"}}" data-next="/" data-method="delete" class="dropdown-item" href="/users/sign-out">{{t $l "personal-bar.sign-out"}}</a>
   </div>
 </li>
 {{else}}

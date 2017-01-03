@@ -14,8 +14,8 @@ $(function() {
                 url: $(this).attr('href'),
                 type: 'DELETE',
                 success: function(rst) {
-                    window.location.href = rst.to;
-                }
+                    window.location.href = $(this).data('next');
+                }.bind(this)
             })
         }
     });

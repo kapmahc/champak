@@ -17,7 +17,7 @@
       <th scope="row">{{dtf .CreatedAt}}</th>
       <td>{{.Body}}</td>
       <td>
-        <a data-confirm="{{t $l "are-you-sure"}}" data-method="delete" class="btn btn-danger btn-sm" href="leave-words/{{.ID}}">{{t $l "buttons.remove"}}</a>
+        <a data-confirm="{{t $l "are-you-sure"}}" data-next="/leave-words" data-method="delete" class="btn btn-danger btn-sm" href="leave-words/{{.ID}}">{{t $l "buttons.remove"}}</a>
       </td>
     </tr>
     {{end}}
