@@ -9,6 +9,11 @@ import (
 	gin "gopkg.in/gin-gonic/gin.v1"
 )
 
+const (
+	// TplForm form template
+	TplForm = "auth/form"
+)
+
 // Engine auth engine
 type Engine struct {
 	Dao      *Dao              `inject:""`

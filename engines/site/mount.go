@@ -109,4 +109,33 @@ func (p *Engine) Mount(rt *gin.Engine) {
 		p.Session.MustSignInHandler(), p.Session.MustAdminHandler(),
 		web.JSON(p.destoryLocale),
 	)
+
+	// -------------
+	ag.GET("/users", p.indexAdminUsers)
+	// -------------
+	rt.GET("/links", p.indexLinks)
+	rt.GET("/links/new",
+		p.Session.MustSignInHandler(), p.Session.MustAdminHandler(),
+		p.newLink,
+	)
+	rt.POST(
+		"/links",
+		p.Session.MustSignInHandler(), p.Session.MustAdminHandler(),
+		web.PostFormHandler(&fmLink{}, p.createLink),
+	)
+	rt.POST(
+		"/links/:id",
+		p.Session.MustSignInHandler(), p.Session.MustAdminHandler(),
+		web.PostFormHandler(&fmLink{}, p.updateLink),
+	)
+	rt.DELETE(
+		"/links/:id",
+		p.Session.MustSignInHandler(), p.Session.MustAdminHandler(),
+		web.JSON(p.destoryLink),
+	)
+	rt.GET(
+		"/links/edit/:id",
+		p.Session.MustSignInHandler(), p.Session.MustAdminHandler(),
+		web.HTML(p.editLink),
+	)
 }

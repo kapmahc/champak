@@ -35,7 +35,7 @@ type fmNotice struct {
 func (p *Engine) createNotice(c *gin.Context, o interface{}) error {
 	lng := c.MustGet(web.LOCALE).(string)
 	fm := o.(*fmNotice)
-	if err := p.Db.Create(&Notice{Body: fm.Body}).Error; err != nil {
+	if err := p.Db.Create(&Notice{Body: fm.Body, Type: web.TypeMARKDOWN}).Error; err != nil {
 		return err
 	}
 
@@ -50,7 +50,7 @@ func (p *Engine) editNotice(c *gin.Context) (tpl string, err error) {
 	lng := c.MustGet(web.LOCALE).(string)
 	data := c.MustGet(web.DATA).(gin.H)
 	id := c.Param("id")
-	tpl = "auth/form"
+	tpl = auth.TplForm
 
 	var n Notice
 	if err = p.Db.Where("id = ?", id).First(&n).Error; err != nil {

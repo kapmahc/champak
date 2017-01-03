@@ -1,0 +1,41 @@
+{{define "links"}}
+{{template "dashboard/header" .}}
+{{$l := .locale}}
+
+<h2>
+  {{.title}}
+  <a class="btn btn-primary btn-sm" href="/links/new">{{t $l "buttons.new"}}</a>
+</h2>
+<hr/>
+
+<table class="table table-bordered table-hover">
+  <thead>
+    <tr>
+      <th>{{t $l "site.attributes.link.loc"}}</th>
+      <th>{{t $l "site.attributes.link.href"}}</th>
+      <th>{{t $l "site.attributes.link.label"}}</th>
+      <th>{{t $l "attributes.sortOrder"}}</th>
+      <th width="15%">{{t $l "buttons.manage"}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{range .items}}
+      <tr>
+        <th scope="row">{{.Loc}}</th>
+        <td>{{.Href}}</td>
+        <td>{{.Label}}</td>
+        <td>{{.SortOrder}}</td>
+        <td>
+          <div class="btn-group btn-group-sm" role="group">
+            <a class="btn btn-warning" href="/links/edit/{{.ID}}">{{t $l "buttons.edit"}}</a>
+            <a data-confirm="{{t $l "are-you-sure"}}" data-next="/links" data-method="delete" class="btn btn-danger" href="/links/{{.ID}}">{{t $l "buttons.remove"}}</a>
+          </div>
+        </td>
+      </tr>
+    {{end}}
+  </tbody>
+</table>
+
+
+{{template "footer" .}}
+{{end}}

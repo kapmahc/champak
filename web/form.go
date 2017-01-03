@@ -146,6 +146,16 @@ type Select struct {
 	Options     []interface{}
 }
 
+// NewOrderSelect new sort order  select
+func NewOrderSelect(id, label string, value, min, max int) *Select {
+	var options []interface{}
+	for i := min; i <= max; i++ {
+		options = append(options, i)
+	}
+
+	return NewSelect(id, label, value, options...)
+}
+
 // NewSelect new select
 func NewSelect(id, label string, value interface{}, options ...interface{}) *Select {
 	return &Select{

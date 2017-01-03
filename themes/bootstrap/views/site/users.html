@@ -1,0 +1,28 @@
+{{define "admin/users"}}
+{{template "dashboard/header" .}}
+{{$l := .locale}}
+
+<h2>
+  {{.title}}
+</h2>
+<hr/>
+
+<table class="table table-bordered table-hover">
+  <thead>
+    <tr>
+      <th>{{t $l "auth.attributes.user.info"}}</th>
+      <th>{{t $l "auth.attributes.user.lastSignIn"}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{range .items}}
+      <tr>
+        <th scope="row">{{.FullName}}&lt;{{.Email}}&gt;</th>
+        <td>{{dtf .LastSignInAt}} &#91;{{.LastSignInIP}}&#93;</td>
+      </tr>
+    {{end}}
+  </tbody>
+</table>
+
+{{template "footer" .}}
+{{end}}

@@ -24,7 +24,6 @@ CREATE TABLE links (
   created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
   updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
 );
-CREATE UNIQUE INDEX idx_links_loc ON links (loc);
 
 -- +goose Down
 -- SQL section 'Down' is executed when this migration is rolled back
