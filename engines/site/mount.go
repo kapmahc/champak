@@ -12,12 +12,6 @@ func (p *Engine) Mount(rt *gin.Engine) {
 	rt.GET("/rss.atom", p.getRss)
 	rt.GET("/robots.txt", p.getRobots)
 
-	rt.GET("/leave-words/new", p.newLeaveWord)
-	rt.POST(
-		"/leave-words",
-		web.PostFormHandler("/leave-words/new", &fmLeaveWord{}, p.createLeaveWord),
-	)
-
 	// ---------------------
 
 	rt.GET("/dashboard", p.Session.MustSignInHandler(), p.getDashboard)
@@ -47,13 +41,26 @@ func (p *Engine) Mount(rt *gin.Engine) {
 	)
 	ag.GET("/site/status", p.getAdminSiteStatus)
 
-	ag.GET("/leave-words", p.indexLeaveWords)
-	ag.DELETE("/leave-words/:id", web.FlashHandler("/ops/leave-words", p.destoryLeaveWord))
+	rt.GET("/leave-words/new", p.newLeaveWord)
+	rt.POST(
+		"/leave-words",
+		web.PostFormHandler("/leave-words/new", &fmLeaveWord{}, p.createLeaveWord),
+	)
+	rt.GET(
+		"/leave-words",
+		p.Session.MustSignInHandler(), p.Session.MustAdminHandler(),
+		p.indexLeaveWords,
+	)
+	rt.DELETE(
+		"/leave-words/:id",
+		p.Session.MustSignInHandler(), p.Session.MustAdminHandler(),
+		web.FlashHandler("/admin/leave-words", p.destoryLeaveWord),
+	)
 
-	// ag.GET("/notices", p.indexNotices)
-	// ag.GET("/notices/new", p.newNotice)
-	// ag.POST("/notices", web.PostFormHandler("/ops/notices", &fmNotice{}, p.createNotice))
-	// ag.POST("/notices/:id", web.PostFormHandler("/ops/notices", &fmNotice{}, p.updateNotice))
-	// ag.DELETE("/notices/:id", web.FlashHandler("/ops/notices", p.destoryNotice))
-	// ag.GET("/notices/:id/edit", web.FlashHandler("/ops/notices", p.editNotice))
+	rt.GET("/notices", p.indexNotices)
+	ag.GET("/notices/new", p.newNotice)
+	ag.POST("/notices", web.PostFormHandler("/ops/notices", &fmNotice{}, p.createNotice))
+	ag.POST("/notices/:id", web.PostFormHandler("/ops/notices", &fmNotice{}, p.updateNotice))
+	ag.DELETE("/notices/:id", web.FlashHandler("/ops/notices", p.destoryNotice))
+	ag.GET("/notices/edit/:id", web.FlashHandler("/ops/notices", p.editNotice))
 }

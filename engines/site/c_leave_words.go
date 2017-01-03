@@ -13,7 +13,7 @@ func (p *Engine) newLeaveWord(c *gin.Context) {
 	lng := c.MustGet(web.LOCALE).(string)
 	data := c.MustGet(web.DATA).(gin.H)
 
-	title := p.I18n.T(lng, "leave-words.new.title")
+	title := p.I18n.T(lng, "site.leave-words.new.title")
 	fm := web.NewForm(c, "new-leave-words", title, "/leave-words")
 
 	fm.AddFields(

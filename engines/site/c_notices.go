@@ -14,8 +14,8 @@ func (p *Engine) newNotice(c *gin.Context) {
 	lng := c.MustGet(web.LOCALE).(string)
 	data := c.MustGet(web.DATA).(gin.H)
 
-	title := p.I18n.T(lng, "ops.notices.new.title")
-	fm := web.NewForm(c, "new-notices", title, "/ops/notices")
+	title := p.I18n.T(lng, "site.admin.notices.new.title")
+	fm := web.NewForm(c, "new-notices", title, "/notices")
 
 	fm.AddFields(
 		web.NewTextArea("body", p.I18n.T(lng, "attributes.body"), ""),
@@ -40,7 +40,7 @@ func (p *Engine) createNotice(c *gin.Context, o interface{}) error {
 	ss := sessions.Default(c)
 	ss.AddFlash(p.I18n.T(lng, "success"), web.NOTICE)
 	ss.Save()
-	c.Redirect(http.StatusFound, "/ops/notices")
+	c.Redirect(http.StatusFound, "/notices")
 	return nil
 }
 
