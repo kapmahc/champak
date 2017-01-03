@@ -222,7 +222,7 @@ func (p *Engine) latestArticles(c *gin.Context) {
 
 	var items []Article
 	if err := p.Db.
-		Select([]string{"id", "title", "summary"}).
+		Select([]string{"id", "title", "summary", "updated_at"}).
 		Order("updated_at DESC").
 		Find(&items).Error; err != nil {
 		log.Error(err)

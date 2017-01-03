@@ -36,6 +36,27 @@
 {{define "forum/articles/list"}}
 {{template "application/header" .}}
 {{$l := .locale}}
+<div class="row">
+  {{range .articles}}
+    <h2>{{.Title}}</h2>
+    <hr/>
+    <blockquote class="blockquote">
+      <p class="mb-0">{{.Summary}}</p>
+      <footer class="blockquote-footer">
+        {{dtf .UpdatedAt}}
+        <cite>
+          <a target="_blank" href="/forum/articles/show/{{.ID}}">{{t $l "buttons.view"}}</a>
+        </cite>
+      </footer>
+    </blockquote>
+  {{end}}
+</div>
+{{template "footer" .}}
+{{end}}
+
+{{define "forum/articles/list_card"}}
+{{template "application/header" .}}
+{{$l := .locale}}
 <h2>{{.title}}</h2>
 <hr/>
 <div class="row">
