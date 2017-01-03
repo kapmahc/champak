@@ -103,10 +103,34 @@ func (p *Engine) indexTags(c *gin.Context) {
 }
 
 func (p *Engine) destoryTag(c *gin.Context) (interface{}, error) {
+	var t Tag
 	if err := p.Db.
 		Where("id = ?", c.Param("id")).
-		Delete(Tag{}).Error; err != nil {
+		First(&t).Error; err != nil {
+		return nil, err
+	}
+	if err := p.Db.Model(&t).Association("Articles").Clear().Error; err != nil {
+		return nil, err
+	}
+	if err := p.Db.Delete(&t).Error; err != nil {
 		return nil, err
 	}
 	return gin.H{}, nil
+}
+
+func (p *Engine) showTag(c *gin.Context) (tpl string, err error) {
+	id := c.Param("id")
+	tpl = "forum/articles/list"
+	var tag Tag
+	if err = p.Db.Where("id = ?", id).First(&tag).Error; err != nil {
+		return
+	}
+	if err = p.Db.Model(&tag).Related(&tag.Articles, "Articles").Error; err != nil {
+		return
+	}
+	data := c.MustGet(web.DATA).(gin.H)
+	data["articles"] = tag.Articles
+	data["title"] = tag.Name
+	c.Set(web.DATA, data)
+	return
 }

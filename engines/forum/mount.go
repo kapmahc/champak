@@ -34,6 +34,10 @@ func (p *Engine) Mount(rt *gin.Engine) {
 		p.Session.MustSignInHandler(), p.Session.MustAdminHandler(),
 		web.HTML(p.editTag),
 	)
+	gt.GET(
+		"/tags/show/:id",
+		web.HTML(p.showTag),
+	)
 	// ---------------
 	gt.GET("/articles/latest", p.latestArticles)
 	gt.GET("/articles", p.Session.MustSignInHandler(), p.indexArticles)

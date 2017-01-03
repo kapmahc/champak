@@ -43,6 +43,7 @@ func (p *Engine) createComment(c *gin.Context, o interface{}) error {
 		Body:      fm.Body,
 		UserID:    user.ID,
 		ArticleID: fm.ArticleID,
+		Type:      web.TypeMARKDOWN,
 	}).Error; err != nil {
 		return err
 	}
@@ -51,6 +52,7 @@ func (p *Engine) createComment(c *gin.Context, o interface{}) error {
 	ss.AddFlash(p.I18n.T(lng, "success"), web.NOTICE)
 	ss.Save()
 
+	c.Set("next", fmt.Sprintf("/forum/articles/show/%d", fm.ArticleID))
 	return nil
 }
 
@@ -71,7 +73,7 @@ func (p *Engine) editComment(c *gin.Context) (tpl string, err error) {
 	title := p.I18n.T(lng, "forum.comments.edit.title", n.ID)
 
 	fm := web.NewForm(c, "edit-comment", title, fmt.Sprintf("/forum/comments/%d", n.ID))
-	body := web.NewTextArea("body", p.I18n.T(lng, "attributes.body"), "")
+	body := web.NewTextArea("body", p.I18n.T(lng, "attributes.body"), n.Body)
 	body.Help = p.I18n.T(lng, "helps.markdown")
 	fm.AddFields(
 		body,
@@ -89,7 +91,7 @@ func (p *Engine) updateComment(c *gin.Context, o interface{}) error {
 	fm := o.(*fmComment)
 	var n Comment
 	id := c.Param("id")
-	if err := p.Db.Select([]string{"user_id"}).Where("id = ?", id).First(&n).Error; err != nil {
+	if err := p.Db.Where("id = ?", id).First(&n).Error; err != nil {
 		return err
 	}
 	if err := p.check(c, n.UserID); err != nil {
@@ -105,6 +107,7 @@ func (p *Engine) updateComment(c *gin.Context, o interface{}) error {
 	ss.AddFlash(p.I18n.T(lng, "success"), web.NOTICE)
 	ss.Save()
 
+	c.Set("next", fmt.Sprintf("/forum/articles/show/%d", n.ArticleID))
 	return nil
 }
 

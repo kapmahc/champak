@@ -196,11 +196,22 @@ func (p *Engine) indexArticles(c *gin.Context) {
 }
 
 func (p *Engine) destoryArticle(c *gin.Context) (interface{}, error) {
+	var a Article
 	if err := p.Db.
 		Where("id = ?", c.Param("id")).
-		Delete(Article{}).Error; err != nil {
+		First(&a).Error; err != nil {
 		return nil, err
 	}
+	if err := p.Db.Model(&a).Association("Tags").Clear().Error; err != nil {
+		return nil, err
+	}
+	if err := p.Db.Where("article_id = ?", a.ID).Delete(Comment{}).Error; err != nil {
+		return nil, err
+	}
+	if err := p.Db.Delete(&a).Error; err != nil {
+		return nil, err
+	}
+
 	return gin.H{}, nil
 }
 

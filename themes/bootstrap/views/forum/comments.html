@@ -1,0 +1,33 @@
+{{define "forum/comments"}}
+{{template "dashboard/header" .}}
+{{$l := .locale}}
+<h2>{{.title}}</h2>
+<hr/>
+<table class="table table-bordered table-hover">
+  <thead>
+    <tr>
+      <th>{{t $l "attributes.updatedAt"}}</th>
+      <th>{{t $l "attributes.body"}}</th>
+      <th width="15%">{{t $l "buttons.manage"}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{range .items}}
+      <tr>
+        <th scope="row">{{dtf .UpdatedAt}}</th>
+        <td >
+          <p class="markdown">{{.Body}}</p>
+        </td>
+        <td>
+          <div class="btn-group btn-group-sm" role="group">
+            <a class="btn btn-primary" href="/forum/articles/show/{{.ArticleID}}" target="_blank">{{t $l "buttons.view"}}</a>
+            <a class="btn btn-warning" href="/forum/comments/edit/{{.ID}}">{{t $l "buttons.edit"}}</a>
+            <a data-confirm="{{t $l "are-you-sure"}}" data-next="/forum/comments" data-method="delete" class="btn btn-danger" href="/forum/comments/{{.ID}}">{{t $l "buttons.remove"}}</a>
+          </div>
+        </td>
+      </tr>
+    {{end}}
+  </tbody>
+</table>
+{{template "footer" .}}
+{{end}}
