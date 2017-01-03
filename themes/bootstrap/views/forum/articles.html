@@ -21,6 +21,7 @@
         <td>{{dtf .UpdatedAt}}</td>
         <td>
           <div class="btn-group btn-group-sm" role="group">
+            <a class="btn btn-primary" href="/forum/articles/show/{{.ID}}" target="_blank">{{t $l "buttons.view"}}</a>
             <a class="btn btn-warning" href="/forum/articles/edit/{{.ID}}">{{t $l "buttons.edit"}}</a>
             <a data-confirm="{{t $l "are-you-sure"}}" data-next="/forum/articles" data-method="delete" class="btn btn-danger" href="/forum/articles/{{.ID}}">{{t $l "buttons.remove"}}</a>
           </div>
@@ -33,19 +34,60 @@
 {{end}}
 
 {{define "forum/articles/list"}}
-{{template "dashboard/header" .}}
+{{template "application/header" .}}
 {{$l := .locale}}
 <h2>{{.title}}</h2>
 <hr/>
 <div class="row">
-  {{range .items}}
+  {{range .articles}}
     <div class="col-md-3">
       <div class="card card-block">
         <h4 class="card-title">{{.Title}}</h4>
         <p class="card-text">{{.Summary}}</p>
-        <a href="/forum/articles/show/{{.ID}}" class="card-link">{{t $l "buttons.view"}}</a>        
+        <a target="_blank" href="/forum/articles/show/{{.ID}}" class="card-link">{{t $l "buttons.view"}}</a>
       </div>
     </div>
+  {{end}}
+</div>
+{{template "footer" .}}
+{{end}}
+
+
+{{define "forum/articles/show"}}
+{{template "application/header" .}}
+{{$l := .locale}}
+<div class="row">
+  <h2>{{.title}}</h2>
+  <hr/>
+  {{if .article}}
+    <blockquote class="blockquote">
+      <p class="mb-0">{{.article.Summary}}</p>
+      <footer class="blockquote-footer">
+        {{.article.User.FullName}} {{dtf .article.UpdatedAt}}
+        <cite>
+          {{range .article.Tags}}
+            <a href="/forum/tags/show/{{.ID}}" target="_blank">{{.Name}}</a>
+          {{end}}
+        </cite>
+      </footer>
+    </blockquote>
+    <p class="markdown">{{.article.Body}}</p>
+    <h4>
+      {{t $l "forum.comments.latest.title"}}
+      {{if .currentUser}}
+        <a class="btn btn-primary btn-sm" href="/forum/comments/new?articleID={{.article.ID}}">{{t $l "forum.comments.new.title"}}</a>
+      {{end}}
+    </h4>
+    <hr/>
+    {{range .article.Comments}}
+      <blockquote class="blockquote">
+        <p class="mb-0 markdown">{{.Body}}</p>
+        <footer class="blockquote-footer">
+          {{dtf .UpdatedAt}}
+          <cite></cite>
+        </footer>
+      </blockquote>
+    {{end}}
   {{end}}
 </div>
 {{template "footer" .}}

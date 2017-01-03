@@ -61,6 +61,10 @@ func (p *Engine) Mount(rt *gin.Engine) {
 		p.Session.MustSignInHandler(),
 		web.HTML(p.editArticle),
 	)
+	gt.GET(
+		"/articles/show/:id",
+		web.HTML(p.showArticle),
+	)
 	// ---------------
 	gt.GET("/comments/latest", p.latestComments)
 	gt.GET("/comments", p.Session.MustSignInHandler(), p.indexComments)

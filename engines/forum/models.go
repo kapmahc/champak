@@ -14,9 +14,10 @@ type Article struct {
 	Body    string
 	Type    string
 
-	UserID uint
-	User   auth.User
-	Tags   []Tag `gorm:"many2many:forum_articles_tags"`
+	UserID   uint
+	User     auth.User
+	Tags     []Tag `gorm:"many2many:forum_articles_tags"`
+	Comments []Comment
 }
 
 // TableName table name

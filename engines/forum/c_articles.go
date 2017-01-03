@@ -216,6 +216,29 @@ func (p *Engine) latestArticles(c *gin.Context) {
 		Find(&items).Error; err != nil {
 		log.Error(err)
 	}
-	data["items"] = items
+	data["articles"] = items
 	c.HTML(http.StatusOK, "forum/articles/list", data)
+}
+
+func (p *Engine) showArticle(c *gin.Context) (tpl string, err error) {
+	id := c.Param("id")
+	tpl = "forum/articles/show"
+	var art Article
+	if err = p.Db.Where("id = ?", id).First(&art).Error; err != nil {
+		return
+	}
+	if err = p.Db.Model(&art).Related(&art.Tags, "Tags").Error; err != nil {
+		return
+	}
+	if err = p.Db.Model(&art).Related(&art.Comments).Error; err != nil {
+		return
+	}
+	if err = p.Db.Model(&art).Related(&art.User).Error; err != nil {
+		return
+	}
+	data := c.MustGet(web.DATA).(gin.H)
+	data["article"] = art
+	data["title"] = art.Title
+	c.Set(web.DATA, data)
+	return
 }

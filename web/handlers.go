@@ -30,7 +30,7 @@ func HTML(fn func(*gin.Context) (string, error)) gin.HandlerFunc {
 			ss.AddFlash(err.Error(), ALERT)
 			ss.Save()
 		}
-		c.HTML(http.StatusOK, tpl, c.MustGet(DATA).(gin.H))
+		c.HTML(http.StatusOK, tpl, c.MustGet(DATA))
 	}
 }
 
