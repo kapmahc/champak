@@ -7,16 +7,21 @@ $.ajaxSetup({
 });
 
 $(function() {
-    $('a[data-method="delete"]').click(function(e) {
-        e.preventDefault();
-        if (confirm($(this).data('confirm'))) {
-            $.ajax({
-                url: $(this).attr('href'),
-                type: 'DELETE',
-                success: function(rst) {
-                    window.location.href = $(this).data('next');
-                }.bind(this)
-            })
-        }
-    });
+  $('p.markdown').each(function(i, n){
+    var txt = $(this).text();    
+    $(this).html(marked(txt));
+  });
+
+  $('a[data-method="delete"]').click(function(e) {
+      e.preventDefault();
+      if (confirm($(this).data('confirm'))) {
+          $.ajax({
+              url: $(this).attr('href'),
+              type: 'DELETE',
+              success: function(rst) {
+                  window.location.href = $(this).data('next');
+              }.bind(this)
+          })
+      }
+  });
 });

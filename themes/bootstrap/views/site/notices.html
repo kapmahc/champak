@@ -12,7 +12,7 @@
 
 {{range .items}}
 <blockquote class="blockquote">
-  <p class="mb-0">{{.Body}}</p>
+  <p class="mb-0 markdown">{{.Body}}</p>
   <footer class="blockquote-footer">
     {{dtf .UpdatedAt}}
     {{if $can}}
