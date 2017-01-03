@@ -18,5 +18,37 @@ func (p *Engine) Mount(rt *gin.Engine) {
 		web.PostFormHandler("/leave-words/new", &fmLeaveWord{}, p.createLeaveWord),
 	)
 
+	// ---------------------
+
 	rt.GET("/dashboard", p.Session.MustSignInHandler(), p.getDashboard)
+
+	// ---------------------------
+	ag := rt.Group("/admin", p.Session.MustSignInHandler(), p.Session.MustAdminHandler())
+
+	ag.GET("/site/info", p.getAdminSiteInfo)
+	ag.POST(
+		"/site/info",
+		web.PostFormHandler("/admin/site/info", &fmSiteInfo{}, p.postAdminSiteInfo),
+	)
+	ag.GET("/site/author", p.getAdminSiteAuthor)
+	ag.POST(
+		"/site/author",
+		web.PostFormHandler("/admin/site/author", &fmSiteAuthor{}, p.postAdminSiteAuthor),
+	)
+	ag.GET("/site/seo", p.getAdminSiteSeo)
+	ag.POST(
+		"/site/seo",
+		web.PostFormHandler("/admin/site/seo", &fmSiteSeo{}, p.postAdminSiteSeo),
+	)
+	ag.GET("/site/status", p.getAdminSiteStatus)
+
+	ag.GET("/leave-words", p.indexLeaveWords)
+	ag.DELETE("/leave-words/:id", web.FlashHandler("/ops/leave-words", p.destoryLeaveWord))
+
+	// ag.GET("/notices", p.indexNotices)
+	// ag.GET("/notices/new", p.newNotice)
+	// ag.POST("/notices", web.PostFormHandler("/ops/notices", &fmNotice{}, p.createNotice))
+	// ag.POST("/notices/:id", web.PostFormHandler("/ops/notices", &fmNotice{}, p.updateNotice))
+	// ag.DELETE("/notices/:id", web.FlashHandler("/ops/notices", p.destoryNotice))
+	// ag.GET("/notices/:id/edit", web.FlashHandler("/ops/notices", p.editNotice))
 }

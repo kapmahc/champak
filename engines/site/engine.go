@@ -21,6 +21,7 @@ type Engine struct {
 	Db       *gorm.DB          `inject:""`
 	Redis    *redis.Pool       `inject:""`
 	Session  *auth.Session     `inject:""`
+	Dao      *auth.Dao         `inject:""`
 }
 
 // Do background job
@@ -37,8 +38,53 @@ func (p *Engine) Sitemap() ([]stm.URL, error) {
 }
 
 // Dashboard dashboard links
-func (p *Engine) Dashboard(*gin.Context) []web.Dropdown {
-	return []web.Dropdown{}
+func (p *Engine) Dashboard(c *gin.Context) []web.Dropdown {
+	var items []web.Dropdown
+	user := c.MustGet(auth.CurrentUser).(*auth.User)
+	if p.Dao.Is(user.ID, auth.RoleAdmin) {
+		items = append(items, web.Dropdown{
+			Label: "site.profile",
+			Links: []*web.Link{
+				&web.Link{
+					Label: "site.admin.info.title",
+					Href:  "/admin/site/info",
+				},
+				&web.Link{
+					Label: "site.admin.author.title",
+					Href:  "/admin/site/author",
+				},
+				&web.Link{
+					Label: "site.admin.seo.title",
+					Href:  "/admin/site/seo",
+				},
+				&web.Link{
+					Label: "site.admin.status.title",
+					Href:  "/admin/site/status",
+				},
+				&web.Link{
+					Label: "site.admin.notices.title",
+					Href:  "/admin/notices",
+				},
+				&web.Link{
+					Label: "site.admin.leave-words.title",
+					Href:  "/admin/leave-words",
+				},
+				&web.Link{
+					Label: "site.admin.locales.title",
+					Href:  "/admin/locales",
+				},
+				&web.Link{
+					Label: "site.admin.links.title",
+					Href:  "/admin/links",
+				},
+				&web.Link{
+					Label: "site.admin.cards.title",
+					Href:  "/admin/cards",
+				},
+			},
+		})
+	}
+	return items
 }
 
 func init() {
