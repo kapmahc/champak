@@ -10,6 +10,7 @@ import (
 	"github.com/garyburd/redigo/redis"
 	"github.com/kapmahc/champak/engines/auth"
 	"github.com/kapmahc/champak/web"
+	"github.com/spf13/viper"
 	gin "gopkg.in/gin-gonic/gin.v1"
 )
 
@@ -127,6 +128,7 @@ func (p *Engine) runtimeStatus() gin.H {
 		"CPUS":         runtime.NumCPU(),
 		"MEMORY USAGE": fmt.Sprintf("%d/%d MB", mem.Alloc/(1024*1024), mem.Sys/(1024*1024)),
 		"LAST GC":      time.Unix(0, int64(mem.LastGC)),
+		"VERSION":      fmt.Sprintf("%s[%s](%s)", web.Version, viper.GetString("env"), web.BuildTime),
 	}
 }
 func (p *Engine) redisStatus() string {

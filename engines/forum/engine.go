@@ -12,6 +12,7 @@ import (
 
 // Engine forum engine
 type Engine struct {
+	Dao     *auth.Dao     `inject:""`
 	Db      *gorm.DB      `inject:""`
 	I18n    *web.I18n     `inject:""`
 	Session *auth.Session `inject:""`
@@ -29,8 +30,35 @@ func (p *Engine) Sitemap() ([]stm.URL, error) {
 
 // Dashboard dashboard links
 func (p *Engine) Dashboard(c *gin.Context) []web.Dropdown {
-	var items []web.Dropdown
-	return items
+
+	user := c.MustGet(auth.CurrentUser).(*auth.User)
+	item := web.Dropdown{
+		Label: "forum.profile",
+		Links: []web.Link{
+			{
+				Label: "forum.articles.new.title",
+				Href:  "/forum/articles/new",
+			},
+			{
+				Label: "forum.articles.index.title",
+				Href:  "/forum/articles",
+			},
+			{
+				Label: "forum.comments.index.title",
+				Href:  "/forum/comments",
+			},
+		},
+	}
+	if p.Dao.Is(user.ID, auth.RoleAdmin) {
+		item.Links = append(
+			item.Links,
+			web.Link{
+				Label: "forum.tags.index.title",
+				Href:  "/forum/tags",
+			},
+		)
+	}
+	return []web.Dropdown{item}
 }
 
 // Do background job
@@ -40,11 +68,6 @@ func (p *Engine) Do() {
 
 // Home home
 func (p *Engine) Home(c *gin.Context) {
-}
-
-// Mount web points
-func (p *Engine) Mount(rt *gin.Engine) {
-
 }
 
 // Shell console commands

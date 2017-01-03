@@ -46,44 +46,44 @@ func (p *Engine) Dashboard(c *gin.Context) []web.Dropdown {
 	if p.Dao.Is(user.ID, auth.RoleAdmin) {
 		items = append(items, web.Dropdown{
 			Label: "site.profile",
-			Links: []*web.Link{
-				&web.Link{
+			Links: []web.Link{
+				{
 					Label: "site.admin.info.title",
 					Href:  "/admin/site/info",
 				},
-				&web.Link{
+				{
 					Label: "site.admin.author.title",
 					Href:  "/admin/site/author",
 				},
-				&web.Link{
+				{
 					Label: "site.admin.seo.title",
 					Href:  "/admin/site/seo",
 				},
-				&web.Link{
+				{
 					Label: "site.admin.smtp.title",
 					Href:  "/admin/site/smtp",
 				},
-				&web.Link{
+				{
 					Label: "site.admin.status.title",
 					Href:  "/admin/site/status",
 				},
-				&web.Link{
+				{
 					Label: "site.notices.index.title",
 					Href:  "/notices",
 				},
-				&web.Link{
+				{
 					Label: "site.leave-words.index.title",
 					Href:  "/leave-words",
 				},
-				&web.Link{
+				{
 					Label: "site.locales.index.title",
 					Href:  "/locales",
 				},
-				&web.Link{
+				{
 					Label: "site.links.index.title",
 					Href:  "/links",
 				},
-				&web.Link{
+				{
 					Label: "site.admin.users.title",
 					Href:  "/admin/users",
 				},

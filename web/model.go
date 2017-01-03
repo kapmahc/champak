@@ -20,7 +20,7 @@ type Model struct {
 type Dropdown struct {
 	Label string
 	Href  string
-	Links []*Link
+	Links []Link
 }
 
 // Link link
