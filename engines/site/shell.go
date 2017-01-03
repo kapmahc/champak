@@ -11,8 +11,6 @@ import (
 	"path/filepath"
 	"time"
 
-	gin "gopkg.in/gin-gonic/gin.v1"
-
 	"github.com/BurntSushi/toml"
 	log "github.com/Sirupsen/logrus"
 	"github.com/facebookgo/inject"
@@ -25,6 +23,7 @@ import (
 	"github.com/steinbacher/goose"
 	"github.com/urfave/cli"
 	"golang.org/x/text/language"
+	gin "gopkg.in/gin-gonic/gin.v1"
 )
 
 const (

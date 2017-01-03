@@ -1,0 +1,27 @@
+{{define "flashs"}}
+{{$l := .locale}}
+<div class="row">
+  {{if .notice}}
+    <div class="alert alert-info alert-dismissible fade in" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <h4 class="alert-heading">{{t $l "flashs.notice"}}</h4>
+      {{range .notice}}
+        <p class="mb-0">{{str2htm .}}</p>
+      {{end}}
+    </div>
+  {{end}}
+  {{if .alert}}
+  <div class="alert alert-danger alert-dismissible fade in" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="alert-heading">{{t $l "flashs.alert"}}</h4>
+    {{range .alert}}
+      <p class="mb-0">{{str2htm .}}</p>
+    {{end}}
+  </div>
+  {{end}}
+</div>
+{{end}}

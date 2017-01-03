@@ -1,0 +1,43 @@
+{{define "dashboard/header"}}
+<!DOCTYPE html>
+<html lang="{{.locale}}">
+  <head>
+    {{template "metas" .}}
+  </head>
+  <body>
+    {{template "dashboard/nav-bar" .}}
+    <div class="container">
+      {{template "flashs" .}}
+{{end}}
+
+
+{{define "dashboard/nav-bar"}}
+{{$l := .locale}}
+<nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
+  <a href="/" class="navbar-brand">{{t $l "site.subTitle"}}</a>
+  <ul class="nav navbar-nav">
+    <li class="nav-item active">
+      <a class="nav-link" href="/dashboard">{{t $l "header.dashboard"}} <span class="sr-only">(current)</span></a>
+    </li>
+    {{range $k, $v := .links}}
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="top-nav-{{$k}}-bar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{t $l $v.Label}}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="top-nav-{{$k}}-bar">
+          {{range $v.Links}}
+            <a class="dropdown-item" href="{{.Href}}">{{t $l .Label}}</a>
+          {{end}}
+        </div>
+      </li>
+    {{end}}
+    {{template "personal-bar" .}}
+    {{template "language-bar" .}}
+  </ul>
+</nav>
+{{end}}
+
+
+{{define "dashboard/footer"}}
+{{template "application/footer" .}}
+{{end}}

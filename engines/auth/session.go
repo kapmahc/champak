@@ -94,5 +94,5 @@ func (p *Session) gotoSignIn(c *gin.Context, msg string) {
 	ss := sessions.Default(c)
 	ss.AddFlash(p.I18n.T(lng, msg), web.ALERT)
 	ss.Save()
-	c.Redirect(http.StatusFound, "/personal/sign-in")
+	c.Redirect(http.StatusFound, "/users/sign-in")
 }

@@ -73,6 +73,17 @@ func (p *Engine) sendEmail(lng string, user *User, act string) {
 	}
 }
 
+func (p *Engine) parseToken(lng, tkn, act string) (*User, error) {
+	cm, err := p.Jwt.Validate([]byte(tkn))
+	if err != nil {
+		return nil, err
+	}
+	if act != cm.Get("act").(string) {
+		return nil, p.I18n.E(lng, "auth.errors.bad-action")
+	}
+	return p.Dao.GetUserByUID(cm.Get("uid").(string))
+}
+
 func (p *Engine) doSendEmail(to, subject, body string) (interface{}, error) {
 	if !web.IsProduction() {
 		log.Infof("to %s\n%s\n%s", to, subject, body)

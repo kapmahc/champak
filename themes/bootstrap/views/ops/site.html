@@ -1,0 +1,53 @@
+{{define "ops/site/seo"}}
+{{template "dashboard/header" .}}
+{{template "form" .form}}
+{{$l := .locale}}
+<br/>
+<div class="list-group">
+  <a href="/robots.txt" target="_blank" class="list-group-item list-group-item-action">
+    robots.txt
+  </a>
+  <a href="/google{{.googleVerifyID}}.html" target="_blank" class="list-group-item list-group-item-action">
+    {{t $l "ops.site.seo.google-verify-file"}}
+  </a>
+  <a href="/baidu_verify_{{.baiduVerifyID}}.html" target="_blank" class="list-group-item list-group-item-action">
+    {{t $l "ops.site.seo.baidu-verify-file"}}
+  </a>
+  <a href="/sitemap.xml" target="_blank" class="list-group-item list-group-item-action">
+    {{t $l "sitemap.xml"}}
+  </a>
+  {{range .languages}}
+    <a href="/rss.atom?locale={{.}}" target="_blank" class="list-group-item list-group-item-action">
+      {{$m := fmt "languages.%s" .}}
+      {{t $l "ops.site.seo.rss-file"}} [{{t $l $m}}]
+    </a>
+  {{end}}
+</div>
+{{template "dashboard/footer" .}}
+{{end}}
+
+
+
+{{define "ops/site/status"}}
+{{template "dashboard/header" .}}
+{{$l := .locale}}
+<div class="row">
+  <div class="col-md-6 block">
+    <h4>REDIS</h4>
+    <hr/>
+    <pre>{{.redis}}</pre>
+  </div>
+  {{range $k, $v := .status}}
+  <div class="col-md-6 block">
+    <h4>{{t $l $k}}</h4>
+    <hr/>
+    <ul class="list-group">
+    {{range $k1, $v1 := $v}}
+      <li class="list-group-item list-group-item-action">{{$k1}}: {{$v1}}</li>
+    {{end}}
+    </ul>
+  </div>
+  {{end}}
+</div>
+{{template "dashboard/footer" .}}
+{{end}}

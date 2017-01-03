@@ -1,0 +1,33 @@
+{{define "ops/notices"}}
+{{template "dashboard/header" .}}
+{{$l := .locale}}
+<h2>{{.title}}</h2>
+<hr/>
+<table class="table table-bordered table-hover">
+  <thead>
+    <tr>
+      <th>{{t $l "attributes.updatedAt"}}</th>
+      <th>{{t $l "attributes.body"}}</th>
+      <th>
+        {{t $l "buttons.manage"}}
+        <a class="btn btn-primary btn-sm" href="/ops/notices/new">{{t $l "buttons.new"}}</a>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    {{range .items}}
+    <tr>
+      <th scope="row">{{dtf .CreatedAt}}</th>
+      <td>{{.Body}}</td>
+      <td>
+        <div class="btn-group btn-group-sm" role="group">
+          <a class="btn btn-warning" href="/ops/notices/{{.ID}}">{{t $l "buttons.edit"}}</a>
+          <a data-confirm="{{t $l "are-you-sure"}}" data-method="delete" class="btn btn-danger" href="/ops/notices/{{.ID}}">{{t $l "buttons.remove"}}</a>
+        </div>
+      </td>
+    </tr>
+    {{end}}
+  </tbody>
+</table>
+{{template "dashboard/footer" .}}
+{{end}}

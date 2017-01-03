@@ -257,5 +257,10 @@ func (p *I18n) Handler(languages ...string) (gin.HandlerFunc, error) {
 		}
 
 		c.Set(LOCALE, tag.String())
+		c.Set(DATA, gin.H{
+			"locale":    tag.String(),
+			"languages": languages,
+		})
+
 	}, nil
 }

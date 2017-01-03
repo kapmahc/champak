@@ -17,10 +17,8 @@ type Engine struct {
 	Security *web.Security     `inject:""`
 	Jwt      *Jwt              `inject:""`
 	Server   *machinery.Server `inject:""`
+	Session  *Session          `inject:""`
 }
-
-// Mount web points
-func (p *Engine) Mount(*gin.Engine) {}
 
 // Atom rss-atom
 func (p *Engine) Atom() ([]*atom.Entry, error) {
