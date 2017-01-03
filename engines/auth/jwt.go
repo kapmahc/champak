@@ -8,7 +8,6 @@ import (
 	"github.com/SermoDigital/jose/crypto"
 	"github.com/SermoDigital/jose/jws"
 	"github.com/SermoDigital/jose/jwt"
-	"github.com/gin-gonic/gin/render"
 	"github.com/google/uuid"
 	"github.com/kapmahc/champak/web"
 )
@@ -24,7 +23,6 @@ type Jwt struct {
 	Method crypto.SigningMethod `inject:"jwt.method"`
 	Dao    *Dao                 `inject:""`
 	I18n   *web.I18n            `inject:""`
-	R      *render.Render       `inject:""`
 }
 
 //Validate check jwt

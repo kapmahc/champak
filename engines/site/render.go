@@ -47,8 +47,28 @@ func (p *Engine) loadTemplates(theme string) (*template.Template, error) {
 		New("").
 		Funcs(template.FuncMap{
 			"t": p.I18n.T,
-			// "links": p.Layout.Links,
-			// "cards": p.Layout.Cards,
+			"links": func(loc string) []Link {
+				var items []Link
+				if err := p.Db.
+					Select([]string{"label", "href"}).
+					Where("loc = ?", loc).
+					Order("sort_order ASC").
+					Find(&items).Error; err != nil {
+					log.Error(err)
+				}
+				return items
+			},
+			"cards": func(loc string) []Card {
+				var items []Card
+				if err := p.Db.
+					Select([]string{"title", "summary", "logo", "href"}).
+					Where("loc = ?", loc).
+					Order("sort_order ASC").
+					Find(&items).Error; err != nil {
+					log.Error(err)
+				}
+				return items
+			},
 			"fmt": fmt.Sprintf,
 			"eq": func(arg1, arg2 interface{}) bool {
 				return arg1 == arg2
