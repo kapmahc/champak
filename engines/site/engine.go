@@ -23,9 +23,6 @@ type Engine struct {
 	Session  *auth.Session     `inject:""`
 }
 
-// Mount web points
-func (p *Engine) Mount(*gin.Engine) {}
-
 // Do background job
 func (p *Engine) Do() {}
 
