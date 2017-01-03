@@ -113,7 +113,10 @@ func (p *Engine) Mount(rt *gin.Engine) {
 	// -------------
 	ag.GET("/users", p.indexAdminUsers)
 	// -------------
-	rt.GET("/links", p.indexLinks)
+	rt.GET("/links",
+		p.Session.MustSignInHandler(), p.Session.MustAdminHandler(),
+		p.indexLinks,
+	)
 	rt.GET("/links/new",
 		p.Session.MustSignInHandler(), p.Session.MustAdminHandler(),
 		p.newLink,

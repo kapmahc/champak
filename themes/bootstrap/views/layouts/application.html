@@ -20,7 +20,7 @@
     </li>
     {{range links "top"}}
       <li class="nav-item">
-        <a class="nav-link" href="{{$.Href}}">{{.Label}}</a>
+        <a class="nav-link" href="{{.Href}}">{{t $l .Label}}</a>
       </li>
     {{end}}
     {{template "personal-bar" .}}
@@ -41,9 +41,9 @@
     {{end}}
   </p>
   <p>
-    &copy; {{t $l "site.copyright"}}    
+    &copy; {{t $l "site.copyright"}}
     {{range links "bottom"}}
-      &middot; <a href="{{$.Href}}">{{$.Label}}</a>
+      &middot; <a href="{{.Href}}">{{t $l .Label}}</a>
     {{end}}
   </p>
 </footer>

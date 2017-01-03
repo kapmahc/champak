@@ -38,7 +38,7 @@ type fmLink struct {
 	Href      string `form:"href" binding:"required,max=255"`
 	Label     string `form:"label" binding:"required,max=255"`
 	Loc       string `form:"loc" binding:"required,max=16"`
-	SortOrder int
+	SortOrder int    `form:"sortOrder"`
 }
 
 func (p *Engine) createLink(c *gin.Context, o interface{}) error {
