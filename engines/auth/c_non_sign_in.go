@@ -69,11 +69,14 @@ func (p *Engine) getUsersSignUp(c *gin.Context) {
 	data := c.MustGet(web.DATA).(gin.H)
 	title := p.I18n.T(lng, "auth.users.sign-up.title")
 	fm := web.NewForm(c, "sign-up", title, "/users/sign-up")
+	pwd := web.NewPasswordField("newPassword", p.I18n.T(lng, "attributes.newPassword"))
+	pwd.Help = p.I18n.T(lng, "helps.password")
+	pwc := web.NewPasswordField("passwordConfirmation", p.I18n.T(lng, "attributes.passwordConfirmation"))
+	pwc.Help = p.I18n.T(lng, "helps.passwordConfirmation")
 	fm.AddFields(
 		web.NewTextField("fullName", p.I18n.T(lng, "attributes.fullName"), ""),
 		web.NewEmailField("email", p.I18n.T(lng, "attributes.email"), ""),
-		web.NewPasswordField("password", p.I18n.T(lng, "attributes.password")),
-		web.NewPasswordField("passwordConfirmation", p.I18n.T(lng, "attributes.passwordConfirmation")),
+		pwd, pwc,
 	)
 
 	data["title"] = title
@@ -209,10 +212,13 @@ func (p *Engine) getUsersResetPassword(c *gin.Context) {
 	data := c.MustGet(web.DATA).(gin.H)
 	title := p.I18n.T(lng, "auth.users.reset-password.title")
 	fm := web.NewForm(c, "reset-password", title, "/users/reset-password")
+	pwd := web.NewPasswordField("newPassword", p.I18n.T(lng, "attributes.newPassword"))
+	pwd.Help = p.I18n.T(lng, "helps.password")
+	pwc := web.NewPasswordField("passwordConfirmation", p.I18n.T(lng, "attributes.passwordConfirmation"))
+	pwc.Help = p.I18n.T(lng, "helps.passwordConfirmation")
 	fm.AddFields(
 		web.NewHiddenField("token", c.Param("token")),
-		web.NewPasswordField("password", p.I18n.T(lng, "attributes.password")),
-		web.NewPasswordField("passwordConfirmation", p.I18n.T(lng, "attributes.passwordConfirmation")),
+		pwd, pwc,
 	)
 
 	data["title"] = title

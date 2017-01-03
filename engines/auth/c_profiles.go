@@ -15,10 +15,14 @@ func (p *Engine) getUsersChangePassword(c *gin.Context) {
 
 	title := p.I18n.T(lng, "auth.users.change-password.title")
 	fm := web.NewForm(c, "change-password", title, "/users/change-password")
+	pwd := web.NewPasswordField("newPassword", p.I18n.T(lng, "attributes.newPassword"))
+	pwd.Help = p.I18n.T(lng, "helps.password")
+	pwc := web.NewPasswordField("passwordConfirmation", p.I18n.T(lng, "attributes.passwordConfirmation"))
+	pwc.Help = p.I18n.T(lng, "helps.passwordConfirmation")
 	fm.AddFields(
 		web.NewPasswordField("password", p.I18n.T(lng, "attributes.password")),
-		web.NewPasswordField("newPassword", p.I18n.T(lng, "attributes.newPassword")),
-		web.NewPasswordField("passwordConfirmation", p.I18n.T(lng, "attributes.passwordConfirmation")),
+		pwd,
+		pwc,
 	)
 
 	data["title"] = title
@@ -68,13 +72,13 @@ func (p *Engine) getUsersLogs(c *gin.Context) {
 	c.HTML(http.StatusOK, "auth/users/logs", data)
 }
 
-func (p *Engine) getUsersProfile(c *gin.Context) {
+func (p *Engine) getUsersInfo(c *gin.Context) {
 	user := c.MustGet(CurrentUser).(*User)
 	lng := c.MustGet(web.LOCALE).(string)
 	data := c.MustGet(web.DATA).(gin.H)
 
-	title := p.I18n.T(lng, "auth.users.profile.title")
-	fm := web.NewForm(c, "profile", title, "/users/profile")
+	title := p.I18n.T(lng, "auth.users.info.title")
+	fm := web.NewForm(c, "info", title, "/users/info")
 	email := web.NewEmailField("email", p.I18n.T(lng, "attributes.email"), user.Email)
 	email.Require = false
 	email.ReadOnly = true
@@ -90,16 +94,16 @@ func (p *Engine) getUsersProfile(c *gin.Context) {
 	c.HTML(http.StatusOK, "auth/form", data)
 }
 
-type fmProfile struct {
+type fmInfo struct {
 	FullName string `form:"fullName" binding:"required,max=255"`
 	Home     string `form:"home" binding:"required,max=255"`
 	Logo     string `form:"logo" binding:"required,max=255"`
 }
 
-func (p *Engine) postUsersProfile(c *gin.Context, o interface{}) error {
+func (p *Engine) postUsersInfo(c *gin.Context, o interface{}) error {
 	lng := c.MustGet(web.LOCALE).(string)
 	user := c.MustGet(CurrentUser).(*User)
-	fm := o.(*fmProfile)
+	fm := o.(*fmInfo)
 
 	if err := p.Db.
 		Model(user).
@@ -110,8 +114,8 @@ func (p *Engine) postUsersProfile(c *gin.Context, o interface{}) error {
 		}).Error; err != nil {
 		return err
 	}
-	p.Dao.Log(user.ID, c.ClientIP(), p.I18n.T(lng, "auth.logs.update-profile"))
-	c.Redirect(http.StatusFound, "/users/profile")
+	p.Dao.Log(user.ID, c.ClientIP(), p.I18n.T(lng, "auth.logs.update-info"))
+	c.Redirect(http.StatusFound, "/users/info")
 	return nil
 }
 

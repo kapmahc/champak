@@ -31,8 +31,32 @@ func (p *Engine) Sitemap() ([]stm.URL, error) {
 }
 
 // Dashboard dashboard links
-func (p *Engine) Dashboard(*gin.Context) []web.Dropdown {
-	return []web.Dropdown{}
+func (p *Engine) Dashboard(c *gin.Context) []web.Dropdown {
+	var items []web.Dropdown
+	if _, ok := c.Get(CurrentUser); ok {
+		items = append(
+			items,
+			web.Dropdown{
+				Label: "auth.profile",
+				Links: []*web.Link{
+					&web.Link{
+						Href:  "/users/info",
+						Label: "auth.users.info.title",
+					},
+					&web.Link{
+						Href:  "/users/change-password",
+						Label: "auth.users.change-password.title",
+					},
+					&web.Link{
+						Href:  "/users/logs",
+						Label: "auth.users.logs.title",
+					},
+				},
+			},
+		)
+	}
+
+	return items
 }
 
 func init() {

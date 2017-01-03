@@ -14,7 +14,7 @@ import (
 
 const (
 	// CurrentUser current user
-	CurrentUser = "current.user"
+	CurrentUser = "currentUser"
 )
 
 //Jwt jwt helper

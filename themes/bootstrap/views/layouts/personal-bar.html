@@ -1,9 +1,9 @@
 {{define "personal-bar"}}
 {{$l := .locale}}
-{{if .current_user}}
+{{if .currentUser}}
 <li class="nav-item dropdown float-xs-right">
   <a class="nav-link dropdown-toggle" id="personal-bar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    {{t $l "personal-bar.welcome" .current_user.full_name}}
+    {{t $l "personal-bar.welcome" .currentUser.full_name}}
   </a>
   <div class="dropdown-menu dropdown-menu-right" aria-labelledby="personal-bar">
     <a class="dropdown-item" href="/dashboard">{{t $l "header.dashboard"}}</a>

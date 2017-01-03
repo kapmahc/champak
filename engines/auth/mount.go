@@ -47,11 +47,11 @@ func (p *Engine) Mount(rt *gin.Engine) {
 		web.PostFormHandler("/users/reset-password", &fmResetPassword{}, p.postUsersResetPassword),
 	)
 
-	umg := rt.Group("/personal", p.Session.MustSignInHandler())
-	umg.GET("/profile", p.getUsersProfile)
+	umg := rt.Group("/users", p.Session.MustSignInHandler())
+	umg.GET("/info", p.getUsersInfo)
 	umg.POST(
-		"/profile",
-		web.PostFormHandler("/users/profile", &fmProfile{}, p.postUsersProfile),
+		"/info",
+		web.PostFormHandler("/users/info", &fmInfo{}, p.postUsersInfo),
 	)
 	umg.GET("/change-password", p.getUsersChangePassword)
 	umg.POST(
