@@ -40,6 +40,11 @@ func (p *Engine) Mount(rt *gin.Engine) {
 		"/site/seo",
 		web.PostFormHandler("/admin/site/seo", &fmSiteSeo{}, p.postAdminSiteSeo),
 	)
+	ag.GET("/site/smtp", p.getAdminSiteSMTP)
+	ag.POST(
+		"/site/smtp",
+		web.PostFormHandler("/admin/site/smtp", &SMTP{}, p.postAdminSiteSMTP),
+	)
 	ag.GET("/site/status", p.getAdminSiteStatus)
 
 	ag.GET("/leave-words", p.indexLeaveWords)

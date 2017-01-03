@@ -136,3 +136,51 @@ func NewTextArea(id, label, value string) *TextArea {
 		Value:   value,
 	}
 }
+
+// Select select
+type Select struct {
+	Require     bool
+	Type        string
+	ID          string
+	Label       string
+	Value       interface{}
+	Help        string
+	Placeholder string
+	ReadOnly    bool
+	Options     []interface{}
+}
+
+// NewSelect new select
+func NewSelect(id, label string, value interface{}, options ...interface{}) *Select {
+	return &Select{
+		Require: true,
+		Type:    "select",
+		ID:      id,
+		Label:   label,
+		Value:   value,
+		Options: options,
+	}
+}
+
+// Checkbox checkbox
+type Checkbox struct {
+	Require     bool
+	Type        string
+	ID          string
+	Label       string
+	Value       bool
+	Help        string
+	Placeholder string
+	ReadOnly    bool
+}
+
+// NewCheckbox new select
+func NewCheckbox(id, label string, value bool) *Checkbox {
+	return &Checkbox{
+		Require: true,
+		Type:    "checkbox",
+		ID:      id,
+		Label:   label,
+		Value:   value,
+	}
+}

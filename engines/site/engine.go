@@ -60,27 +60,31 @@ func (p *Engine) Dashboard(c *gin.Context) []web.Dropdown {
 					Href:  "/admin/site/seo",
 				},
 				&web.Link{
+					Label: "site.admin.smtp.title",
+					Href:  "/admin/site/smtp",
+				},
+				&web.Link{
 					Label: "site.admin.status.title",
 					Href:  "/admin/site/status",
 				},
 				&web.Link{
-					Label: "site.admin.notices.title",
+					Label: "site.admin.notices.index.title",
 					Href:  "/admin/notices",
 				},
 				&web.Link{
-					Label: "site.admin.leave-words.title",
+					Label: "site.admin.leave-words.index.title",
 					Href:  "/admin/leave-words",
 				},
 				&web.Link{
-					Label: "site.admin.locales.title",
+					Label: "site.admin.locales.index.title",
 					Href:  "/admin/locales",
 				},
 				&web.Link{
-					Label: "site.admin.links.title",
+					Label: "site.admin.links.index.title",
 					Href:  "/admin/links",
 				},
 				&web.Link{
-					Label: "site.admin.cards.title",
+					Label: "site.admin.cards.index.title",
 					Href:  "/admin/cards",
 				},
 			},

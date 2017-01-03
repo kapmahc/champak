@@ -46,7 +46,7 @@ func (p *Engine) createLeaveWord(c *gin.Context, o interface{}) error {
 func (p *Engine) indexLeaveWords(c *gin.Context) {
 	lng := c.MustGet(web.LOCALE).(string)
 	data := c.MustGet(web.DATA).(gin.H)
-	data["title"] = p.I18n.T(lng, "ops.leave-words.title")
+	data["title"] = p.I18n.T(lng, "site.leave-words.index.title")
 	var items []LeaveWord
 	if err := p.Db.Order("created_at DESC").Find(&items).Error; err != nil {
 		log.Error(err)

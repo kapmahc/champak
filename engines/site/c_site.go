@@ -12,6 +12,57 @@ import (
 	gin "gopkg.in/gin-gonic/gin.v1"
 )
 
+func (p *Engine) getAdminSiteSMTP(c *gin.Context) {
+	lng := c.MustGet(web.LOCALE).(string)
+	data := c.MustGet(web.DATA).(gin.H)
+
+	title := p.I18n.T(lng, "site.admin.smtp.title")
+
+	var v SMTP
+	if err := p.Settings.Get("site.smtp", &v); err != nil {
+		log.Error(err)
+		v.Port = 25
+		v.Host = "localhost"
+	}
+	fm := web.NewForm(c, "site-smtp", title, "/admin/site/smtp")
+	pwd := web.NewPasswordField("password", p.I18n.T(lng, "attributes.password"))
+	pwd.Help = p.I18n.T(lng, "helps.password")
+	pwc := web.NewPasswordField("passwordConfirmation", p.I18n.T(lng, "attributes.passwordConfirmation"))
+	pwc.Help = p.I18n.T(lng, "helps.passwordConfirmation")
+
+	ports := []interface{}{25, 465, 587}
+	fm.AddFields(
+		web.NewTextField("host", p.I18n.T(lng, "attributes.host"), v.Host),
+		web.NewSelect("port", p.I18n.T(lng, "attributes.port"), v.Port, ports...),
+		web.NewEmailField("user", p.I18n.T(lng, "attributes.user"), v.User),
+		pwd, pwc,
+		web.NewCheckbox("ssl", p.I18n.T(lng, "attributes.ssl"), v.Ssl),
+	)
+
+	data["title"] = title
+	data["form"] = fm
+	c.HTML(http.StatusOK, "auth/form", data)
+}
+
+// SMTP smtp config
+type SMTP struct {
+	Host                 string `form:"host" binding:"required"`
+	User                 string `form:"user" binding:"required,email"`
+	Password             string `form:"password" binding:"min=6,max=32"`
+	PasswordConfirmation string `form:"passwordConfirmation" binding:"eqfield=Password"`
+	Port                 int    `form:"port"`
+	Ssl                  bool   `form:"ssl"`
+}
+
+func (p *Engine) postAdminSiteSMTP(c *gin.Context, o interface{}) error {
+	fm := o.(*SMTP)
+	if err := p.Settings.Set("site.smtp", fm, true); err != nil {
+		log.Error(err)
+	}
+	c.Redirect(http.StatusFound, "/admin/site/smtp")
+	return nil
+}
+
 func (p *Engine) getAdminSiteSeo(c *gin.Context) {
 	lng := c.MustGet(web.LOCALE).(string)
 	data := c.MustGet(web.DATA).(gin.H)

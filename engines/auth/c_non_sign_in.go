@@ -31,7 +31,7 @@ func (p *Engine) getUsersSignIn(c *gin.Context) {
 }
 
 type fmSignIn struct {
-	Email      string `form:"email" binding:"required"`
+	Email      string `form:"email" binding:"required,email"`
 	Password   string `form:"password" binding:"required"`
 	RememberMe bool   `form:"rememberMe"`
 }
@@ -69,7 +69,7 @@ func (p *Engine) getUsersSignUp(c *gin.Context) {
 	data := c.MustGet(web.DATA).(gin.H)
 	title := p.I18n.T(lng, "auth.users.sign-up.title")
 	fm := web.NewForm(c, "sign-up", title, "/users/sign-up")
-	pwd := web.NewPasswordField("newPassword", p.I18n.T(lng, "attributes.newPassword"))
+	pwd := web.NewPasswordField("password", p.I18n.T(lng, "attributes.password"))
 	pwd.Help = p.I18n.T(lng, "helps.password")
 	pwc := web.NewPasswordField("passwordConfirmation", p.I18n.T(lng, "attributes.passwordConfirmation"))
 	pwc.Help = p.I18n.T(lng, "helps.passwordConfirmation")
@@ -86,7 +86,7 @@ func (p *Engine) getUsersSignUp(c *gin.Context) {
 
 type fmSignUp struct {
 	FullName             string `form:"fullName" binding:"required,max=255"`
-	Email                string `form:"email" binding:"email"`
+	Email                string `form:"email" binding:"required,email"`
 	Password             string `form:"password" binding:"min=6,max=32"`
 	PasswordConfirmation string `form:"passwordConfirmation" binding:"eqfield=Password"`
 }
@@ -156,7 +156,7 @@ func (p *Engine) getUsersConfirm(c *gin.Context) {
 }
 
 type fmEmail struct {
-	Email string `form:"email" binding:"email"`
+	Email string `form:"email" binding:"required,email"`
 }
 
 func (p *Engine) postUsersConfirm(c *gin.Context, o interface{}) error {

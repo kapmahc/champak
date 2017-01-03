@@ -21,6 +21,26 @@
           {{.Help}}
         </small>
       </div>
+    {{else if eq .Type "select"}}
+      <div class="form-group">
+        <label for="{{.ID}}">{{if .Require}}*{{end}}{{.Label}}:</label>
+        <select class="form-control" id="{{.ID}}" name="{{.ID}}">
+          {{$v := .Value}}
+          {{ range .Options}}
+            <option value="{{.}}" {{if eq . $v}}selected{{end}}>{{.}}</option>
+          {{ end }}
+        </select>
+        <small id="{{.ID}}Help" class="form-text text-muted">
+          {{.Help}}
+        </small>
+      </div>
+    {{else if eq .Type "checkbox"}}
+      <div class="form-check">
+        <label class="form-check-label">
+          <input value="true" name="{{.ID}}" id="{{.ID}}" type="checkbox" class="form-check-input" {{if .Value}}checked{{end}}>
+          {{.Label}}
+        </label>
+      </div>
     {{else if eq .Type "password"}}
       <div class="form-group">
         <label for="{{.ID}}">{{if .Require}}*{{end}}{{.Label}}</label>
