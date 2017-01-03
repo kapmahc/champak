@@ -48,9 +48,6 @@ func IocAction(fn func(*cli.Context, *inject.Graph) error) cli.ActionFunc {
 		}
 		// -----------------
 		if err := Walk(func(en Engine) error {
-			if err := en.Map(&inj); err != nil {
-				return err
-			}
 			return inj.Provide(&inject.Object{Value: en})
 		}); err != nil {
 			return err

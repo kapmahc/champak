@@ -3,6 +3,12 @@
 	"ignore": "test",
 	"package": [
 		{
+			"checksumSHA1": "hqDDDpue/5363luidNMBS8z8eJU=",
+			"path": "github.com/BurntSushi/toml",
+			"revision": "99064174e013895bbd9b025c31100bd1d9b590ca",
+			"revisionTime": "2016-07-17T15:07:09Z"
+		},
+		{
 			"checksumSHA1": "KhP9frz3tonueOr6YVuKG1z9phk=",
 			"path": "github.com/RichardKnop/machinery/v1",
 			"revision": "97375d36323015a394b0d586c843c5d68f60ff87",
@@ -59,6 +65,18 @@
 		{
 			"checksumSHA1": "u92C5yEz1FLBeoXp8jujn3tUNFI=",
 			"path": "github.com/SermoDigital/jose/crypto",
+			"revision": "2bd9b81ac51d6d6134fcd4fd846bd2e7347a15f9",
+			"revisionTime": "2016-12-05T22:51:55Z"
+		},
+		{
+			"checksumSHA1": "FJP5enLaw1JzZNu6Fen+eEKY7Lo=",
+			"path": "github.com/SermoDigital/jose/jws",
+			"revision": "2bd9b81ac51d6d6134fcd4fd846bd2e7347a15f9",
+			"revisionTime": "2016-12-05T22:51:55Z"
+		},
+		{
+			"checksumSHA1": "3gGGWQ3PcKHE+2cVlkJmIlBfBlw=",
+			"path": "github.com/SermoDigital/jose/jwt",
 			"revision": "2bd9b81ac51d6d6134fcd4fd846bd2e7347a15f9",
 			"revisionTime": "2016-12-05T22:51:55Z"
 		},
@@ -279,6 +297,12 @@
 			"revisionTime": "2016-10-26T20:31:22Z"
 		},
 		{
+			"checksumSHA1": "HplKoLae5nJxeiLdRL9ngfmYX8c=",
+			"path": "github.com/fvbock/endless",
+			"revision": "67d0a784ad8ab10a69d12107f6de220db0c18002",
+			"revisionTime": "2016-08-09T06:34:05Z"
+		},
+		{
 			"checksumSHA1": "2UmMbNHc8FBr98mJFN1k8ISOIHk=",
 			"path": "github.com/garyburd/redigo/internal",
 			"revision": "8c052d82153967815d9093a7e9d3e7fd2e554861",
@@ -339,10 +363,22 @@
 			"revisionTime": "2016-11-17T03:31:26Z"
 		},
 		{
+			"checksumSHA1": "UP2wONSE346WHWwT20G1Xedd6ZI=",
+			"path": "github.com/google/uuid",
+			"revision": "064e2069ce9c359c118179501254f67d7d37ba24",
+			"revisionTime": "2016-11-28T19:12:14Z"
+		},
+		{
 			"checksumSHA1": "g/V4qrXjUGG9B+e3hB+4NAYJ5Gs=",
 			"path": "github.com/gorilla/context",
 			"revision": "08b5f424b9271eedf6f9f0ce86cb9396ed337a42",
 			"revisionTime": "2016-08-17T18:46:32Z"
+		},
+		{
+			"checksumSHA1": "2ieXR7YGRBDmQWVeUpjk5ay8iCE=",
+			"path": "github.com/gorilla/csrf",
+			"revision": "69581736821c33d85bbf378f42f6ad864dbd85de",
+			"revisionTime": "2016-11-22T16:45:00Z"
 		},
 		{
 			"checksumSHA1": "veX5bpYOBjZZWMyWxXxys8EH9d8=",
@@ -441,6 +477,24 @@
 			"revisionTime": "2016-08-03T19:07:31Z"
 		},
 		{
+			"checksumSHA1": "p+Bj1OSkp9/zxr6oZGzBAvYsdm0=",
+			"path": "github.com/kylelemons/go-gypsy/yaml",
+			"revision": "08cad365cd28a7fba23bb1e57aa43c5e18ad8bb8",
+			"revisionTime": "2016-09-05T02:00:20Z"
+		},
+		{
+			"checksumSHA1": "rjOPPye7xtwKTe67HeEtLP5Gl8A=",
+			"path": "github.com/lib/pq",
+			"revision": "22cb3e4c487ce6242e2b03369219e5631eed1221",
+			"revisionTime": "2016-12-31T17:40:29Z"
+		},
+		{
+			"checksumSHA1": "xppHi82MLqVx1eyQmbhTesAEjx8=",
+			"path": "github.com/lib/pq/oid",
+			"revision": "22cb3e4c487ce6242e2b03369219e5631eed1221",
+			"revisionTime": "2016-12-31T17:40:29Z"
+		},
+		{
 			"checksumSHA1": "506eXGmFfB7mgzbMcsdT/UAXJgI=",
 			"path": "github.com/magiconair/properties",
 			"revision": "9c47895dc1ce54302908ab8a43385d1f5df2c11c",
@@ -477,6 +531,12 @@
 			"revisionTime": "2016-12-29T18:51:04Z"
 		},
 		{
+			"checksumSHA1": "ynJSWoF6v+3zMnh9R0QmmG6iGV8=",
+			"path": "github.com/pkg/errors",
+			"revision": "248dadf4e9068a0b3e79f02ed0a610d935de5302",
+			"revisionTime": "2016-10-29T09:36:37Z"
+		},
+		{
 			"checksumSHA1": "iGmLeUVcmiFgd4/iK2Tmx7WIoa4=",
 			"path": "github.com/spf13/afero",
 			"revision": "90dd71edc4d0a8b3511dc12ea15d617d03be09e0",
@@ -511,6 +571,12 @@
 			"path": "github.com/spf13/viper",
 			"revision": "5ed0fc31f7f453625df314d8e66b9791e8d13003",
 			"revisionTime": "2016-12-13T09:38:49Z"
+		},
+		{
+			"checksumSHA1": "YvQ7WnFMOBjofstj6eVn7uuEkn0=",
+			"path": "github.com/steinbacher/goose",
+			"revision": "dc457c3195032dd1c3848e21dc95ed02c92f8cfa",
+			"revisionTime": "2016-07-25T13:16:29Z"
 		},
 		{
 			"checksumSHA1": "qik08F9+tO3aD/VsiPY19IbmT7k=",

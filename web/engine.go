@@ -1,7 +1,6 @@
 package web
 
 import (
-	"github.com/facebookgo/inject"
 	"github.com/ikeikeikeike/go-sitemap-generator/stm"
 	"github.com/urfave/cli"
 	"golang.org/x/tools/blog/atom"
@@ -10,12 +9,12 @@ import (
 
 // Engine engine
 type Engine interface {
-	Map(*inject.Graph) error
 	Mount(*gin.Engine)
-	Workers()
+	Do()
 	Shell() []cli.Command
 	Atom() ([]*atom.Entry, error)
 	Sitemap() ([]stm.URL, error)
+	Dashboard(*gin.Context) []Dropdown
 }
 
 // -----------------------------------------------------------------------------

@@ -69,9 +69,8 @@ func init() {
 	})
 
 	viper.SetDefault("server", map[string]interface{}{
-		"port":     8080,
-		"frontend": "http://localhost:3000",
-		"backend":  "http://localhost:8080",
+		"port": 8080,
+		"name": "www.change-me.com",
 	})
 
 	viper.SetDefault("secrets", map[string]interface{}{
@@ -85,14 +84,6 @@ func init() {
 	viper.SetDefault("elasticsearch", map[string]interface{}{
 		"host": "localhost",
 		"port": 9200,
-	})
-
-	viper.SetDefault("rabbitmq", map[string]interface{}{
-		"host":     "localhost",
-		"port":     5672,
-		"user":     "guest",
-		"password": "guest",
-		"virtual":  "",
 	})
 
 	viper.SetDefault("languages", []string{

@@ -1,26 +1,15 @@
-package site
+package blog
 
 import (
-	machinery "github.com/RichardKnop/machinery/v1"
-	"github.com/garyburd/redigo/redis"
 	"github.com/ikeikeikeike/go-sitemap-generator/stm"
-	"github.com/jinzhu/gorm"
-	"github.com/kapmahc/champak/engines/auth"
 	"github.com/kapmahc/champak/web"
+	"github.com/urfave/cli"
 	"golang.org/x/tools/blog/atom"
 	gin "gopkg.in/gin-gonic/gin.v1"
 )
 
-// Engine site engine
+// Engine blog engine
 type Engine struct {
-	Cache    *web.Cache        `inject:""`
-	I18n     *web.I18n         `inject:""`
-	Settings *web.Settings     `inject:""`
-	Server   *machinery.Server `inject:""`
-	Jwt      *auth.Jwt         `inject:""`
-	Db       *gorm.DB          `inject:""`
-	Redis    *redis.Pool       `inject:""`
-	Session  *auth.Session     `inject:""`
 }
 
 // Mount web points
@@ -28,6 +17,11 @@ func (p *Engine) Mount(*gin.Engine) {}
 
 // Do background job
 func (p *Engine) Do() {}
+
+// Shell shell commands
+func (p *Engine) Shell() []cli.Command {
+	return []cli.Command{}
+}
 
 // Atom rss-atom
 func (p *Engine) Atom() ([]*atom.Entry, error) {
