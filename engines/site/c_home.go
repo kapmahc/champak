@@ -1,15 +1,31 @@
 package site
 
 import (
+	"fmt"
 	"net/http"
+	"reflect"
 
 	"github.com/kapmahc/champak/web"
+	"github.com/spf13/viper"
 	gin "gopkg.in/gin-gonic/gin.v1"
 )
 
+// Home home
+func (p *Engine) Home() gin.HandlerFunc {
+	return p.indexNotices
+}
+
 func (p *Engine) getHome(c *gin.Context) {
-	data := c.MustGet("data").(gin.H)
-	c.HTML(http.StatusOK, "site/home", data)
+	fns := make(map[string]gin.HandlerFunc)
+	web.Walk(func(en web.Engine) error {
+		fns[reflect.TypeOf(en).String()] = en.Home()
+		return nil
+	})
+	fn, ok := fns[fmt.Sprintf("*%s.Engine", viper.GetString("server.root"))]
+	if !ok {
+		fn = p.newLeaveWord
+	}
+	fn(c)
 }
 
 func (p *Engine) getDashboard(c *gin.Context) {

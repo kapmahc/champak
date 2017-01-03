@@ -45,19 +45,3 @@ type Link struct {
 func (Link) TableName() string {
 	return "links"
 }
-
-// Card card
-type Card struct {
-	web.Model
-	Loc       string
-	Title     string
-	Sumamry   string
-	Logo      string
-	Href      string
-	SortOrder int
-}
-
-// TableName table name
-func (Card) TableName() string {
-	return "cards"
-}

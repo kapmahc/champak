@@ -11,6 +11,7 @@ import (
 type Engine interface {
 	Mount(*gin.Engine)
 	Do()
+	Home() gin.HandlerFunc
 	Shell() []cli.Command
 	Atom() ([]*atom.Entry, error)
 	Sitemap() ([]stm.URL, error)

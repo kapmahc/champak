@@ -72,6 +72,7 @@ func init() {
 		"port":  8080,
 		"name":  "www.change-me.com",
 		"theme": "bootstrap",
+		"root":  "site",
 	})
 
 	viper.SetDefault("secrets", map[string]interface{}{

@@ -58,17 +58,6 @@ func (p *Engine) loadTemplates(theme string) (*template.Template, error) {
 				}
 				return items
 			},
-			"cards": func(loc string) []Card {
-				var items []Card
-				if err := p.Db.
-					Select([]string{"title", "summary", "logo", "href"}).
-					Where("loc = ?", loc).
-					Order("sort_order ASC").
-					Find(&items).Error; err != nil {
-					log.Error(err)
-				}
-				return items
-			},
 			"fmt": fmt.Sprintf,
 			"eq": func(arg1, arg2 interface{}) bool {
 				return arg1 == arg2
