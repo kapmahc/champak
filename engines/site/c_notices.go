@@ -25,7 +25,7 @@ func (p *Engine) newNotice(c *gin.Context) {
 
 	data["title"] = title
 	data["form"] = fm
-	c.HTML(http.StatusOK, "auth/form", data)
+	c.HTML(http.StatusOK, auth.TplForm, data)
 }
 
 type fmNotice struct {

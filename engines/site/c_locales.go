@@ -5,6 +5,7 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-contrib/sessions"
+	"github.com/kapmahc/champak/engines/auth"
 	"github.com/kapmahc/champak/web"
 	gin "gopkg.in/gin-gonic/gin.v1"
 )
@@ -23,7 +24,7 @@ func (p *Engine) newLocale(c *gin.Context) {
 
 	data["title"] = title
 	data["form"] = fm
-	c.HTML(http.StatusOK, "auth/form", data)
+	c.HTML(http.StatusOK, auth.TplForm, data)
 }
 
 type fmLocale struct {
@@ -49,7 +50,7 @@ func (p *Engine) editLocale(c *gin.Context) (tpl string, err error) {
 	lng := c.MustGet(web.LOCALE).(string)
 	data := c.MustGet(web.DATA).(gin.H)
 	id := c.Param("id")
-	tpl = "auth/form"
+	tpl = auth.TplForm
 
 	var l web.Locale
 	if err = p.Db.Where("id = ?", id).First(&l).Error; err != nil {

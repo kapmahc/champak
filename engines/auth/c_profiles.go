@@ -27,7 +27,7 @@ func (p *Engine) getUsersChangePassword(c *gin.Context) {
 
 	data["title"] = title
 	data["form"] = fm
-	c.HTML(http.StatusOK, "auth/form", data)
+	c.HTML(http.StatusOK, TplForm, data)
 }
 
 type fmChangePassword struct {
@@ -91,7 +91,7 @@ func (p *Engine) getUsersInfo(c *gin.Context) {
 
 	data["title"] = title
 	data["form"] = fm
-	c.HTML(http.StatusOK, "auth/form", data)
+	c.HTML(http.StatusOK, TplForm, data)
 }
 
 type fmInfo struct {

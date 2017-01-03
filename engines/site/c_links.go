@@ -31,7 +31,7 @@ func (p *Engine) newLink(c *gin.Context) {
 
 	data["title"] = title
 	data["form"] = fm
-	c.HTML(http.StatusOK, "auth/form", data)
+	c.HTML(http.StatusOK, auth.TplForm, data)
 }
 
 type fmLink struct {

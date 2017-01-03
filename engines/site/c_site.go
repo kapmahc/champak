@@ -8,6 +8,7 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/garyburd/redigo/redis"
+	"github.com/kapmahc/champak/engines/auth"
 	"github.com/kapmahc/champak/web"
 	gin "gopkg.in/gin-gonic/gin.v1"
 )
@@ -41,7 +42,7 @@ func (p *Engine) getAdminSiteSMTP(c *gin.Context) {
 
 	data["title"] = title
 	data["form"] = fm
-	c.HTML(http.StatusOK, "auth/form", data)
+	c.HTML(http.StatusOK, auth.TplForm, data)
 }
 
 // SMTP smtp config
@@ -184,7 +185,7 @@ func (p *Engine) getAdminSiteInfo(c *gin.Context) {
 
 	data["title"] = title
 	data["form"] = fm
-	c.HTML(http.StatusOK, "auth/form", data)
+	c.HTML(http.StatusOK, auth.TplForm, data)
 }
 
 type fmSiteInfo struct {
@@ -232,7 +233,7 @@ func (p *Engine) getAdminSiteAuthor(c *gin.Context) {
 
 	data["title"] = title
 	data["form"] = fm
-	c.HTML(http.StatusOK, "auth/form", data)
+	c.HTML(http.StatusOK, auth.TplForm, data)
 }
 
 type fmSiteAuthor struct {
