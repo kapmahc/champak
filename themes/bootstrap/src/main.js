@@ -1,6 +1,7 @@
 import $ from 'jquery'
 
 // require("bootstrap/dist/css/bootstrap.css");
+// require("!style-loader!css-loader!sass-loader!bootstrap/scss/bootstrap.scss");
 require("./main.css");
 
 require("file-loader!./fail.png")
