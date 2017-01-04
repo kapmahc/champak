@@ -156,3 +156,17 @@ func (Role) TableName() string {
 func (p Role) String() string {
 	return fmt.Sprintf("%s@%s://%d", p.Name, p.ResourceType, p.ResourceID)
 }
+
+// Vote vote
+type Vote struct {
+	web.Model
+
+	Point        int
+	ResourceID   uint
+	ResourceType string
+}
+
+// TableName table name
+func (Vote) TableName() string {
+	return "votes"
+}

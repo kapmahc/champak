@@ -11,7 +11,7 @@
     <tr>
       <th>{{t $l "attributes.title"}}</th>
       <th>{{t $l "attributes.updatedAt"}}</th>
-      <th width="15%">{{t $l "buttons.manage"}}</th>
+      <th width="20%">{{t $l "buttons.manage"}}</th>
     </tr>
   </thead>
   <tbody>
@@ -22,6 +22,7 @@
         <td>
           <div class="btn-group btn-group-sm" role="group">
             <a class="btn btn-primary" href="/forum/articles/show/{{.ID}}" target="_blank">{{t $l "buttons.view"}}</a>
+            <a target="_blank" class="btn btn-info" href="/attachments?type=forum.Article&id={{.ID}}">{{t $l "attributes.attachments"}}</a>
             <a class="btn btn-warning" href="/forum/articles/edit/{{.ID}}">{{t $l "buttons.edit"}}</a>
             <a data-confirm="{{t $l "are-you-sure"}}" data-next="/forum/articles" data-method="delete" class="btn btn-danger" href="/forum/articles/{{.ID}}">{{t $l "buttons.remove"}}</a>
           </div>
@@ -93,6 +94,7 @@
       </footer>
     </blockquote>
     <p class="markdown">{{.article.Body}}</p>
+    {{template "vote-thumb" .article}}    
     <h4>
       {{t $l "forum.comments.latest.title"}}
       {{if .currentUser}}

@@ -61,9 +61,10 @@ func (p *Engine) Mount(rt *gin.Engine) {
 	umg.GET("/logs", p.getUsersLogs)
 	umg.DELETE("/sign-out", p.deleteUsersSignOut)
 
+	rt.POST("/votes", p.Session.MustSignInHandler(), web.PostFormHandler(&fmVote{}, p.postVotes))
+
 	// rt.GET("/attachments/*name", p.getAttachment)
 	// rt.POST("/attachments", p.Session.MustSignInHandler(), p.postAttachment)
 	// rt.DELETE("/attachmetns/:id", p.Session.MustSignInHandler(), p.deleteAttachment)
-	//
-	// rt.POST("/votes", p.Session.MustSignInHandler(), p.postVotes)
+
 }

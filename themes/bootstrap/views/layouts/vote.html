@@ -1,0 +1,9 @@
+{{define "vote-thumb"}}
+<div class="row">
+  <p class="float-xs-right">
+    {{$size := 32}}
+    <img class="votes" data-point="1" data-type="{{tn .}}" data-id="{{.ID}}" src="/assets/up.png" height="{{$size}}" width="{{$size}}" />
+    <img class="votes" data-point="-1" data-type="{{tn .}}" data-id="{{.ID}}" src="/assets/down.png" height="{{$size}}" width="{{$size}}"/>
+  </p>
+</div>
+{{end}}

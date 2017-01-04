@@ -37,7 +37,7 @@ func (p *Engine) tagsSelect(lng string, art *Article) *web.Select {
 		}
 		options = append(options, o)
 	}
-	sel := web.NewSelect("tags", p.I18n.T(lng, "forum.attributes.articles.tags"), options)
+	sel := web.NewSelect("tags", p.I18n.T(lng, "forum.attributes.article.tags"), options)
 	sel.Multiple = true
 	return sel
 }

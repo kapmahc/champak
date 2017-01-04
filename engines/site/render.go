@@ -3,6 +3,7 @@ package site
 import (
 	"fmt"
 	"html/template"
+	"reflect"
 	"time"
 
 	log "github.com/Sirupsen/logrus"
@@ -47,6 +48,9 @@ func (p *Engine) loadTemplates(theme string) (*template.Template, error) {
 		New("").
 		Funcs(template.FuncMap{
 			"t": p.I18n.T,
+			"tn": func(v interface{}) string {
+				return reflect.TypeOf(v).String()
+			},
 			"links": func(loc string) []Link {
 				var items []Link
 				if err := p.Db.

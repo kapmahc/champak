@@ -8,7 +8,7 @@ $.ajaxSetup({
 
 $(function() {
   $('p.markdown').each(function(i, n){
-    var txt = $(this).text();    
+    var txt = $(this).text();
     $(this).html(marked(txt));
   });
 
@@ -23,5 +23,22 @@ $(function() {
               }.bind(this)
           })
       }
+  });
+
+  $("img.votes").click(function(e){
+    e.preventDefault();
+    $.ajax({
+        url: "/votes",
+        type: 'POST',
+        data: {
+          point: $(this).data('point'),
+          type: $(this).data('type'),
+          id: $(this).data('id'),
+        },
+        success: function(rst) {
+          alert("OK")
+        }.bind(this)
+    })
+
   });
 });
