@@ -1,3 +1,11 @@
+import $ from 'jquery'
+
+require("css!./main.css");
+require("file!./fail.png")
+require("file!./up.png")
+require("file!./down.png")
+require("file!./favicon.png")
+
 $.ajaxSetup({
     beforeSend: function(xhr, settings) {
         if (settings.type == 'POST' || settings.type == 'PUT' || settings.type == 'DELETE') {
