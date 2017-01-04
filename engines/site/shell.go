@@ -67,8 +67,8 @@ func (p *Engine) Shell() []cli.Command {
 				rt.Use(
 					sessions.Sessions("_session_", sss),
 					lngH,
-					csrfHandler,
-					flashsHandler,
+					web.CsrfHandler,
+					web.FlashsHandler,
 					p.authorHandler,
 					p.Session.CurrentUserHandler,
 				)

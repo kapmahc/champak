@@ -7,8 +7,29 @@ import (
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin/binding"
+	"github.com/gorilla/csrf"
 	gin "gopkg.in/gin-gonic/gin.v1"
 )
+
+// FlashsHandler flashs handler
+func FlashsHandler(c *gin.Context) {
+	data := c.MustGet(DATA).(gin.H)
+	ss := sessions.Default(c)
+	for _, k := range []string{ALERT, NOTICE} {
+		data[k] = ss.Flashes(k)
+	}
+	ss.Save()
+	c.Set(DATA, data)
+}
+
+// CsrfHandler csrf handler
+func CsrfHandler(c *gin.Context) {
+	tkn := csrf.Token(c.Request)
+	c.Writer.Header().Set("X-CSRF-Token", tkn)
+	data := c.MustGet(DATA).(gin.H)
+	data["csrf"] = tkn
+	c.Set(DATA, data)
+}
 
 // JSON render json
 func JSON(fn func(*gin.Context) (interface{}, error)) gin.HandlerFunc {
@@ -25,12 +46,13 @@ func JSON(fn func(*gin.Context) (interface{}, error)) gin.HandlerFunc {
 func HTML(fn func(*gin.Context) (string, error)) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		tpl, err := fn(c)
+		data := c.MustGet(DATA).(gin.H)
 		if err != nil {
-			ss := sessions.Default(c)
-			ss.AddFlash(err.Error(), ALERT)
-			ss.Save()
+			alt := data[ALERT].([]interface{})
+			alt = append(alt, err.Error())
+			data[ALERT] = alt
 		}
-		c.HTML(http.StatusOK, tpl, c.MustGet(DATA))
+		c.HTML(http.StatusOK, tpl, data)
 	}
 }
 

@@ -37,7 +37,8 @@ func (Locale) TableName() string {
 
 //I18n i18n
 type I18n struct {
-	Db *gorm.DB `inject:""`
+	Db    *gorm.DB `inject:""`
+	Cache *Cache   `inject:""`
 }
 
 // F format message
@@ -107,6 +108,12 @@ func (p *I18n) Del(lng, code string) {
 }
 
 func (p *I18n) getMessage(lng, code string) (string, error) {
+	key := p.key(lng, code)
+	var msg string
+	if err := p.Cache.Get(key, &msg); err == nil {
+		return msg, nil
+	}
+
 	var l Locale
 	if err := p.Db.
 		Select("message").
@@ -114,7 +121,7 @@ func (p *I18n) getMessage(lng, code string) (string, error) {
 		First(&l).Error; err != nil {
 		return "", err
 	}
-
+	p.Cache.Set(key, l.Message, time.Hour*24)
 	return l.Message, nil
 }
 

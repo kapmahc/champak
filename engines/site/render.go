@@ -11,8 +11,6 @@ import (
 	"time"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/gin-contrib/sessions"
-	"github.com/gorilla/csrf"
 	"github.com/kapmahc/champak/web"
 	gin "gopkg.in/gin-gonic/gin.v1"
 )
@@ -27,23 +25,6 @@ func (p *Engine) authorHandler(c *gin.Context) {
 	}
 	data := c.MustGet(web.DATA).(gin.H)
 	data["author"] = gin.H{"name": an, "email": ae}
-	c.Set(web.DATA, data)
-}
-func flashsHandler(c *gin.Context) {
-	data := c.MustGet(web.DATA).(gin.H)
-	ss := sessions.Default(c)
-	for _, k := range []string{web.ALERT, web.NOTICE} {
-		data[k] = ss.Flashes(k)
-	}
-	ss.Save()
-	c.Set(web.DATA, data)
-}
-
-func csrfHandler(c *gin.Context) {
-	tkn := csrf.Token(c.Request)
-	c.Writer.Header().Set("X-CSRF-Token", tkn)
-	data := c.MustGet(web.DATA).(gin.H)
-	data["csrf"] = tkn
 	c.Set(web.DATA, data)
 }
 
@@ -61,7 +42,6 @@ func (p *Engine) loadTemplates(theme string) (*template.Template, error) {
 			name := info.Name()
 			switch filepath.Ext(name) {
 			case ".css", ".js", ".png":
-				log.Info("find file ", name)
 				ss := strings.Split(name, ".")
 				if len(ss) == 3 {
 					assets[fmt.Sprintf("%s.%s", ss[0], ss[2])] = name
