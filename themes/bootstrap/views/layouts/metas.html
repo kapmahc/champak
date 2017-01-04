@@ -7,7 +7,9 @@
 <meta name="keywords" content="{{t .locale "site.keywords"}}">
 <meta name="author" content="{{.author.name}} <{{.author.email}}>">
 <title>{{.title}}-{{t .locale "site.subTitle"}}-{{t .locale "site.title"}}</title>
-<link rel="shortcut icon" href="/assets/favicon.png" type="image/png" />
-<link rel="stylesheet" href="/assets/main.css">
-<script src="/assets/main.js"></script>
+<link rel="shortcut icon" href="{{asset "favicon.png" }}" type="image/png" />
+<link rel="stylesheet" href="{{ asset "main.css"}}">
+<script src="{{asset "manifest.js"}}"></script>
+<script src="{{asset "vendor.js"}}"></script>
+<script src="{{asset "main.js"}}"></script>
 {{end}}

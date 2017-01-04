@@ -9,7 +9,7 @@ const dist = 'assets'
 module.exports = {
   entry: {
     'main': path.join(__dirname, 'src', 'main.js'),
-    'vendor': ['jquery', 'bootstrap', 'marked'],
+    'vendor': ['jquery', 'tether', 'bootstrap', 'marked'],
   },
   output: {
     filename: '[name].[chunkhash].js',
@@ -34,6 +34,13 @@ module.exports = {
   devtool: 'source-map',
   plugins: [
     new CleanWebpackPlugin([dist]),
+    // fix " Bootstrap's JavaScript requires jQuery"
+    new webpack.ProvidePlugin({
+      $: "jquery",
+      jQuery: "jquery",
+      "window.jQuery": "jquery",
+      "window.Tether": 'tether'
+    }),
     new StatsPlugin('stats.json', {
       chunkModules: true,
       exclude: [/node_modules[\\\/]react/]

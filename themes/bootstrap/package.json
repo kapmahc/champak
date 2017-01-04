@@ -18,7 +18,8 @@
   "homepage": "https://github.com/kapmahc/champak#readme",
   "dependencies": {
     "bootstrap": "^4.0.0-alpha.5",
-    "marked": "^0.3.6"
+    "marked": "^0.3.6",
+    "tether": "^1.4.0"
   },
   "devDependencies": {
     "clean-webpack-plugin": "^0.1.14",

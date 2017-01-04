@@ -3,7 +3,11 @@ package site
 import (
 	"fmt"
 	"html/template"
+	"os"
+	"path"
+	"path/filepath"
 	"reflect"
+	"strings"
 	"time"
 
 	log "github.com/Sirupsen/logrus"
@@ -44,12 +48,40 @@ func csrfHandler(c *gin.Context) {
 }
 
 func (p *Engine) loadTemplates(theme string) (*template.Template, error) {
+	assets := make(map[string]string)
+	if err := filepath.Walk(
+		path.Join("themes", theme, "assets"),
+		func(path string, info os.FileInfo, err error) error {
+			if err != nil {
+				return err
+			}
+			if info.IsDir() {
+				return nil
+			}
+			name := info.Name()
+			switch filepath.Ext(name) {
+			case ".css", ".js", ".png":
+				log.Info("find file ", name)
+				ss := strings.Split(name, ".")
+				if len(ss) == 3 {
+					assets[fmt.Sprintf("%s.%s", ss[0], ss[2])] = name
+				}
+			}
+			return nil
+		},
+	); err != nil {
+		return nil, err
+	}
+	log.Infof("assets %v", assets)
 	return template.
 		New("").
 		Funcs(template.FuncMap{
 			"t": p.I18n.T,
 			"tn": func(v interface{}) string {
 				return reflect.TypeOf(v).String()
+			},
+			"asset": func(k string) string {
+				return fmt.Sprintf("/assets/%s", assets[k])
 			},
 			"links": func(loc string) []Link {
 				var items []Link
