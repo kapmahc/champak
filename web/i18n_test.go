@@ -33,9 +33,7 @@ func TestI18n(t *testing.T) {
 	val := "你好"
 	p.Set(lang, key, val)
 	p.Set(lang, key+".1", val)
-	if val1 := p.Get(lang, key); val != val1 {
-		t.Errorf("want %s, get %s", val, val1)
-	}
+
 	ks, err := p.Codes(lang)
 	if err != nil {
 		t.Fatal(err)

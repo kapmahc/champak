@@ -50,11 +50,11 @@ func (p *Jwt) Parse(r *http.Request) (jwt.Claims, error) {
 }
 
 //Sum create jwt token
-func (p *Jwt) Sum(cm jws.Claims, days int) ([]byte, error) {
+func (p *Jwt) Sum(cm jws.Claims, exp time.Duration) ([]byte, error) {
 	kid := uuid.New().String()
 	now := time.Now()
 	cm.SetNotBefore(now)
-	cm.SetExpiration(now.AddDate(0, 0, days))
+	cm.SetExpiration(now.Add(exp))
 	cm.Set("kid", kid)
 	//TODO using kid
 

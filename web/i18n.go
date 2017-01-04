@@ -87,17 +87,10 @@ func (p *I18n) Set(lng string, code, message string) error {
 		l.Message = message
 		err = p.Db.Save(&l).Error
 	}
-	return err
-}
-
-//Get get locale
-func (p *I18n) Get(lng string, code string) string {
-	var l Locale
-	if err := p.Db.Where("lang = ? AND code = ?", lng, code).First(&l).Error; err != nil {
-		log.Error(err)
+	if err == nil {
+		p.Cache.Set(p.key(lng, code), message, time.Hour*24)
 	}
-	return l.Message
-
+	return err
 }
 
 //Del del locale

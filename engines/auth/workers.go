@@ -2,6 +2,7 @@ package auth
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/RichardKnop/machinery/v1/signatures"
 	"github.com/SermoDigital/jose/jws"
@@ -22,7 +23,7 @@ func (p *Engine) sendEmail(lng string, user *User, act string) {
 	cm := jws.Claims{}
 	cm.Set("act", act)
 	cm.Set("uid", user.UID)
-	tkn, err := p.Jwt.Sum(cm, 1)
+	tkn, err := p.Jwt.Sum(cm, time.Hour*6)
 	if err != nil {
 		log.Error(err)
 		return
