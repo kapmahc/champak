@@ -1,6 +1,10 @@
-var webpack = require('webpack');
-var path = require('path');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+const webpack = require('webpack');
+const path = require('path');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const StatsPlugin = require('stats-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+
+const dist = 'assets'
 
 module.exports = {
   entry: {
@@ -9,7 +13,7 @@ module.exports = {
   },
   output: {
     filename: '[name].[chunkhash].js',
-    path: './assets'
+    path: path.join(__dirname, dist),
   },
   module: {
     rules: [
@@ -20,13 +24,38 @@ module.exports = {
           loader: 'css-loader?sourceMap'
         })
       },
-      // { test: /\.css$/, loader: "style-loader!css-loader" },
-      { test: /\.png$/, loader: "url-loader?limit=100000" }
+      { test: /\.(png|woff|woff2|eot|ttf|svg)$/, loader: "url-loader?limit=100000" }
     ]
   },
   devtool: 'source-map',
   plugins: [
-    new ExtractTextPlugin({ filename: 'bundle.css', disable: false, allChunks: true }),
-    new webpack.optimize.CommonsChunkPlugin({name: ['vendor', 'manifest']})
+    new CleanWebpackPlugin([dist]),
+    new StatsPlugin('stats.json', {
+      chunkModules: true,
+      exclude: [/node_modules[\\\/]react/]
+    }),
+    new ExtractTextPlugin({ filename: '[name].[chunkhash].css', disable: false, allChunks: true }),
+    new webpack.LoaderOptionsPlugin({
+      minimize: true,
+      debug: false
+    }),
+    new webpack.DefinePlugin({
+      'process.env': {
+          'NODE_ENV': JSON.stringify('prod')
+      }
+    }),
+    new webpack.optimize.CommonsChunkPlugin({name: ['vendor', 'manifest']}),
+    new webpack.optimize.UglifyJsPlugin({
+      beautify: false,
+      mangle: {
+          screw_ie8: true,
+          keep_fnames: true
+      },
+      compress: {
+          screw_ie8: true
+      },
+      comments: false,
+      sourceMap: true,
+    })
   ]
 }

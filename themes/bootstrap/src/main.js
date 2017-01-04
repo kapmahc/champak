@@ -1,10 +1,12 @@
 import $ from 'jquery'
 
-require("css!./main.css");
-require("file!./fail.png")
-require("file!./up.png")
-require("file!./down.png")
-require("file!./favicon.png")
+// require("bootstrap/dist/css/bootstrap.css");
+require("./main.css");
+
+require("file-loader!./fail.png")
+require("file-loader!./up.png")
+require("file-loader!./down.png")
+require("file-loader!./favicon.png")
 
 $.ajaxSetup({
     beforeSend: function(xhr, settings) {
