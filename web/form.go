@@ -25,7 +25,7 @@ func NewForm(ctx *gin.Context, id, title, action string) Form {
 	fm["title"] = title
 	fm["method"] = "post"
 	fm["action"] = action
-	fm["next"] = ctx.Request.URL.Path
+	fm["next"] = ctx.Request.RequestURI //ctx.Request.URL.Path
 	fm["fields"] = make([]interface{}, 0)
 	return fm
 }

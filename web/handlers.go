@@ -47,9 +47,9 @@ func RedirectTo(fn func(*gin.Context) (string, error)) gin.HandlerFunc {
 		if nex, ok := c.Get("next"); ok {
 			url = nex.(string)
 		}
-
-		c.Redirect(http.StatusFound, url)
-
+		if !c.Writer.Written() {
+			c.Redirect(http.StatusFound, url)
+		}
 	}
 }
 
@@ -62,7 +62,6 @@ func PostFormHandler(fm interface{}, fn func(*gin.Context, interface{}) error) g
 		} else {
 			err = errors.New(strings.Replace(err.Error(), "\n", "<br/>", -1))
 		}
-
 		return c.PostForm("next"), err
 	})
 }

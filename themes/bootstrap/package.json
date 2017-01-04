@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/kapmahc/champak#readme",
   "dependencies": {
+    "blueimp-file-upload": "^9.14.2",
     "bootstrap": "^4.0.0-alpha.5",
+    "jquery-ui": "^1.12.1",
     "marked": "^0.3.6",
     "tether": "^1.4.0"
   },

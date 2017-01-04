@@ -46,7 +46,7 @@ $(function() {
           id: $(this).data('id'),
         },
         success: function(rst) {
-          alert("OK")
+          alert(rst.message)
         }.bind(this)
     })
 
