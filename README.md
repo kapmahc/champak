@@ -49,6 +49,7 @@ echo 'eval "$(rbenv init -)"' >> ~/.bashrc
 rbenv install 2.3.3
 rbenv local 2.3.3
 gem install bundler
+bundle config github.https true
 ```
 
 ## Deployment

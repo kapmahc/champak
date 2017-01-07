@@ -69,11 +69,11 @@ gem 'spree_product_assembly', github: 'spree-contrib/spree-product-assembly'
 gem 'spree_editor', github: 'spree-contrib/spree_editor'
 gem 'spree_recently_viewed', github: 'spree-contrib/spree_recently_viewed'
 gem 'spree_sitemap', github: 'spree-contrib/spree_sitemap'
+gem 'spree_active_shipping', github: 'spree-contrib/spree_active_shipping'
 
 # gem 'spree_globalize', github: 'spree-contrib/spree_globalize', branch: 'master'
-# gem 'spree_active_shipping', github: 'spree-contrib/spree_active_shipping'
-# gem 'spree_wishlist', github: 'spree-contrib/spree_wishlist', branch: 'master'
-# gem 'spree_email_to_friend', github: 'spree-contrib/spree_email_to_friend', branch: 'master'
+# gem 'spree_wishlist', github: 'spree-contrib/spree_wishlist'
+# gem 'spree_email_to_friend', github: 'spree-contrib/spree_email_to_friend'
 
 group :development do
   gem 'capistrano', '~> 3.7'
