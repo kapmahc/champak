@@ -17,11 +17,12 @@ $.ajaxSetup({
 });
 
 $(function() {
+  // ---------------------
   $('p.markdown').each(function(i, n){
     var txt = $(this).text();
     $(this).html(marked(txt));
   });
-
+  // ---------------------
   $('a[data-method="delete"]').click(function(e) {
       e.preventDefault();
       if (confirm($(this).data('confirm'))) {
@@ -34,7 +35,7 @@ $(function() {
           })
       }
   });
-
+  // ---------------------
   $("img.votes").click(function(e){
     e.preventDefault();
     $.ajax({
@@ -49,6 +50,7 @@ $(function() {
           alert(rst.message)
         }.bind(this)
     })
-
   });
+  // ---------------------  
+  // ---------------------
 });

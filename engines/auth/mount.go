@@ -63,7 +63,8 @@ func (p *Engine) Mount(rt *gin.Engine) {
 
 	rt.POST("/votes", p.Session.MustSignInHandler(), web.PostFormHandler(&fmVote{}, p.postVotes))
 
-	rt.GET("/attachments", p.Session.MustSignInHandler(), p.indexAttachments)
+	rt.POST("/attachments/upload", p.Session.MustSignInHandler(), p.attachmentsUpload)
+	rt.GET("/attachments", p.Session.MustSignInHandler(), p.attachmentsIndex)
 	// rt.GET("/attachments/*name", p.getAttachment)
 	// rt.POST("/attachments", p.Session.MustSignInHandler(), p.postAttachment)
 	// rt.DELETE("/attachmetns/:id", p.Session.MustSignInHandler(), p.deleteAttachment)

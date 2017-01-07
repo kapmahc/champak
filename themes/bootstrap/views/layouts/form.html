@@ -25,7 +25,7 @@
     {{else if eq .Type "select"}}
       <div class="form-group">
         <label for="{{.ID}}">{{if .Require}}*{{end}}{{.Label}}:</label>
-        <select {{if .Multiple}}multiple{{end}} class="form-control" id="{{.ID}}" name="{{.ID}}">          
+        <select {{if .Multiple}}multiple{{end}} class="form-control" id="{{.ID}}" name="{{.ID}}">
           {{ range .Options}}
             <option value="{{.Value}}" {{if .Selected}}selected{{end}}>{{.Label}}</option>
           {{ end }}
@@ -56,6 +56,12 @@
         <small id="{{.ID}}Help" class="form-text text-muted">
           {{.Help}}
         </small>
+      </div>
+    {{else if eq .Type "file"}}
+      <div class="form-group">
+        <label for="{{.ID}}">{{if .Require}}*{{end}}{{.Label}}</label>
+        <input type="file" class="form-control-file" id="{{.ID}}" aria-describedby="{{.ID}}Help" multiple>
+        <small id="{{.ID}}Help" class="form-text text-muted">{{.Help}}</small>
       </div>
     {{else}}
       <input type="hidden" id="{{.ID}}" name="{{.ID}}" value="{{.Value}}">

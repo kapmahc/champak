@@ -198,3 +198,22 @@ func NewCheckbox(id, label string, value bool) *Checkbox {
 		Value:   value,
 	}
 }
+
+// File file input
+type File struct {
+	Require bool
+	Type    string
+	ID      string
+	Label   string
+	Help    string
+}
+
+// NewFileField new file
+func NewFileField(id, label string) *File {
+	return &File{
+		Require: true,
+		Type:    "file",
+		ID:      id,
+		Label:   label,
+	}
+}

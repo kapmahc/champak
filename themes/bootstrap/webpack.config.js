@@ -9,7 +9,7 @@ const dist = 'assets'
 module.exports = {
   entry: {
     'main': path.join(__dirname, 'src', 'main.js'),
-    'vendor': ['jquery', 'tether', 'bootstrap', 'marked', 'blueimp-file-upload'],
+    'vendor': ['jquery', 'tether', 'bootstrap', 'marked'],
   },
   output: {
     filename: '[name].[chunkhash].js',
