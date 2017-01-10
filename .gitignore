@@ -22,3 +22,6 @@
 
 # Spree
 public/spree
+
+# Deploy
+/db/*.sql

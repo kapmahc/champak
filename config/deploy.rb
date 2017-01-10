@@ -1,5 +1,5 @@
 # config valid only for current version of Capistrano
-lock '3.7.0'
+lock '3.7.1'
 
 set :application, 'champak'
 set :repo_url, 'https://github.com/kapmahc/champak.git'
@@ -27,7 +27,7 @@ append :linked_files, 'config/database.yml', '.rbenv-vars', 'vendor/assets/image
 
 # Default value for linked_dirs is []
 # append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'public/system'
-append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'tmp/sessions', 'public/system'
+append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'tmp/sessions', 'public/system', 'public/attachments'
 
 # Default value for default_env is {}
 # set :default_env, { path: '/opt/ruby/bin:$PATH' }
@@ -40,8 +40,15 @@ append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'tmp/session
 set :rbenv_type, :user # or :system, depends on your rbenv setup
 set :rbenv_ruby, File.read('.ruby-version').strip
 
+# database
+set :db_remote_clean, true
+set :assets_dir, %w(public/attachments)
+set :local_assets_dir, %w(public/attachments)
+set :disallow_pushing, true
+set :db_dump_dir, "./db"
+set :compressor, :bzip2
 
 # nginx
-set :nginx_config_name, -> { "#{fetch(:app_domain)}" }
+set :nginx_config_name, -> { fetch :app_domain }
 set :nginx_server_name, -> { fetch :app_domain }
 set :nginx_use_ssl, true
