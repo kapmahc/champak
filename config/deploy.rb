@@ -45,7 +45,7 @@ set :db_remote_clean, true
 set :assets_dir, %w(public/attachments)
 set :local_assets_dir, %w(public/attachments)
 set :disallow_pushing, true
-set :db_dump_dir, "./db"
+set :db_dump_dir, -> { File.join(current_path, 'db') }
 set :compressor, :bzip2
 
 # nginx
