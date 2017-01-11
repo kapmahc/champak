@@ -75,6 +75,11 @@ gem 'spree_active_shipping', github: 'spree-contrib/spree_active_shipping'
 # gem 'spree_wishlist', github: 'spree-contrib/spree_wishlist'
 # gem 'spree_email_to_friend', github: 'spree-contrib/spree_email_to_friend'
 
+# for merge from magento
+gem 'sequel'
+gem 'mysql2'
+gem 'highline'
+
 group :development do
   gem 'capistrano', '~> 3.7'
   gem 'capistrano-rails', '~> 1.1'

@@ -25,4 +25,5 @@ public/spree
 
 # Deploy
 /db/*.sql
+/db/*.json
 *.sql
