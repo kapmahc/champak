@@ -6,13 +6,13 @@ A complete open source e-commerce solution by Go and React.
 
 ```bash
 bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
-gvm install go1.7.4 -B
-gvm use go1.7.4 --default
+gvm install go1.8rc1 -B
+gvm use go1.8rc1 --default
 
 go get -u github.com/kardianos/govendor
 go get -u github.com/kapmahc/champak
 cd $GOPATH/src/github.com/kapmahc/champak
-govender sync
+govendor sync
 make
 ls -l dist
 ```

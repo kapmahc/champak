@@ -691,6 +691,12 @@
 			"revisionTime": "2016-12-29T10:55:49Z"
 		},
 		{
+			"checksumSHA1": "ivIeCpZXmDL3OC8i2sGxUOt8zrI=",
+			"path": "golang.org/x/tools/blog/atom",
+			"revision": "0d047c8d5a8c3a1c89d9d78511f4ed7aef49ea0c",
+			"revisionTime": "2016-12-22T22:50:28Z"
+		},
+		{
 			"checksumSHA1": "hT+7DPyl8tQ96kUXW3Sr5o0Pcj0=",
 			"path": "gopkg.in/gin-gonic/gin.v1",
 			"revision": "e2212d40c62a98b388a5eb48ecbdcf88534688ba",
