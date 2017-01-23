@@ -1,6 +1,6 @@
 # Champak
 
-A complete open source e-commerce solution by Go.
+A complete open source e-commerce solution by Go and Vue.js.
 
 ## Installing
 
@@ -10,6 +10,8 @@ gvm install go1.8rc1 -B
 gvm use go1.8rc1 --default
 
 go get -u github.com/kardianos/govendor
+sudo npm install --global vue-cli
+
 go get -u github.com/kapmahc/champak
 cd $GOPATH/src/github.com/kapmahc/champak
 govendor sync
