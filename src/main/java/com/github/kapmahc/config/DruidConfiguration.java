@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
  * Created by flamen on 17-1-23.
  */
 @Configuration
-public class Druid {
+public class DruidConfiguration {
     @Bean
     public ServletRegistrationBean druidServlet() {
         ServletRegistrationBean reg = new ServletRegistrationBean();

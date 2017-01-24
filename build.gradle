@@ -32,6 +32,7 @@ repositories {
 
 
 dependencies {
+	compile group: 'com.itextpdf', name: 'itextpdf', version: '5.5.10'
 
 	compile group: 'mysql', name: 'mysql-connector-java', version: '6.0.5'
 	compile group: 'org.postgresql', name: 'postgresql', version: '9.4.1212.jre7'
