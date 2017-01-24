@@ -12,3 +12,5 @@ ls build/libs
 * [Druid](https://github.com/alibaba/druid/wiki)
 * [JavaMelody](https://github.com/javamelody/javamelody/wiki/UserGuide)
 * [Configuration](https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html)
+* [Configuration file orders](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html)
+* (Logback)[https://logback.qos.ch/manual/configuration.html]
