@@ -14,39 +14,21 @@ import java.util.List;
  * Created by flamen on 17-1-23.
  */
 @Entity
-@Table(name = "users", indexes = {
-        @Index(columnList = "name"),
-        @Index(columnList = "providerType"),
-        @Index(columnList = "providerId,providerType", unique = true)
-})
+@Table(name = "users")
 public class User implements Serializable {
     public enum Type {
         EMAIL
     }
 
     @Id
-    @GenericGenerator(
-            name = "usersSequenceGenerator",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "users_")
-            }
-    )
-    @GeneratedValue(generator = "usersSequenceGenerator")
     private long id;
-    @Column(nullable = false, unique = true, updatable = false)
     private String email;
-    @Column(nullable = false)
     private String name;
     private String password;
-    @Column(nullable = false, unique = true, length = 36)
     private String uid;
-    @Column(nullable = false, updatable = false)
     private String providerId;
-    @Column(nullable = false, updatable = false, length = 8)
     @Enumerated(EnumType.STRING)
     private Type providerType;
-    @Column(nullable = false)
     private int signInCount;
     private String currentSignInIp;
     private Date currentSignInAt;
@@ -59,14 +41,12 @@ public class User implements Serializable {
     private Date lockedAt;
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
-    @Column(nullable = false)
     private Date createdAt;
     @Temporal(TemporalType.TIMESTAMP)
     @UpdateTimestamp
-    @Column(nullable = false)
     private Date updatedAt;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private List<Log> logs;
 
     public User() {

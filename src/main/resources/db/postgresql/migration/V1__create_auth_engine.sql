@@ -1,20 +1,18 @@
-CREATE SEQUENCE hibernate_sequences;
-
 CREATE TABLE users (
-  id                 SERIAL PRIMARY KEY,
-  full_name          VARCHAR(32)                 NOT NULL,
+  id                 BIGSERIAL PRIMARY KEY,
+  name               VARCHAR(32)                 NOT NULL,
   email              VARCHAR(255)                NOT NULL,
   uid                VARCHAR(36)                 NOT NULL,
-  password           BYTEA,
+  password           VARCHAR(255),
   provider_id        VARCHAR(255)                NOT NULL,
   provider_type      VARCHAR(32)                 NOT NULL,
   home               VARCHAR(255),
   logo               VARCHAR(255),
   sign_in_count      INT                         NOT NULL DEFAULT 0,
   current_sign_in_at TIMESTAMP WITHOUT TIME ZONE,
-  current_sign_in_ip INET,
+  current_sign_in_ip VARCHAR(16),
   last_sign_in_at    TIMESTAMP WITHOUT TIME ZONE,
-  last_sign_in_ip    INET,
+  last_sign_in_ip    VARCHAR(16),
   confirmed_at       TIMESTAMP WITHOUT TIME ZONE,
   locked_at          TIMESTAMP WITHOUT TIME ZONE,
   created_at         TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
@@ -26,8 +24,8 @@ CREATE UNIQUE INDEX idx_users_email
   ON users (email);
 CREATE UNIQUE INDEX idx_users_provider_id_type
   ON users (provider_id, provider_type);
-CREATE INDEX idx_users_full_name
-  ON users (full_name);
+CREATE INDEX idx_users_name
+  ON users (name);
 CREATE INDEX idx_users_provider_id
   ON users (provider_id);
 CREATE INDEX idx_users_provider_type
@@ -35,7 +33,7 @@ CREATE INDEX idx_users_provider_type
 
 
 CREATE TABLE contacts (
-  id         SERIAL PRIMARY KEY,
+  id         BIGSERIAL PRIMARY KEY,
   user_id    BIGINT                      NOT NULL,
   key        VARCHAR(32)                 NOT NULL,
   val        VARCHAR(255)                NOT NULL,
@@ -48,17 +46,17 @@ CREATE INDEX idx_contacts_key
   ON contacts (key);
 
 CREATE TABLE logs (
-  id         SERIAL PRIMARY KEY,
+  id         BIGSERIAL PRIMARY KEY,
   user_id    BIGINT                      NOT NULL,
-  type       VARCHAR(8)                  NOT NULL DEFAULT 'info',
+  level      VARCHAR(8)                  NOT NULL DEFAULT 'info',
   message    VARCHAR(255)                NOT NULL,
   created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now()
 );
-CREATE INDEX idx_logs_type
-  ON logs (type);
+CREATE INDEX idx_logs_level
+  ON logs (level);
 
 CREATE TABLE roles (
-  id            SERIAL PRIMARY KEY,
+  id            BIGSERIAL PRIMARY KEY,
   name          VARCHAR(32)                 NOT NULL,
   resource_id   BIGINT,
   resource_type VARCHAR(255),
@@ -73,7 +71,7 @@ CREATE INDEX idx_roles_resource_type
   ON roles (resource_type);
 
 CREATE TABLE policies (
-  id         SERIAL PRIMARY KEY,
+  id         BIGSERIAL PRIMARY KEY,
   user_id    BIGINT                      NOT NULL,
   role_id    BIGINT                      NOT NULL,
   start_up   DATE                        NOT NULL DEFAULT current_date,
@@ -85,7 +83,7 @@ CREATE UNIQUE INDEX idx_policies
   ON policies (user_id, role_id);
 
 CREATE TABLE settings (
-  id         SERIAL PRIMARY KEY,
+  id         BIGSERIAL PRIMARY KEY,
   key        VARCHAR(255)                NOT NULL,
   user_id    BIGINT,
   val        BYTEA                       NOT NULL,
@@ -99,7 +97,7 @@ CREATE INDEX idx_settings_key
   ON settings (key);
 
 CREATE TABLE votes (
-  id            SERIAL PRIMARY KEY,
+  id            BIGSERIAL PRIMARY KEY,
   resource_type VARCHAR(255)                NOT NULL,
   resource_id   BIGINT                      NOT NULL,
   point         INT                         NOT NULL DEFAULT 0,
@@ -112,7 +110,7 @@ CREATE INDEX idx_votes_resource_type
   ON votes (resource_type);
 
 CREATE TABLE locales (
-  id         SERIAL PRIMARY KEY,
+  id         BIGSERIAL PRIMARY KEY,
   code       VARCHAR(255)                NOT NULL,
   lang       VARCHAR(8)                  NOT NULL DEFAULT 'en-US',
   message    TEXT                        NOT NULL,
@@ -127,7 +125,7 @@ CREATE INDEX idx_locales_lang
   ON locales (lang);
 
 CREATE TABLE notices (
-  id         SERIAL PRIMARY KEY,
+  id         BIGSERIAL PRIMARY KEY,
   body       TEXT                        NOT NULL,
   type       VARCHAR(8)                  NOT NULL DEFAULT 'markdown',
   created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
@@ -135,14 +133,14 @@ CREATE TABLE notices (
 );
 
 CREATE TABLE leave_words (
-  id         SERIAL PRIMARY KEY,
+  id         BIGSERIAL PRIMARY KEY,
   body       TEXT                        NOT NULL,
   type       VARCHAR(8)                  NOT NULL DEFAULT 'markdown',
   created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now()
 );
 
 CREATE TABLE attachments (
-  id            SERIAL PRIMARY KEY,
+  id            BIGSERIAL PRIMARY KEY,
   title         VARCHAR(255)                NOT NULL,
   url           VARCHAR(255)                NOT NULL,
   length        INT                         NOT NULL,

@@ -8,7 +8,7 @@ import javax.annotation.Resource;
 /**
  * Created by flamen on 17-1-23.
  */
-@Controller("auth.UsersController")
+@Controller("auth.usersC")
 public class UsersController {
     @Resource
     UserRepository userRepository;

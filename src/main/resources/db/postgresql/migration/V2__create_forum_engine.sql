@@ -1,5 +1,5 @@
 CREATE TABLE forum_articles (
-  id         SERIAL PRIMARY KEY,
+  id         BIGSERIAL PRIMARY KEY,
   user_id    BIGINT                      NOT NULL,
   title      VARCHAR(255)                NOT NULL,
   summary    VARCHAR(800)                NOT NULL,
@@ -14,7 +14,7 @@ CREATE INDEX idx_forum_type
   ON forum_articles (type);
 
 CREATE TABLE forum_tags (
-  id         SERIAL PRIMARY KEY,
+  id         BIGSERIAL PRIMARY KEY,
   name       VARCHAR(255)                NOT NULL,
   created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
   updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
@@ -23,7 +23,7 @@ CREATE UNIQUE INDEX idx_forum_tags_name
   ON forum_tags (name);
 
 CREATE TABLE forum_articles_tags (
-  id         SERIAL PRIMARY KEY,
+  id         BIGSERIAL PRIMARY KEY,
   article_id BIGINT NOT NULL,
   tag_id     BIGINT NOT NULL
 );
@@ -31,7 +31,7 @@ CREATE UNIQUE INDEX idx_forum_articles_tags
   ON forum_articles_tags (article_id, tag_id);
 
 CREATE TABLE forum_comments (
-  id         SERIAL PRIMARY KEY,
+  id         BIGSERIAL PRIMARY KEY,
   article_id BIGINT                      NOT NULL,
   user_id    BIGINT                      NOT NULL,
   body       TEXT                        NOT NULL,

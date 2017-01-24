@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 /**
  * Created by flamen on 17-1-23.
  */
-@Repository("auth.userRepository")
+@Repository("auth.userR")
 public interface UserRepository extends CrudRepository<User, Long> {
 }

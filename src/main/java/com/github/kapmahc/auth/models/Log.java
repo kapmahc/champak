@@ -20,20 +20,12 @@ public class Log implements Serializable {
     }
 
     @Id
-    @GenericGenerator(
-            name = "logsSequenceGenerator",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator"
-    )
-    @GeneratedValue(generator = "logsSequenceGenerator")
     private long id;
-    @Column(nullable = false, updatable = false)
     private String message;
-    @Column(nullable = false, updatable = false, length = 8)
     @Enumerated(EnumType.STRING)
     private Level level;
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
-    @Column(nullable = false)
     private Date createdAt;
     @JoinColumn(nullable = false, updatable = false)
     @ManyToOne
