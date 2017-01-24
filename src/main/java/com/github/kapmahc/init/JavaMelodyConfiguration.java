@@ -1,4 +1,4 @@
-package com.github.kapmahc.config;
+package com.github.kapmahc.init;
 
 import net.bull.javamelody.MonitoringFilter;
 import net.bull.javamelody.Parameter;
@@ -10,10 +10,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 
 import javax.servlet.DispatcherType;
-import javax.servlet.Filter;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpSessionListener;
 
 /**
  * Created by flamen on 17-1-23.

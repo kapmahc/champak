@@ -1,4 +1,4 @@
-package com.github.kapmahc.config;
+package com.github.kapmahc.init;
 
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
