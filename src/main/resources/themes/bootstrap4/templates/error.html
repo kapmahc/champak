@@ -7,13 +7,13 @@
 </head>
 <body>
 <div layout:fragment="content" class="row">
-  <div class="col">
+  <div class="col-md-4 offset-md-4">
     <div class="card">
         <img class="card-img-top" th:src="${@mvcResourceUrlProvider.getForLookupPath('/statics/fail.png')}">
         <div class="card-block">
-            <h4 class="card-title" th:text="#{pages.error.title}">title</h4>
-            <p class="card-text" th:text="#{pages.error.body}"></p>
-            <a th:href="@{/leave_words/new}" class="btn btn-primary" th:text="#{buttons.goto}">Go </a>
+            <h4 class="card-title" th:text="#{error.title}">title</h4>
+            <p class="card-text" th:text="#{error.body}"></p>
+            <a th:href="@{/leave_words/new}" class="btn btn-primary" th:text="#{auth.leave-words.new.title}">Go </a>
         </div>
     </div>
   </div>

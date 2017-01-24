@@ -13,10 +13,12 @@ public class HomeController {
     public String dashboard() {
         return "dashboard";
     }
+
     @GetMapping("/")
     public String home() {
         return "home";
     }
+
     @PostMapping("/search")
     public String search() {
         return "search";

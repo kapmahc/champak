@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.annotation.Resource;
 
@@ -19,8 +20,6 @@ import javax.annotation.Resource;
 @Configuration
 @EnableRedisHttpSession
 @EnableWebSecurity
-//jsr250Enabled = true,securedEnabled = true,
-@EnableGlobalMethodSecurity(prePostEnabled = true, proxyTargetClass = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -32,9 +31,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeRequests().antMatchers("/druid/**", "/monitoring").hasRole("admin")
-                .and().formLogin().loginPage("/users/sign-in").defaultSuccessUrl("/dashboard").permitAll()
+                .and().formLogin().loginPage("/users/sign-in").defaultSuccessUrl("/dashboard")
                 .and().logout().logoutUrl("/users/sign-out").logoutSuccessUrl("/").addLogoutHandler(signOutHandler).invalidateHttpSession(true)
-                .and().csrf().ignoringAntMatchers("/druid/**", "/monitoring");
+                .and().csrf().ignoringAntMatchers("/druid/**", "/monitoring")
+        ;
     }
 
     @Resource

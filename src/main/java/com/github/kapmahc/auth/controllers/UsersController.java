@@ -1,7 +1,9 @@
 package com.github.kapmahc.auth.controllers;
 
 import com.github.kapmahc.auth.forms.SignInForm;
+import com.github.kapmahc.auth.forms.SignUpForm;
 import com.github.kapmahc.auth.repositories.UserRepository;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,13 +19,12 @@ import javax.annotation.Resource;
 public class UsersController {
 
     @GetMapping("/sign-in")
-    public String signIn(SignInForm signInForm) {
+    public String signIn(SignInForm form) {
         return "auth/users/sign-in";
     }
 
-    @PreAuthorize("permitAll()")
     @GetMapping("/sign-up")
-    public String signUp() {
+    public String signUp(SignUpForm form) {
         return "auth/users/sign-up";
     }
 
