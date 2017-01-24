@@ -53,8 +53,8 @@ public class LocaleConfig extends WebMvcConfigurerAdapter {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         VersionResourceResolver vrr = new VersionResourceResolver().addVersionStrategy(new ContentVersionStrategy(), "/**");
 
-        registry.addResourceHandler("/static/**")
-                .addResourceLocations("classpath:/themes/" + theme + "/static/")
+        registry.addResourceHandler("/statics/**")
+                .addResourceLocations("classpath:/themes/" + theme + "/statics/")
                 .setCachePeriod(60 * 60 * 24 * 365) /* one year */
                 .resourceChain(true)
                 .addResolver(vrr);

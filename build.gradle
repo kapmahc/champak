@@ -4,9 +4,11 @@ buildscript {
     }
     repositories {
         mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath 'org.springframework:springloaded:1.2.0.RELEASE'
     }
 }
 
@@ -14,6 +16,13 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
+
+idea {
+    module {
+        inheritOutputDirs = false
+        outputDir = file("$buildDir/classes/main/")
+    }
+}
 
 jar {
     baseName = 'champak'
@@ -47,8 +56,8 @@ dependencies {
     compile group: 'net.bull.javamelody', name: 'javamelody-core', version: '1.63.0'
 
     compile group: 'org.thymeleaf', name: 'thymeleaf', version: '3.0.3.RELEASE'
-    compile group: 'nz.net.ultraq.thymeleaf', name: 'thymeleaf-layout-dialect', version: '2.1.2'
     compile group: 'org.thymeleaf', name: 'thymeleaf-spring4', version: '3.0.3.RELEASE'
+    compile group: 'nz.net.ultraq.thymeleaf', name: 'thymeleaf-layout-dialect', version: '2.1.2'
 
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('org.springframework.boot:spring-boot-starter-security')

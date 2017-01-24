@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{application}">
+<head>
+    <title th:text="#{auth.confirm.title}">title</title>
+</head>
+<body>
+
+<div layout:fragment="content" class="row">
+    <h2 th:text="#{auth.confirm.title}">title</h2>
+    <hr/>
+    <form th:action="@{/users/confirm}" th:object="${emailForm}" method="post">
+        <div class="form-group" th:classappend="${#fields.hasErrors('email')} ? 'has-danger' : ''">
+            <label class="form-control-label" th:for="email" th:text="#{attributes.email}">Email</label>
+            <input type="email" class="form-control" th:field="*{email}"/>
+            <div class="form-control-feedback" th:errors="*{email}"></div>
+        </div>
+        <div th:replace="fragments/form :: buttons">Buttons</div>
+    </form>
+    <br/>
+    <div th:replace="auth/users/shared :: non-sign-in-links"></div>
+</div>
+
+</body>
+</html>
