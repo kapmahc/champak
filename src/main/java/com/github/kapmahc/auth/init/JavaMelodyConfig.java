@@ -1,4 +1,4 @@
-package com.github.kapmahc.init;
+package com.github.kapmahc.auth.init;
 
 import net.bull.javamelody.MonitoringFilter;
 import net.bull.javamelody.Parameter;
@@ -18,7 +18,7 @@ import javax.servlet.ServletException;
  */
 @Configuration
 @ImportResource("classpath:net/bull/javamelody/monitoring-spring.xml")
-public class JavaMelodyConfiguration implements ServletContextInitializer {
+public class JavaMelodyConfig implements ServletContextInitializer {
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         servletContext.addListener(new SessionListener());

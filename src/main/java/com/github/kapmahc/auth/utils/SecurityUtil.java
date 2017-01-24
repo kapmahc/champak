@@ -15,11 +15,11 @@ import javax.annotation.PostConstruct;
 @Component("auth.securityUtil")
 public class SecurityUtil {
 
-    public String encrypt(String plain){
+    public String encrypt(String plain) {
         return te.encrypt(plain);
     }
 
-    public String decrypt(String code){
+    public String decrypt(String code) {
         return te.decrypt(code);
     }
 

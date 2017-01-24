@@ -1,7 +1,6 @@
 package com.github.kapmahc.auth.models;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -20,7 +19,8 @@ public class Log implements Serializable {
     }
 
     @Id
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String message;
     @Enumerated(EnumType.STRING)
     private Level level;
@@ -31,11 +31,11 @@ public class Log implements Serializable {
     @ManyToOne
     private User user;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

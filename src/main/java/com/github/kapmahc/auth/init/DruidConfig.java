@@ -1,4 +1,4 @@
-package com.github.kapmahc.init;
+package com.github.kapmahc.auth.init;
 
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
  * Created by flamen on 17-1-23.
  */
 @Configuration
-public class DruidConfiguration {
+public class DruidConfig {
     @Bean
     public ServletRegistrationBean druidServlet() {
         ServletRegistrationBean reg = new ServletRegistrationBean();
