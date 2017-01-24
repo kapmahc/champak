@@ -15,13 +15,13 @@ import javax.annotation.Resource;
 @Controller("auth.usersC")
 @RequestMapping("/users")
 public class UsersController {
-//    @PreAuthorize("permitAll()")
+
     @GetMapping("/sign-in")
     public String signIn(SignInForm signInForm) {
         return "auth/users/sign-in";
     }
 
-//    @PreAuthorize("permitAll()")
+    @PreAuthorize("permitAll()")
     @GetMapping("/sign-up")
     public String signUp() {
         return "auth/users/sign-up";

@@ -31,12 +31,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().authorizeRequests()
-                .antMatchers("/druid/**", "/monitoring").hasRole("admin")
+                .and().authorizeRequests().antMatchers("/druid/**", "/monitoring").hasRole("admin")
                 .and().formLogin().loginPage("/users/sign-in").defaultSuccessUrl("/dashboard").permitAll()
                 .and().logout().logoutUrl("/users/sign-out").logoutSuccessUrl("/").addLogoutHandler(signOutHandler).invalidateHttpSession(true)
-                .and().csrf().ignoringAntMatchers("/druid/**", "/monitoring")
-                .and();
+                .and().csrf().ignoringAntMatchers("/druid/**", "/monitoring");
     }
 
     @Resource

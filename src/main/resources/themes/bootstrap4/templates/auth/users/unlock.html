@@ -8,6 +8,7 @@
 <body>
 
 <div layout:fragment="content" class="row">
+  <div class="col">
     <h2 th:text="#{auth.unlock.title}">title</h2>
     <hr/>
     <form th:action="@{/users/unlock}" th:object="${emailForm}" method="post">
@@ -20,6 +21,7 @@
     </form>
     <br/>
     <div th:replace="auth/users/shared :: non-sign-in-links"></div>
+  </div>
 </div>
 
 </body>
