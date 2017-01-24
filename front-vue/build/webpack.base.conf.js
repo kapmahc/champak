@@ -12,6 +12,8 @@ var useCssSourceMap = cssSourceMapDev || cssSourceMapProd
 
 module.exports = {
   entry: {
+    'bootstrap-loader': 'bootstrap-loader',
+    'tether': 'tether',
     app: './src/main.js'
   },
   output: {

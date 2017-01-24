@@ -32,6 +32,7 @@ go get -u github.com/golang/lint/golint
 - atom-beautify
 - atom-react
 - autosave(remember to enable it)
+- language-vue
 
 ## Notes
 
