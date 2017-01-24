@@ -4,9 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ChampakApplication {
+public class Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ChampakApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 }
