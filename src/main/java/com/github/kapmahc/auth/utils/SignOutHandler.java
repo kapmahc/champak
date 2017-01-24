@@ -1,4 +1,4 @@
-package com.github.kapmahc.auth.controllers;
+package com.github.kapmahc.auth.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,5 +18,6 @@ public class SignOutHandler implements LogoutHandler {
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication auth) {
         logger.info("{} sign out", auth.getName());
     }
+
     private final static Logger logger = LoggerFactory.getLogger(SignOutHandler.class);
 }

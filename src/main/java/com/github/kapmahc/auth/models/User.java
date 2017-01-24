@@ -29,6 +29,8 @@ public class User implements Serializable {
     private String providerId;
     @Enumerated(EnumType.STRING)
     private Type providerType;
+    private String home;
+    private String logo;
     private int signInCount;
     private String currentSignInIp;
     private Date currentSignInAt;
@@ -51,6 +53,22 @@ public class User implements Serializable {
 
     public User() {
         logs = new ArrayList<>();
+    }
+
+    public String getHome() {
+        return home;
+    }
+
+    public void setHome(String home) {
+        this.home = home;
+    }
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
     }
 
     public List<Log> getLogs() {

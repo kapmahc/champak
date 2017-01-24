@@ -1,6 +1,6 @@
 package com.github.kapmahc.auth.init;
 
-import com.github.kapmahc.auth.controllers.SignOutHandler;
+import com.github.kapmahc.auth.utils.SignOutHandler;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;

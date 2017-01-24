@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<ul th:fragment="non-sign-in-links">
+    <li>
+        <a th:href="@{/users/sign-in}" th:text="#{auth.sign-in.title}"></a>
+    </li>
+    <li>
+        <a th:href="@{/users/sign-up}" th:text="#{auth.sign-up.title}"></a>
+    </li>
+    <li>
+        <a th:href="@{/users/forgot-password}" th:text="#{auth.forgot-password.title}"></a>
+    </li>
+    <li>
+        <a th:href="@{/users/confirm}" th:text="#{auth.confirm.title}"></a>
+    </li>
+    <li>
+        <a th:href="@{/users/unlock}" th:text="#{auth.unlock.title}"></a>
+    </li>
+</ul>
+</body>
+</html>

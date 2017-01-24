@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+<div th:fragment="flash" class="row">
+    <div th:if="${notice}" class="alert alert-success" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="alert-heading" th:text="#{flash.notice}">Heading</h4>
+        <p th:text="${notice}">Body</p>
+    </div>
+    <div th:if="${info}" class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="alert-heading" th:text="#{flash.info}">Heading</h4>
+        <p th:text="${info}">Body</p>
+    </div>
+    <div th:if="${warn}" class="alert alert-warning" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="alert-heading" th:text="#{flash.warn}">Heading</h4>
+        <p th:text="${warn}">Body</p>
+    </div>
+    <div th:if="${alert}" class="alert alert-danger" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="alert-heading" th:text="#{flash.alert}">Heading</h4>
+        <p th:text="${alert}">Body</p>
+    </div>
+</div>
+</body>
+</html>
