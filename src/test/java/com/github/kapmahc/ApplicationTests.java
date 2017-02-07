@@ -2,6 +2,7 @@ package com.github.kapmahc;
 
 import com.github.kapmahc.auth.models.User;
 import com.github.kapmahc.auth.services.UserService;
+import com.github.kapmahc.auth.utils.JwtHelper;
 import com.github.kapmahc.auth.utils.SecurityUtil;
 import org.junit.Assert;
 import org.junit.Test;
@@ -43,9 +44,16 @@ public class ApplicationTests {
         }
     }
 
+    @Test
+    public void testJwt(){
+        System.out.printf("vendor: %s\n",JwtHelper.class.getPackage().getImplementationVendor());
+    }
+
     @Resource
     SecurityUtil securityUtil;
     @Resource
     UserService userService;
+    @Resource
+    JwtHelper jwtHelper;
 
 }

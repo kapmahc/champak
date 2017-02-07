@@ -15,7 +15,7 @@ import java.util.Date;
 })
 public class Log implements Serializable {
     public enum Level {
-        INFO, ERROR
+        INFO, WARNING, ERROR
     }
 
     @Id
