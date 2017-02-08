@@ -20,6 +20,14 @@ GIT
       sitemap_generator (~> 5.1.0)
       solidus_core (>= 1.1, < 3)
 
+GIT
+  remote: https://github.com/solidusio-contrib/solidus_static_content.git
+  revision: f188a2abfb287313b8c4ddee8ce6d5e29debd7e9
+  specs:
+    solidus_static_content (1.0.0)
+      deface (~> 1.0.2)
+      solidus (>= 1.1, < 3)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -384,6 +392,7 @@ DEPENDENCIES
   solidus_gateway
   solidus_i18n!
   solidus_sitemap!
+  solidus_static_content!
   spring
   spring-watcher-listen (~> 2.0.0)
   turbolinks (~> 5)
