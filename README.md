@@ -118,3 +118,4 @@ bundle exec rake spree_sample:load
 ## Documents
 - [extensions](http://extensions.solidus.io/)
 - [solidus](https://github.com/solidusio/solidus)
+- [whenever](https://github.com/javan/whenever)
