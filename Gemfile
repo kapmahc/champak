@@ -66,3 +66,11 @@ gem 'solidus_static_content', github: 'solidusio-contrib/solidus_static_content'
 
 gem 'solidus_editor', github: 'solidusio-contrib/solidus_editor', branch: 'master'
 gem 'tinymce-rails-langs'
+
+group :development do
+  gem 'capistrano', '~> 3.7'
+  gem 'capistrano-rails', '~> 1.1'
+  gem 'capistrano-rbenv', '~> 2.0'
+  gem 'capistrano3-puma', github: 'seuros/capistrano-puma'
+  gem "capistrano-db-tasks", require: false
+end
