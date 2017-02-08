@@ -52,7 +52,7 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 # gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
-
 gem 'solidus'
 gem 'solidus_auth_devise'
 gem 'solidus_gateway'
+gem 'solidus_i18n', github: 'solidusio-contrib/solidus_i18n', branch: 'master'
