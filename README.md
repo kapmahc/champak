@@ -56,7 +56,7 @@ bundle config github.https true
 ### Config files
 * Upload
 ```
-scp .rbenv-vars config/database.yml deploy@www.change-me.com:/tmp
+scp .rbenv-vars config/database.yml public/robots.txt deploy@www.change-me.com:/tmp
 ```
 
 * robots.txt
