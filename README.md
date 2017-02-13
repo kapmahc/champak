@@ -1,4 +1,4 @@
-champak - A open source e-commerce solution by solidus.
+champak - A open source e-commerce box by solidus.
 ---
 For ubuntu (16.04.1 LTS)
 
